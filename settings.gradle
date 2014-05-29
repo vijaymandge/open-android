@@ -1,0 +1,4 @@
+include ':library', ':NativeSDK'
+include ':NativePaymentSample'
+include ':CardValidation'
+include ':CitrusLibrary'

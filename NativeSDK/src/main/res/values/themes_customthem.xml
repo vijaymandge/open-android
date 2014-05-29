@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <style name="CustomThem" parent="@style/_CustomThem"/>
+
+  <style name="_CustomThem" parent="@android:style/Theme.Holo.Light">
+
+    <item name="android:editTextStyle">@style/EditTextCustomThem</item>
+
+    <item name="android:textColorHighlight">#9933b5e5</item>
+
+    <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewCustomThem</item>
+
+    <item name="android:checkboxStyle">@style/CheckBoxCustomThem</item>
+
+    <item name="android:radioButtonStyle">@style/RadioButtonCustomThem</item>
+
+    <item name="android:buttonStyle">@style/ButtonCustomThem</item>
+
+    <item name="android:imageButtonStyle">@style/ImageButtonCustomThem</item>
+
+    <item name="android:spinnerStyle">@style/SpinnerCustomThem</item>
+
+    <item name="android:spinnerDropDownItemStyle">@style/SpinnerDropDownItemCustomThem</item>
+
+    <item name="android:progressBarStyleHorizontal">@style/ProgressBarCustomThem</item>
+
+    <item name="android:seekBarStyle">@style/SeekBarCustomThem</item>
+
+    <item name="android:ratingBarStyle">@style/RatingBarCustomThem</item>
+
+    <item name="android:ratingBarStyleIndicator">@style/RatingBarBigCustomThem</item>
+
+    <item name="android:buttonStyleToggle">@style/ToggleCustomThem</item>
+
+    <item name="android:listViewStyle">@style/ListViewCustomThem</item>
+
+    <item name="android:listViewWhiteStyle">@style/ListViewCustomThem.White</item>
+
+    <item name="android:spinnerItemStyle">@style/SpinnerItemCustomThem</item>
+    
+    <item name="vpiIconPageIndicatorStyle">@style/Widget.IconPageIndicator</item>
+    
+    <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+    
+    <item name="vpiHomePageIndicatorStyle">@style/Widget.HomeTabPageIndicator</item>
+
+  </style>
+  
+    <style name="Widget">
+    </style>
+
+    <style name="Widget.TabPageIndicator" parent="@android:style/Theme.Light">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/customthem_tab_indicator_holo</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingTop">12dip</item>
+        <item name="android:paddingBottom">12dp</item>
+<!--         <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+ -->    
+ 	    <item name="android:textColor">@android:color/black</item>	
+ 		<item name="android:textSize">15sp</item>
+ 		<item name="android:textStyle">bold</item>
+        <item name="android:maxLines">1</item>
+        
+    </style>
+    
+    <style name="Widget.HomeTabPageIndicator" parent="@android:style/Theme.Light">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/vpi__tab_indicator</item>
+        <item name="android:paddingLeft">5dip</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+<!--         <item name="android:textAppearance">@style/TextAppearance.TabPageIndicator</item>
+ -->    <item name="android:textSize">15sp</item>
+ 	    <item name="android:textStyle">bold</item>
+ 	    <item name="android:textColor">@android:color/white</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- <style name="TextAppearance.TabPageIndicator" parent="Widget">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/vpi__dark_theme</item>
+    </style> -->
+
+    <style name="Widget.IconPageIndicator" parent="Widget">
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+    </style>
+
+</resources>

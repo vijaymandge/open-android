@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" 
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="#F2F2F2"
+    android:descendantFocusability="blocksDescendants">
+    
+    
+    <LinearLayout android:id="@+id/optionLayout"
+        		  android:layout_width="wrap_content"
+        		  android:layout_height="wrap_content"
+        		  android:orientation="vertical"
+        		  android:layout_alignParentLeft="true">
+        		  
+        <TextView android:id="@+id/optionType"
+        	  android:layout_width="wrap_content"
+        	  android:layout_height="wrap_content"
+        	  android:layout_marginLeft="20dp"
+        	  android:layout_marginTop="10dp"
+        	  android:textColor="@android:color/black"/>
+    
+    	<TextView android:id="@+id/paymentDetail"
+        	  android:layout_width="wrap_content"
+        	  android:layout_height="wrap_content"
+        	  android:layout_marginLeft="20dp"
+        	  android:textColor="@android:color/black"/>
+        
+    </LinearLayout>
+    
+    
+    <LinearLayout android:id="@+id/editLayout"
+        		  android:layout_width="wrap_content"
+        		  android:layout_height="wrap_content"
+        		  android:orientation="horizontal"
+        		  android:layout_alignParentRight="true"
+        		  android:layout_marginRight="20dp"
+        		  android:layout_marginTop="10dp"
+        		  android:layout_centerHorizontal="true">
+    	
+            	
+        <ImageButton android:id="@+id/defaultImage"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+     			android:src="@drawable/ic_action_accept"
+            	android:layout_gravity="center"
+            	android:background="@android:color/transparent"
+            	android:layout_marginRight="5dp"/>
+        
+    	
+        <ImageButton android:id="@+id/deleteButton"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+     			android:src="@drawable/ic_action_discard"
+            	android:layout_gravity="center"
+            	android:background="@android:color/transparent"
+            	android:layout_marginLeft="5dp"/>
+    	
+    </LinearLayout>    
+    
+    
+
+</RelativeLayout>

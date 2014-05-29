@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.citrus.sdk.demo" >
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/CustomThem" >
+
+
+
+        <activity
+            android:name="com.citrus.sdk.activity.SignIn"
+            android:label="Sign In" >
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name="com.citrus.sdk.activity.SignUp"
+            android:label="Sign Up" >
+        </activity>
+        <activity
+            android:name="com.citrus.sdk.activity.SavepayOption"
+            android:label="@string/title_activity_savepay_option" >
+        </activity>
+        <activity
+            android:name="com.citrus.sdk.activity.MemberFlow"
+            android:label="@string/title_activity_get_pay_options" >
+        </activity>
+        <activity
+            android:name="com.citrus.sdk.activity.HomeScreen"
+            android:label="@string/title_activity_home_screen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.citrus.sdk.activity.Guestflow"
+            android:label="@string/title_activity_guestflow" >
+        </activity>
+        <activity android:name="com.citrus.sdk.webops.Web3DSecure"
+                  android:label="3D Secure" >
+        </activity>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DebitCard" >
+
+    
+    <ScrollView 
+        		android:id="@+id/personalDetailsScroll"
+        		android:layout_width="match_parent"
+        		android:layout_height="match_parent"
+        		android:layout_above="@+id/checkoutLayout"
+        		android:scrollbars="vertical"
+        		>
+        		<RelativeLayout android:id="@+id/submitLayout"
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content"
+        		    >
+        
+        		<LinearLayout android:id="@+id/cardLayout"
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content"
+        		    android:layout_gravity="top"
+        		    android:orientation="horizontal"
+        		    android:layout_marginTop="10dp"
+        		    >
+        
+        		<com.citruspay.mobile.payment.widgets.CardNumberEditText android:id="@+id/debitCardText"
+        	  	android:layout_width="match_parent" 	  	
+        	  	android:layout_height="42dp"
+        	  	android:hint="@string/CardNumber"
+        	  	android:inputType="number|none"
+        	  	android:layout_marginLeft="3dp"
+        	  	android:paddingLeft="12dp"
+        	  	/>
+        
+        
+    		</LinearLayout>
+    
+    		<LinearLayout android:id="@+id/expiryLayout"
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content"
+        		    android:layout_centerInParent="true"
+        		    android:layout_below="@+id/cardLayout"
+        		    android:weightSum="10">
+    		<com.citruspay.mobile.payment.widgets.ExpiryEditText android:id="@+id/cardExpiry"
+        	  android:layout_width="0dp"
+        	  android:layout_weight="6"
+        	  android:layout_height="42dp"
+        	  android:hint="@string/MMYY"
+        	  android:inputType="number|none"
+        	  android:maxLength="5"
+        	  android:layout_marginLeft="3dp"
+        	  android:paddingLeft="12dp"/>
+    		
+    		<EditText android:id="@+id/cvvText"
+    		    	  android:layout_width="0dp"
+    		    	  android:layout_height="42dp"
+    		    	  android:inputType="number|none"
+    		    	  android:maxLength="4"
+    		    	  android:layout_marginLeft="5dp"
+    		    	  android:layout_weight="4"
+    		    	  android:hint="@string/cvv"
+    		    	  android:layout_marginRight="3dp"/>
+    
+    		</LinearLayout>
+    
+    		<EditText android:id="@+id/nameOnCard"
+        	  android:layout_width="match_parent"
+        	  android:layout_height="42dp"
+        	  android:hint="@string/holderName"
+        	  android:inputType="textPersonName"
+        	  android:layout_below="@+id/expiryLayout"
+        	  android:layout_marginLeft="3dp"
+        	  android:paddingLeft="12dp"/>		    
+        
+    </RelativeLayout>
+    </ScrollView>    		
+    
+    <LinearLayout android:id="@+id/checkoutLayout"
+        		    android:layout_width="match_parent"
+        		    android:layout_height="wrap_content"
+        		    android:layout_alignParentBottom="true"
+        		    android:orientation="vertical">
+        		
+        <CheckBox android:id="@+id/saveOption"
+        	  android:layout_width="wrap_content"
+        	  android:layout_height="wrap_content"
+        	  android:text="@string/checkbox"
+        	  android:layout_gravity="center"
+        	  android:checked="true"/>
+    
+    	<Button android:id="@+id/submitButton"
+            	android:layout_width="match_parent"
+            	android:layout_height="50dp"
+            	android:text="@string/pay"
+            	android:textColor="@android:color/white"
+            	android:textSize="20sp"
+  				/>
+        
+      </LinearLayout>
+   	
+    
+    
+   
+</RelativeLayout>

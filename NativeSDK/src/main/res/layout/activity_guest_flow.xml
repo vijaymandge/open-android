@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="@android:color/white">
+    
+    	<!-- <RelativeLayout android:id="@+id/topLogoLayout"
+    	    		  android:layout_width="match_parent"
+    	    		  android:layout_height="wrap_content"
+    	    		  android:orientation="vertical"
+    	    		  android:layout_margin="0dp"
+    	    		  android:background="#F2F2F2"
+    	    		  android:paddingTop="30dp"
+    	    		  android:paddingBottom="30dp">
+    	    
+    	    <ImageView android:id="@+id/imageLogo"
+    	        	   android:layout_width="wrap_content"
+    	        	   android:layout_height="wrap_content"
+    	        	   android:layout_alignParentLeft="true"
+    	        	   android:layout_marginLeft="10dp"/>
+    	    
+    	    <RelativeLayout android:id="@+id/arrowLayout"
+    	        		  android:layout_width="wrap_content"
+    	        		  android:layout_height="wrap_content"
+    	        		  android:layout_centerInParent="true">
+    	        
+    	        <TextView android:id="@+id/amount"
+    	            	  android:layout_height="wrap_content"
+    	            	  android:layout_width="wrap_content"
+    	            	  android:layout_alignParentTop="true"
+    	            	  android:layout_centerHorizontal="true"
+    	            	  android:text="Rs 10"
+    	            	  android:textColor="@android:color/black"
+    	            	  android:textSize="18sp"
+    	            	  android:textStyle="bold"/>
+    	        
+    	        <ImageView android:id="@+id/arrow"
+    	            	   android:layout_width="wrap_content"
+    	            	   android:layout_height="wrap_content"
+    	            	   android:src="@drawable/arrow"
+    	            	   android:layout_below="@+id/amount"/>
+    	        
+    	        
+    	    </RelativeLayout>
+    	    
+    	    
+    	    <ImageView android:id="@+id/companyLogo"
+    	        	   android:layout_width="wrap_content"
+    	        	   android:layout_height="wrap_content"
+    	        	   android:layout_alignParentRight="true"
+    	        	   android:src="@drawable/seller"
+    	        	   android:layout_marginRight="10dp"/>
+    	      
+    	</RelativeLayout> -->
+    
+    	<com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/indicator"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+        
+    	<android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />     
+</LinearLayout>
