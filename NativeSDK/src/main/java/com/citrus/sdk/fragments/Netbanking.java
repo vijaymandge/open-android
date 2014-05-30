@@ -14,6 +14,22 @@
    limitations under the License.
 */
 
+/*
+   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 package com.citrus.sdk.fragments;
 
 import android.content.Intent;
@@ -38,6 +54,7 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
+import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 
@@ -152,6 +169,9 @@ public class Netbanking extends Fragment {
                         createGuestTxn();
                     }
                     else {
+                        if (saveOption.isChecked()) {
+                            savePayOption(selectedBank);
+                        }
                         createMemberTxn();
                     }
 
@@ -271,5 +291,25 @@ public class Netbanking extends Fragment {
 		new Pay(getActivity(), paymentObject, taskExecuted).execute();
 	}
 
+
+    private void savePayOption(String bankName) {
+        JSONObject paymentDetails = null;
+        try {
+            paymentDetails =  new JSONObject().put("type", "netbanking").put("bank", bankName).put("owner", "");
+        } catch (JSONException e) {
+
+        }
+        /* try {
+      String defaultOption = StorePayOperations.getDefaultOption(getActivity().getApplicationContext());
+      JSONObject paymentDetails =  new JSONObject().put("type", "netbanking").put("bank", bankName).put("owner", "");
+      mCardDetails.put("type", Constants.FASTCHECKOUT_TYPE)
+         .put("defaultOption", defaultOption)
+         .put("paymentOptions", new JSONArray(((Collections.singleton(paymentDetails)))));
+     } catch (JSONException e) {
+      e.printStackTrace();
+     }
+        * */
+       new SavePayOption(getActivity(), paymentDetails).execute();
+     }
 
 }

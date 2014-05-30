@@ -14,6 +14,22 @@
    limitations under the License.
 */
 
+/*
+   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 package com.citrus.sdk.activity;
 
 import android.app.Activity;
@@ -79,18 +95,18 @@ public class HomeScreen extends Activity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logoutUser();
+                logoutUser(HomeScreen.this);
             }
         });
     }
 
-    private void logoutUser() {
+    public static final void logoutUser(Activity activity) {
         try {
-            Logout.logoutUser(HomeScreen.this);
-            DBHandler.deleteDB(HomeScreen.this);
-            Toast.makeText(getApplicationContext(), "User Logged out successfully!", Toast.LENGTH_SHORT).show();
+            Logout.logoutUser(activity);
+            DBHandler.deleteDB(activity);
+            Toast.makeText(activity.getApplicationContext(), "User Logged out successfully!", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Could not out successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), "Could not out successfully!", Toast.LENGTH_SHORT).show();
         }
 
     }

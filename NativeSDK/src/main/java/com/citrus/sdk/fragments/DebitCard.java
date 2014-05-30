@@ -14,6 +14,22 @@
    limitations under the License.
 */
 
+/*
+   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 package com.citrus.sdk.fragments;
 
 import android.content.Intent;
@@ -25,6 +41,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 
@@ -34,6 +51,7 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
+import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.OnTaskCompleted;
@@ -52,6 +70,7 @@ public class DebitCard extends Fragment{
 	private String paymentType;
 	private JSONObject paymentObject;
 	private OnTaskCompleted taskExecuted;
+    private CheckBox checkBox;
 	
 	private View returnView;
 		
@@ -77,6 +96,7 @@ public class DebitCard extends Fragment{
 		nameOnCard.setText("Lavekar");
 		cvv = (EditText) returnView.findViewById(R.id.cvvText);
 		cvv.setText("303");
+        checkBox = (CheckBox) returnView.findViewById(R.id.saveOption);
 		submitButton = (Button) returnView.findViewById(R.id.submitButton);
 		initSubmitButton();
 	}
@@ -91,6 +111,9 @@ public class DebitCard extends Fragment{
                         createGuestTxn();
                     }
                     else {
+                        if (checkBox.isChecked()) {
+                            savePayOption();
+                        }
                         createMemberTxn();
                     }
 				}
@@ -225,5 +248,17 @@ public class DebitCard extends Fragment{
 		};
 		new Pay(getActivity(), paymentObject, taskExecuted).execute();
 	}
+
+    private void savePayOption() {
+        JSONObject paymentDetails = null;
+        try {
+            paymentDetails  =  new JSONObject().put("type", "debit").put("owner", nameOnCard.getText().toString())
+                    .put("number", cardnumber.getText().toString()).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+        } catch (JSONException e) {
+
+        }
+        new SavePayOption(getActivity(), paymentDetails).execute();
+
+    }
 	
 }

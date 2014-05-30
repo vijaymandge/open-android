@@ -14,10 +14,27 @@
    limitations under the License.
 */
 
+/*
+   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 package com.citrus.sdk.webops;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
@@ -58,8 +75,14 @@ public class SignUpAsynch extends AsyncTask<String, Void, String>{
 			e.printStackTrace();
 			result = "failure";
 		} catch (SubscriptionException e) {
+            try {
+                if (TextUtils.equals(Constants.USER_EXISTS, e.getContent().getString("type"))) {
+                    result = e.getContent().getString("type");
+                }
+            } catch (JSONException ex) {
+
+            }
 			e.printStackTrace();
-			result = "failure";
 		} catch (JSONException e) {
 			e.printStackTrace();
 			result = "failure";
@@ -70,7 +93,6 @@ public class SignUpAsynch extends AsyncTask<String, Void, String>{
 	
 	@Override
 	protected void onPostExecute(String result) {
-		Toast.makeText(activity.getApplicationContext(), result, Toast.LENGTH_LONG).show();
 		listener.onTaskExecuted(null, result);
 	}
 
