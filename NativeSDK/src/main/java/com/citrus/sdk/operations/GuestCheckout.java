@@ -49,21 +49,16 @@ import org.json.JSONObject;
  * Created by shardul on 27/5/14.
  */
 public class GuestCheckout {
-    private String paymentType;
     private Activity activity;
+    private Messenger messenger;
 
-    public GuestCheckout() {
-        paymentType = "";
-    }
-
-    public GuestCheckout(Activity activity, String type) {
+    public GuestCheckout(Activity activity) {
         this.activity = activity;
-        paymentType = type;
+
     }
 
-    public void pay(JSONObject paymentObject) {
-
-        Messenger messenger = new Messenger() {
+    public void cardPay(String type) {
+        messenger = new Messenger() {
             @Override
             public void onTaskExecuted(String result) {
                 if (!TextUtils.isEmpty(result)) {
@@ -76,81 +71,75 @@ public class GuestCheckout {
                 }
             }
         };
+        String txnId = String.valueOf(System.currentTimeMillis());
+        JSONObject paymentObject = new JSONObject();
+        try {
+            paymentObject.put("paymentMode", type);
+            paymentObject.put("cardType", "VISA");
+            paymentObject.put("cardNumber", "4028530052708001");
+            paymentObject.put("cardHolderName", "Jitendra Gupta");
+            paymentObject.put("expiryMonth", "03");
+            paymentObject.put("expiryYear", "2015");
+            paymentObject.put("cvvNumber", "018");
 
-        if (TextUtils.equals(paymentType, "netbanking")) {
-            /*Netbanking guest Flow remains to be done*/
-            Toast.makeText(activity.getApplicationContext(), "Netbanking - yet to be implemented", Toast.LENGTH_SHORT).show();
-        }
-        else if (TextUtils.equals(paymentType, "credit")) {
-            String txnId = String.valueOf(System.currentTimeMillis());
-            try {
-                paymentObject.put("paymentMode", PaymentUtils.CREDIT_CARD.toString());
-                paymentObject.put("cardType", "VISA");
-                paymentObject.put("cardNumber", "4028530052708001");
-                paymentObject.put("cardHolderName", "Jitendra Gupta");
-                paymentObject.put("expiryMonth", "03");
-                paymentObject.put("expiryYear", "2015");
-                paymentObject.put("cvvNumber", "018");
-
-                paymentObject.put("merchantTxnId", txnId);
+            paymentObject.put("merchantTxnId", txnId);
 
 			/*Personal Details*/
-                paymentObject.put("amount", "1.0");
-                paymentObject.put("firstName", "Shardul");
-                paymentObject.put("lastName", "Swwww");
-                paymentObject.put("address", "Baner");
-                paymentObject.put("addressCity", "Pune");
-                paymentObject.put("addressState", "Goa");
-                paymentObject.put("addressZip", "885744");
-                paymentObject.put("email", "shardullavekar@gmail.com");
-                paymentObject.put("mobile", "7875432990");
+            paymentObject.put("amount", "1.0");
+            paymentObject.put("firstName", "Shardul");
+            paymentObject.put("lastName", "Swwww");
+            paymentObject.put("address", "Baner");
+            paymentObject.put("addressCity", "Pune");
+            paymentObject.put("addressState", "Goa");
+            paymentObject.put("addressZip", "885744");
+            paymentObject.put("email", "shardullavekar@gmail.com");
+            paymentObject.put("mobile", "7875432990");
 
-                paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
+            paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
 
-                new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
+            new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+    }
 
-        else if (TextUtils.equals(paymentType, "debit")){
-            String txnId = String.valueOf(System.currentTimeMillis());
-            paymentObject = new JSONObject();
-            try {
-                paymentObject.put("paymentMode", PaymentUtils.DEBIT_CARD.toString());
-                paymentObject.put("cardType", "VISA");
-                paymentObject.put("cardNumber", "4028530052708001");
-                paymentObject.put("cardHolderName", "Jitendra Gupta");
-                paymentObject.put("expiryMonth", "03");
-                paymentObject.put("expiryYear", "2015");
-                paymentObject.put("cvvNumber", "018");
-
-                paymentObject.put("merchantTxnId", txnId);
+    public void netbankPay(String bankCode) {
+        messenger = new Messenger() {
+            @Override
+            public void onTaskExecuted(String result) {
+                if (!TextUtils.isEmpty(result)) {
+                    Intent intent = new Intent(activity, Web3DSecure.class);
+                    intent.putExtra("redirectUrl", result);
+                    activity.startActivity(intent);
+                }
+                else {
+                    Toast.makeText(activity.getApplicationContext(), "Could not process your request", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+        String txnId = String.valueOf(System.currentTimeMillis());
+        JSONObject paymentObject = new JSONObject();
+        try {
+            paymentObject.put("paymentMode", PaymentUtils.NET_BANKING.toString());
+            paymentObject.put("merchantTxnId", txnId);
 
 			/*Personal Details*/
-                paymentObject.put("amount", "1.0");
-                paymentObject.put("firstName", "Shardul");
-                paymentObject.put("lastName", "Swwww");
-                paymentObject.put("address", "Baner");
-                paymentObject.put("addressCity", "Pune");
-                paymentObject.put("addressState", "Goa");
-                paymentObject.put("addressZip", "885744");
-                paymentObject.put("email", "shardullavekar@gmail.com");
-                paymentObject.put("mobile", "7875432990");
+            paymentObject.put("amount", "1.0");
+            paymentObject.put("firstName", "Shardul");
+            paymentObject.put("lastName", "Swwww");
+            paymentObject.put("address", "Baner");
+            paymentObject.put("addressCity", "Pune");
+            paymentObject.put("addressState", "Goa");
+            paymentObject.put("addressZip", "885744");
+            paymentObject.put("email", "shardullavekar@gmail.com");
+            paymentObject.put("mobile", "7875432990");
+            paymentObject.put("issuerCode", bankCode);
+            paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
 
-                paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
+        } catch (JSONException e) {
 
-                new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
-        else {
-            Toast.makeText(activity.getApplicationContext(), "Payment type not recognized!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
+        new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
     }
 }

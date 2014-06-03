@@ -46,6 +46,8 @@ import android.widget.TextView;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
+import com.citrus.sdk.interfaces.Messenger;
+import com.citrus.sdk.webops.ActivateAc;
 import com.citrus.sdk.webops.SignUpAsynch;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 
@@ -68,6 +70,8 @@ public class SignUp extends Activity {
     private Button signUpButton;
 
     private OnTaskCompleted listener;
+
+    private Messenger accListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +93,7 @@ public class SignUp extends Activity {
             @Override
             public void onClick(View view) {
                 HomeScreen.logoutUser(SignUp.this);
-                String params[] = new String[] {usernameET.getText().toString(), mobileET.getText().toString(), passwordET.getText().toString(), "", ""};
+                String params[] = new String[] {randomEmail(), mobileET.getText().toString(), passwordET.getText().toString(), "", ""};
                 signUpLayout.setVisibility(View.INVISIBLE);
                 spinner.setVisibility(View.VISIBLE);
                 new SignUpAsynch(SignUp.this, listener).execute(params);
@@ -101,15 +105,15 @@ public class SignUp extends Activity {
         listener = new OnTaskCompleted() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-                spinner.setVisibility(View.INVISIBLE);
+
                 if (TextUtils.equals(message, "success")) {
-                    Intent intent = new Intent(SignUp.this, MemberFlow.class);
-                    startActivity(intent);
-                    finish();
+                    activateAccount();
+
                 }
                 else if (TextUtils.equals(Constants.USER_EXISTS, message)) {
                     signUpLayout.setVisibility(View.VISIBLE);
                     errorText.setText("User already exists.");
+                    HomeScreen.logoutUser(SignUp.this);
                 }
                 else {
                     signUpLayout.setVisibility(View.VISIBLE);
@@ -118,5 +122,30 @@ public class SignUp extends Activity {
             }
         };
 
+    }
+
+    private void activateAccount() {
+        accListener = new Messenger() {
+            @Override
+            public void onTaskExecuted(String result) {
+                spinner.setVisibility(View.INVISIBLE);
+                if (TextUtils.equals(result, "success")) {
+                    Intent intent = new Intent(SignUp.this, MemberFlow.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    signUpLayout.setVisibility(View.VISIBLE);
+                    errorText.setText("Could not sign up the user");
+                }
+            }
+        };
+
+        new ActivateAc(SignUp.this, accListener).execute();
+    }
+
+    private String randomEmail() {
+        String email = String.valueOf(Math.random()) + "@gmail.com";
+        return email;
     }
 }

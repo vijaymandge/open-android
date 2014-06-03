@@ -35,6 +35,8 @@ package com.citrus.sdk.webops;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.citrus.sdk.interfaces.Messenger;
 import com.citruspay.util.HMACSignature;
@@ -62,20 +64,21 @@ public class GuestPay extends AsyncTask <Void, Void, Void>{
 	private Activity activity;
 	private Messenger listener;
 	private JSONObject txnObject;
-	private String redirectUrl, txnId;
+	private String result, txnId, exception;
 	
 	
 	public GuestPay(Activity activity, JSONObject txnObject, Messenger listener, String txnId) {
 		this.listener = listener;
 		this.activity = activity;
 		this.txnObject = txnObject;
-		this.txnId = txnId;
+        this.txnId = txnId;
 	}
 	
 	@Override
 	protected void onPreExecute() {
 		dialog = ProgressDialog.show(activity, "Please Wait", "Redirecting to Citrus", true, true);
-		redirectUrl = null;
+		result = null;
+        exception = null;
 	}
 	
 	@Override
@@ -109,22 +112,29 @@ public class GuestPay extends AsyncTask <Void, Void, Void>{
 
 		    String[] splitString = res.toString().split("<redirectUrl>");
 		    splitString = splitString[1].split("</redirectUrl>");
-			redirectUrl = splitString[0];
+			result = splitString[0];
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+            exception = "malformed url";
 		} catch (URISyntaxException e) {
-			e.printStackTrace();
+            exception = "wrong url";
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            exception = "io exception - check your net connection";
+		} catch (ArrayIndexOutOfBoundsException e) {
+            exception = "bad request - option may not be available";
+        }
 				
 		return null;
 	}
 	
 	@Override
 	protected void onPostExecute(Void result) {
-		listener.onTaskExecuted(redirectUrl);
-		dialog.dismiss();
+        dialog.dismiss();
+        if (TextUtils.isEmpty(exception)) {
+            listener.onTaskExecuted(this.result);
+        }
+        else {
+            Toast.makeText(activity.getApplicationContext(), exception, Toast.LENGTH_SHORT).show();
+        }
 	}
 
 }

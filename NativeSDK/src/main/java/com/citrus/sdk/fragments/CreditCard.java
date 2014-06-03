@@ -274,8 +274,8 @@ public class CreditCard extends Fragment{
 	}
 	
 	protected void createGuestTxn() {
-        GuestCheckout checkout = new GuestCheckout(getActivity(), "credit");
-        checkout.pay(new JSONObject());
+        GuestCheckout checkout = new GuestCheckout(getActivity());
+        checkout.cardPay(PaymentUtils.CREDIT_CARD.toString());
 	}
 
     private void savePayOption() {

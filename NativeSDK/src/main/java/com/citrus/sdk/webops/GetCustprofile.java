@@ -88,11 +88,11 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 			contactDetails = service.getProfile(contact).asJSON();
 			
 		} catch (ProtocolException e) {
-			throw new RuntimeException(e.getMessage());
+            executionMsg = "proto";
 		} catch (OAuth2Exception e) {
 			executionMsg = "oauth";
 		} catch (SubscriptionException e) {
-			throw new RuntimeException(e.getMessage());
+            executionMsg = "subsc";
 		}
 		return new JSONObject[]{contactDetails, paymentOptions};
 	}

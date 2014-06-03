@@ -57,6 +57,7 @@ import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
 import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.internals.PaymentUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,7 +78,7 @@ public class Netbanking extends Fragment {
 	
 	private List<String> bankNames, bankCodes;
 	
-	private String selectedBank, paymentType;
+	private String selectedBank, paymentType, selectedCode;
 	
 	private Button submit;
 
@@ -141,6 +142,7 @@ public class Netbanking extends Fragment {
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				selectedBank = bankNames.get(arg2);
+                selectedCode = bankCodes.get(arg2);
 			}
 
 			@Override
@@ -187,8 +189,8 @@ public class Netbanking extends Fragment {
 	}
 
     private void createGuestTxn() {
-        GuestCheckout checkout = new GuestCheckout(getActivity(), "netbanking");
-        checkout.pay(new JSONObject());
+        GuestCheckout checkout = new GuestCheckout(getActivity());
+        checkout.netbankPay(selectedCode);
     }
 
     private void createMemberTxn() {
@@ -299,16 +301,7 @@ public class Netbanking extends Fragment {
         } catch (JSONException e) {
 
         }
-        /* try {
-      String defaultOption = StorePayOperations.getDefaultOption(getActivity().getApplicationContext());
-      JSONObject paymentDetails =  new JSONObject().put("type", "netbanking").put("bank", bankName).put("owner", "");
-      mCardDetails.put("type", Constants.FASTCHECKOUT_TYPE)
-         .put("defaultOption", defaultOption)
-         .put("paymentOptions", new JSONArray(((Collections.singleton(paymentDetails)))));
-     } catch (JSONException e) {
-      e.printStackTrace();
-     }
-        * */
+
        new SavePayOption(getActivity(), paymentDetails).execute();
      }
 

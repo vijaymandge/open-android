@@ -55,6 +55,7 @@ import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.mobile.payment.widgets.CardNumberEditText;
 import com.citruspay.mobile.payment.widgets.ExpiryEditText;
 
@@ -145,8 +146,8 @@ public class DebitCard extends Fragment{
 	}
 
     private void createGuestTxn() {
-        GuestCheckout checkout = new GuestCheckout(getActivity(), "debit");
-        checkout.pay(new JSONObject());
+        GuestCheckout checkout = new GuestCheckout(getActivity());
+        checkout.cardPay(PaymentUtils.DEBIT_CARD.toString());
     }
 
 	private void createMemberTxn() {

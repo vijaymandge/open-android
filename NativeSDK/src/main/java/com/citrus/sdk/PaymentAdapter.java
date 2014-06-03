@@ -86,16 +86,7 @@ public class PaymentAdapter extends BaseAdapter {
 		}
 		
 		TextView type = (TextView) arg1.findViewById(R.id.optionType);
-		TextView option = (TextView) arg1.findViewById(R.id.paymentDetail);
-		
-		ImageButton delete = (ImageButton) arg1.findViewById(R.id.deleteButton);
-		delete.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-					Toast.makeText(context, "Delete Button", Toast.LENGTH_SHORT).show();
-			}
-		});
+		TextView option = (TextView) arg1.findViewById(R.id.paymentDetail); 
 		
 		ImageButton defaultOption = (ImageButton) arg1.findViewById(R.id.defaultImage);
 		
