@@ -56,13 +56,13 @@ import android.widget.Toast;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.PaymentAdapter;
 import com.citrus.sdk.database.DBHandler;
-import com.citrus.sdk.database.OptionDetails;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.webops.GetCustprofile;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SignInAsynch;
 import com.citrus.sdk.webops.Web3DSecure;
+import com.citruspay.mobile.client.subscription.OptionDetails;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 
 import org.json.JSONArray;
@@ -142,16 +142,20 @@ public class SavedOptions extends Fragment{
 		DBHandler dbInstance = new DBHandler(getActivity().getApplicationContext());
 		try {
 			JSONArray payOptionArray = savedOption.getJSONArray("paymentOptions");
-			dbInstance.addPayOption(payOptionArray);		
+			dbInstance.addPayOption(payOptionArray);
+            dbInstance.setDefaultOption("");
+            dbInstance.setDefaultOption(savedOption.getString("defaultOption"));
 		} catch (JSONException e) {
 			Toast.makeText(getActivity().getApplicationContext(), "Could not add payment options!", Toast.LENGTH_SHORT).show();
 		} finally {
 			dbInstance.close();
 		}
+
+
 	}
 	
 	private void showPayOptions() {
-		adapter = new PaymentAdapter(getActivity().getApplicationContext());
+		adapter = new PaymentAdapter(getActivity());
 		payOptionList.setAdapter(adapter);
 		setOnClick();
 	}

@@ -37,8 +37,8 @@ import android.app.Activity;
 import com.citruspay.mobile.client.MobileClient;
 
 public class Constants {
-	/*public static final String CITRUS_SERVER_URL = "https://stgadmin.citruspay.com/api/v2/txn/create";*/
-	public static final String CITRUS_SERVER_URL = "https://oops.citruspay.com/service/moto/authorize/struct/shardul";
+	public static final String CITRUS_SERVER_URL = "https://stgadmin.citruspay.com/service/moto/authorize/struct/shardul";
+	//public static final String CITRUS_SERVER_URL = "https://oops.citruspay.com/service/moto/authorize/struct/shardul";
 	//public static final String CITRUS_SERVER_URL = "https://admin.citruspay.com/api/v2/txn/create";
 	public static final String REDIRECT_URL = "http://103.13.97.20/citrus/index.php";
 

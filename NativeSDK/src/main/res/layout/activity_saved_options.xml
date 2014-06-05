@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SavedOptions" >
+    tools:mActivity=".SavedOptions" >
 
     
            		        
@@ -50,7 +50,7 @@
     	  android:layout_margin="20dp"
     	  android:layout_centerInParent="true"
     	  android:hint="@string/Email"
-    	  android:text="10lavekarshardul@gmail.com"/>
+    	  android:text="shardullavekar@gmail.com"/>
 	
 	<EditText android:id="@+id/password"
     	  android:layout_width="match_parent"

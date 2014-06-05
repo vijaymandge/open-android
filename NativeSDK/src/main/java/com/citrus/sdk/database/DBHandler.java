@@ -38,6 +38,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
+
+import com.citrus.sdk.Constants;
+import com.citruspay.mobile.client.subscription.OptionDetails;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,9 +123,32 @@ public class DBHandler extends SQLiteOpenHelper{
 		}
 		
 	}
-	
-	public void setDefaultOption(String name) {
-		
+
+  	public int setDefaultOption(String optionName) {
+        String whereValues[] = new String[]{optionName};
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues newValues = new ContentValues();
+
+        if (!TextUtils.isEmpty(optionName)) {
+            try {
+                newValues.put(DEFAULT_OPTION, 1);
+                return db.update(PAYOPTION_TABLE, newValues, NAME + "=?", whereValues);
+            } catch (Exception e) {
+                db.close();
+                return 0;
+            }
+
+        }
+        else {
+            try {
+                newValues.put(DEFAULT_OPTION, 0);
+                return db.update(PAYOPTION_TABLE, newValues, null, null);
+            } catch (Exception e) {
+                db.close();
+                return 0;
+            }
+
+        }
 	}
 	
 	public List<OptionDetails> getSavedOptions() {
