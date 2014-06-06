@@ -14,22 +14,6 @@
    limitations under the License.
 */
 
-/*
-   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
 package com.citrus.sdk.fragments;
 
 import android.app.Dialog;
@@ -209,7 +193,7 @@ public class SavedOptions extends Fragment{
 		final String type = optionDetails.getType();
 		JSONObject txnDetails = new JSONObject();
 		try {
-				txnDetails.put("amount", "1.21");
+				txnDetails.put("amount", "1");
 				txnDetails.put("currency", "INR");
 				txnDetails.put("redirect", Constants.REDIRECT_URL);
 		} catch (JSONException e) {
@@ -270,7 +254,7 @@ public class SavedOptions extends Fragment{
 		try {
 			JSONObject amount = new JSONObject();
 			amount.put("currency", "INR");
-			amount.put("value", "1.21");
+			amount.put("value", "1");
 			
 			JSONObject address = new JSONObject();
 			address.put("street1", "");
@@ -281,9 +265,9 @@ public class SavedOptions extends Fragment{
 			address.put("zip", "411046");
 			
 			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "shardul@gmail.com");
-			userDetails.put("firstName", "Shardul");
-			userDetails.put("lastName", "Swwww");
+			userDetails.put("email", "tester@gmail.com");
+			userDetails.put("firstName", "Tester");
+			userDetails.put("lastName", "Testing");
 			userDetails.put("mobileNo", "7875432990");
 			
 			userDetails.put("address", address);
@@ -330,5 +314,4 @@ public class SavedOptions extends Fragment{
 		};
 		new Pay(getActivity(), paymentObject, taskExecuted).execute();
 	}
-	
 }

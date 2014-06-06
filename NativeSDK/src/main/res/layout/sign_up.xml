@@ -43,7 +43,7 @@
                 android:layout_margin="20dp"
                 android:layout_centerInParent="true"
                 android:hint="@string/Email"
-                android:text="shardullavekar@gmail.com"/>
+                android:text="tester@gmail.com"/>
 
             <EditText android:id="@+id/mobile"
                 android:layout_width="match_parent"

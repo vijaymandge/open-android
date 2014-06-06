@@ -196,7 +196,7 @@ public class Netbanking extends Fragment {
     private void createMemberTxn() {
         JSONObject txnDetails = new JSONObject();
         try {
-            txnDetails.put("amount", "1.21");
+            txnDetails.put("amount", "1.11");
             txnDetails.put("currency", "INR");
             txnDetails.put("redirect", Constants.REDIRECT_URL);
         } catch (JSONException e) {
@@ -227,7 +227,7 @@ public class Netbanking extends Fragment {
 			/*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*/
 			JSONObject amount = new JSONObject();
 			amount.put("currency", "INR");
-			amount.put("value", "1.21");
+			amount.put("value", "1.11");
 			
 			JSONObject address = new JSONObject();
 			address.put("street1", "");

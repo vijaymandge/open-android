@@ -120,7 +120,7 @@ public class CreditCard extends Fragment{
 		expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
 		expDate.setText("12/20");
 		nameOnCard = (EditText) returnView.findViewById(R.id.nameOnCard);
-		nameOnCard.setText("Lavekar Shrikant");
+		nameOnCard.setText("Testing Here");
 		cvv = (EditText) returnView.findViewById(R.id.cvvText);
 		cvv.setText("303");
 
@@ -217,7 +217,7 @@ public class CreditCard extends Fragment{
 			address.put("zip", "411046");
 			
 			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "shardullavekar@gmail.com");
+			userDetails.put("email", "tester@gmail.com");
 			userDetails.put("firstName", "Shardul");
 			userDetails.put("lastName", "Swwww");
 			userDetails.put("mobileNo", "7875432990");
@@ -228,7 +228,7 @@ public class CreditCard extends Fragment{
 			paymentMode.put("type", "credit");
 			paymentMode.put("scheme", "VISA");
 			paymentMode.put("number", "4111111111111111");
-			paymentMode.put("holder", "Lavekar Shardul");
+			paymentMode.put("holder", "Tester Shardul");
 			paymentMode.put("expiry", "12/2020");
 			paymentMode.put("cvv", "100");
 			
@@ -281,8 +281,9 @@ public class CreditCard extends Fragment{
     private void savePayOption() {
         JSONObject paymentDetails = null;
         try {
+          String cardNum = cardnumber.getText().toString().replace(" ", "");
           paymentDetails  =  new JSONObject().put("type", "credit").put("owner", nameOnCard.getText().toString())
-                    .put("number", cardnumber.getText().toString()).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+                    .put("number", "4111111111111111").put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
         } catch (JSONException e) {
 
         }

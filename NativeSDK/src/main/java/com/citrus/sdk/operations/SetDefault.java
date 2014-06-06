@@ -24,7 +24,6 @@ public class SetDefault {
     private OptionDetails option;
     private Messenger messanger;
 
-
     public SetDefault(Activity activity) {
         this.activity = activity;
     }
@@ -59,5 +58,7 @@ public class SetDefault {
            messanger.onTaskExecuted(error);
         }
     }
+
+
 
 }

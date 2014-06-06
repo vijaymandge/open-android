@@ -92,7 +92,7 @@ public class GuestCheckout {
             paymentObject.put("addressCity", "Pune");
             paymentObject.put("addressState", "Goa");
             paymentObject.put("addressZip", "885744");
-            paymentObject.put("email", "shardullavekar@gmail.com");
+            paymentObject.put("email", "tester@gmail.com");
             paymentObject.put("mobile", "7875432990");
 
             paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
