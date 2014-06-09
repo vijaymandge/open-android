@@ -14,22 +14,6 @@
    limitations under the License.
 */
 
-/*
-   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
 package com.citrus.sdk.fragments;
 
 import android.content.Intent;
@@ -177,7 +161,6 @@ public class Netbanking extends Fragment {
                         createMemberTxn();
                     }
 
-                    /*createTxn();*/
                 } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Server may be down.", Toast.LENGTH_LONG).show();
                 }
@@ -196,7 +179,8 @@ public class Netbanking extends Fragment {
     private void createMemberTxn() {
         JSONObject txnDetails = new JSONObject();
         try {
-            txnDetails.put("amount", "1.11");
+            /*Enter your amount here*/
+            txnDetails.put("amount", "1");
             txnDetails.put("currency", "INR");
             txnDetails.put("redirect", Constants.REDIRECT_URL);
         } catch (JSONException e) {
@@ -207,14 +191,21 @@ public class Netbanking extends Fragment {
 
             @Override
             public void onTaskExecuted(JSONObject[] signedOrder, String message) {
-                try {
-                    String txnId = signedOrder[0].getString("merchantTransactionId");
-                    String signature = signedOrder[0].getString("signature");
-                    JSONObject txnObject = initValues(txnId, signature);
-                    initiateTxn(txnObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (TextUtils.equals(message, "oauth")) {
+                    Toast.makeText(getActivity().getApplicationContext(), "You need to be signed in to make this payment", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                else {
+                    try {
+                        String txnId = signedOrder[0].getString("merchantTransactionId");
+                        String signature = signedOrder[0].getString("signature");
+                        JSONObject txnObject = initValues(txnId, signature);
+                        initiateTxn(txnObject);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
 
         }).execute();
@@ -226,9 +217,13 @@ public class Netbanking extends Fragment {
 		try {
 			/*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*/
 			JSONObject amount = new JSONObject();
-			amount.put("currency", "INR");
-			amount.put("value", "1.11");
-			
+
+			/*This amount and currency has to be exactly the same as earlier*/
+            amount.put("currency", "INR");
+			amount.put("value", "1");
+
+            /*Fill in the user address details*/
+
 			JSONObject address = new JSONObject();
 			address.put("street1", "");
 			address.put("street2", "");
@@ -236,7 +231,8 @@ public class Netbanking extends Fragment {
 			address.put("state", "Maharashtra");
 			address.put("country", "India");
 			address.put("zip", "411046");
-			
+
+            /*Fill in the user contact details*/
 			JSONObject userDetails = new JSONObject();
 			userDetails.put("email", "shardullavekar@gmail.com");
 			userDetails.put("firstName", "Shardul");

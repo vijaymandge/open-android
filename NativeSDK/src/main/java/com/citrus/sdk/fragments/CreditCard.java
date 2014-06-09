@@ -14,22 +14,6 @@
    limitations under the License.
 */
 
-/*
-   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
 package com.citrus.sdk.fragments;
 
 import android.app.Activity;
@@ -51,7 +35,6 @@ import com.citrus.sdk.ErrorValidation;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.webops.GetSignedorder;
-import com.citrus.sdk.webops.GuestPay;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
@@ -83,7 +66,7 @@ public class CreditCard extends Fragment{
 
     private Activity activity;
 
-    private String paymentType;
+    private String paymentType, cardNumStr, expDateStr, cvvStr, holder_name;
 
     private CheckBox checkBox;
 	
@@ -116,13 +99,14 @@ public class CreditCard extends Fragment{
 
 	private void initEditText() {
 		cardnumber = (CardNumberEditText) returnView.findViewById(R.id.creditCardText);
-		cardnumber.setText("4111111111111111");
-		expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
-		expDate.setText("12/20");
+
+        cardnumber.setText("4111111111111111");
+
+        expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
+
 		nameOnCard = (EditText) returnView.findViewById(R.id.nameOnCard);
-		nameOnCard.setText("Testing Here");
-		cvv = (EditText) returnView.findViewById(R.id.cvvText);
-		cvv.setText("303");
+
+        cvv = (EditText) returnView.findViewById(R.id.cvvText);
 
         checkBox = (CheckBox) returnView.findViewById(R.id.saveOption);
 
@@ -136,6 +120,7 @@ public class CreditCard extends Fragment{
 			@Override
 			public void onClick(View v) {
 				if (isValidCard()) {
+                    initValues();
                     if (TextUtils.equals(paymentType, Constants.GUEST_FLOW)) {
                         createGuestTxn();
                     }
@@ -149,6 +134,14 @@ public class CreditCard extends Fragment{
 			}
 		});
 	}
+
+    private void initValues() {
+        cardNumStr = cardnumber.getText().toString().replace(" ", "");
+        String[] dateStr = expDate.getText().toString().split("/");
+        expDateStr = dateStr[0] + "/20" + dateStr[1];
+        cvvStr = cvv.getText().toString();
+        holder_name = nameOnCard.getText().toString();
+    }
 	
 	protected boolean isValidCard() {
 		card = new Card(cardnumber.getText().toString(), expDate.getText().toString(), cvv.getText().toString(), nameOnCard.getText().toString());			
@@ -176,7 +169,8 @@ public class CreditCard extends Fragment{
 	private void createMemberTxn() {
 		JSONObject txnDetails = new JSONObject();
 		try {
-				txnDetails.put("amount", "1.21");
+                /*Enter your amount here*/
+				txnDetails.put("amount", "1");
 				txnDetails.put("currency", "INR");
 				txnDetails.put("redirect", Constants.REDIRECT_URL);
 		} catch (JSONException e) {
@@ -205,9 +199,12 @@ public class CreditCard extends Fragment{
 		try {
 			//*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*//*
 			JSONObject amount = new JSONObject();
-			amount.put("currency", "INR");
-			amount.put("value", "1.21");
-			
+
+            /*This amount has to be exactly same as entered earlier*/
+            amount.put("currency", "INR");
+			amount.put("value", "1");
+
+            /*Enter the address details*/
 			JSONObject address = new JSONObject();
 			address.put("street1", "");
 			address.put("street2", "");
@@ -215,7 +212,8 @@ public class CreditCard extends Fragment{
 			address.put("state", "Maharashtra");
 			address.put("country", "India");
 			address.put("zip", "411046");
-			
+
+            /*Enter the contact details*/
 			JSONObject userDetails = new JSONObject();
 			userDetails.put("email", "tester@gmail.com");
 			userDetails.put("firstName", "Shardul");
@@ -226,11 +224,11 @@ public class CreditCard extends Fragment{
 			
 			JSONObject paymentMode = new JSONObject();
 			paymentMode.put("type", "credit");
-			paymentMode.put("scheme", "VISA");
-			paymentMode.put("number", "4111111111111111");
-			paymentMode.put("holder", "Tester Shardul");
-			paymentMode.put("expiry", "12/2020");
-			paymentMode.put("cvv", "100");
+			paymentMode.put("scheme", card.getCardType().toUpperCase());
+			paymentMode.put("number", cardNumStr);
+			paymentMode.put("holder", holder_name);
+			paymentMode.put("expiry", expDateStr);
+			paymentMode.put("cvv", cvvStr);
 			
 			JSONObject paymentToken = new JSONObject();
 			paymentToken.put("type", "paymentOptionToken");
@@ -281,9 +279,8 @@ public class CreditCard extends Fragment{
     private void savePayOption() {
         JSONObject paymentDetails = null;
         try {
-          String cardNum = cardnumber.getText().toString().replace(" ", "");
           paymentDetails  =  new JSONObject().put("type", "credit").put("owner", nameOnCard.getText().toString())
-                    .put("number", cardNum).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+                    .put("number", cardNumStr).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
         } catch (JSONException e) {
 
         }

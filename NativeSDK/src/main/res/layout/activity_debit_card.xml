@@ -51,7 +51,8 @@
         	  android:inputType="number|none"
         	  android:maxLength="5"
         	  android:layout_marginLeft="3dp"
-        	  android:paddingLeft="12dp"/>
+        	  android:paddingLeft="12dp"
+              android:text="12/20"/>
     		
     		<EditText android:id="@+id/cvvText"
     		    	  android:layout_width="0dp"
@@ -61,7 +62,8 @@
     		    	  android:layout_marginLeft="5dp"
     		    	  android:layout_weight="4"
     		    	  android:hint="@string/cvv"
-    		    	  android:layout_marginRight="3dp"/>
+    		    	  android:layout_marginRight="3dp"
+                      android:text="102"/>
     
     		</LinearLayout>
     
@@ -72,7 +74,8 @@
         	  android:inputType="textPersonName"
         	  android:layout_below="@+id/expiryLayout"
         	  android:layout_marginLeft="3dp"
-        	  android:paddingLeft="12dp"/>		    
+        	  android:paddingLeft="12dp"
+              android:text="Tester Citrus"/>
         
     </RelativeLayout>
     </ScrollView>    		

@@ -12,7 +12,7 @@ import com.citrus.sdk.demo.R;
  */
 public class ExampleTest extends ActivityInstrumentationTestCase2<HomeScreen> {
     private Activity activity;
-    private Button logout;
+    private Button logout, signUp, signIn, member, guest;
 
     public ExampleTest() {
         super(HomeScreen.class);
@@ -21,14 +21,34 @@ public class ExampleTest extends ActivityInstrumentationTestCase2<HomeScreen> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setActivityInitialTouchMode(false);
         this.activity = getActivity();
-        logout = (Button)this.activity.findViewById(R.id.logout);
+        setActivityInitialTouchMode(true);
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
+        activity.finish();
+    }
+
+    public void testOnClicks() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                logout = (Button)activity.findViewById(R.id.logout);
+                logout.performClick();
+                signUp = (Button)activity.findViewById(R.id.signUp);
+                signUp.performClick();
+                signIn = (Button)activity.findViewById(R.id.signIn);
+                signIn.performClick();
+                member = (Button)activity.findViewById(R.id.memberFlow);
+                member.performClick();
+                guest = (Button)activity.findViewById(R.id.guestFlow);
+                guest.performClick();
+            }
+        });
+
+
     }
 
 

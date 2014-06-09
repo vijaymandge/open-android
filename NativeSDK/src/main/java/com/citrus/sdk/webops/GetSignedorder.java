@@ -73,6 +73,7 @@ public class GetSignedorder extends AsyncTask<Void, Void, JSONObject[]>{
 		mobileClient = new MobileClient(activity);
 		cardService = mobileClient.getNetCardService(Constants.SignInpClientId, Constants.SignInClientSecret);
 		try {
+            txnOrder = new JSONObject();
 			txnOrder = cardService.getLoadValues(txnObject);
 		} catch (ProtocolException e) {
 			e.printStackTrace();
