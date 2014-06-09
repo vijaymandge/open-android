@@ -283,7 +283,7 @@ public class CreditCard extends Fragment{
         try {
           String cardNum = cardnumber.getText().toString().replace(" ", "");
           paymentDetails  =  new JSONObject().put("type", "credit").put("owner", nameOnCard.getText().toString())
-                    .put("number", "4111111111111111").put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+                    .put("number", cardNum).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
         } catch (JSONException e) {
 
         }

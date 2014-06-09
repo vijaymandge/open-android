@@ -90,7 +90,7 @@ public class DebitCard extends Fragment{
 
 	private void initEditText() {
 		cardnumber = (CardNumberEditText) returnView.findViewById(R.id.debitCardText);
-		cardnumber.setText("4111111111111111");
+		cardnumber.setText("5555555555554444");
 		expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
 		expDate.setText("12/20");
 		nameOnCard = (EditText) returnView.findViewById(R.id.nameOnCard);
@@ -255,7 +255,7 @@ public class DebitCard extends Fragment{
         try {
             String cardNum = cardnumber.getText().toString().replace(" ", "");
             paymentDetails  =  new JSONObject().put("type", "debit").put("owner", nameOnCard.getText().toString())
-                    .put("number", "5555555555554444").put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+                    .put("number", cardNum).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
         } catch (JSONException e) {
 
         }

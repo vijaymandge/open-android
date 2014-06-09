@@ -61,7 +61,7 @@ public class Constants {
     public static final String MEMBER_FLOW = "memberFlow";
 
     public static final String USER_EXISTS = "com.citruspay.directory.exception.CitrusUserAlreadyExistsException";
-	
+
 	public static final boolean isSignedIn(Activity activity) {
 		MobileClient mobileClient = new MobileClient(activity);	
 		return mobileClient.isSignedIn(SignInpClientId);
