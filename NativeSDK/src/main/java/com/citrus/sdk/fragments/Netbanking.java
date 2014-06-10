@@ -42,6 +42,7 @@ import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.Web3DSecure;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
+import com.citruspay.util.HMACSignature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -187,7 +188,14 @@ public class Netbanking extends Fragment {
 
         }
 
-        new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
+        String txnId = String.valueOf(System.currentTimeMillis());
+        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
+        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+
+        JSONObject txnObject = initValues(txnId, signature);
+        initiateTxn(txnObject);
+
+        /*new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
 
             @Override
             public void onTaskExecuted(JSONObject[] signedOrder, String message) {
@@ -208,7 +216,7 @@ public class Netbanking extends Fragment {
 
             }
 
-        }).execute();
+        }).execute();*/
     }
 
 

@@ -34,7 +34,6 @@ package com.citrus.sdk.webops;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.citrus.mobile.client.load.Amount;
 import com.citrus.mobile.client.load.NetCardService;
@@ -42,11 +41,8 @@ import com.citrus.mobile.client.load.PrepaidException;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
 import com.citruspay.mobile.client.MobileClient;
-import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
-
-import org.json.JSONObject;
 
 /**
  * Created by shardul on 26/5/14.
@@ -71,7 +67,7 @@ public class ActivateAc extends AsyncTask <Void, Void, Void>{
     @Override
     protected Void doInBackground(Void... voids) {
         client = new MobileClient(context);
-        cardService = client.getNetCardService(Constants.SignInpClientId, Constants.SignInClientSecret);
+        cardService = client.getNetCardService(Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         try {
            Amount amount = cardService.activateAccount();
         } catch (OAuth2Exception e) {

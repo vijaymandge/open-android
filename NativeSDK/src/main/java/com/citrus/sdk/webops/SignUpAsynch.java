@@ -35,7 +35,6 @@ package com.citrus.sdk.webops;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
 import com.citruspay.mobile.client.MobileClient;
@@ -63,7 +62,7 @@ public class SignUpAsynch extends AsyncTask<String, Void, String>{
 	protected String doInBackground(String... params) {
 		String result = null;
 		mobileClient = new MobileClient(this.activity);	
-		subscriptionService = mobileClient.getSubscriptionService(Constants.SignUpClientId, Constants.SignUpClientSecret, Constants.SignInpClientId, Constants.SignInClientSecret);
+		subscriptionService = mobileClient.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		
 		try {
 			subscriptionService.signup(params[0], params[1], params[2], params[3], params[4]);

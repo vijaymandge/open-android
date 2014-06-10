@@ -2,7 +2,6 @@ package com.citrus.sdk.operations;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
@@ -30,7 +29,7 @@ public class SetDefault {
 
     public void setdefaultOption(OptionDetails option, Messenger messanger) {
         client = new MobileClient(this.activity);
-        subscriptionService = client.getSubscriptionService(Constants.SignUpClientId, Constants.SignUpClientSecret, Constants.SignInpClientId, Constants.SignInClientSecret);
+        subscriptionService = client.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         this.option = option;
         this.messanger = messanger;
         error = "";

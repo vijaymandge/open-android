@@ -80,7 +80,7 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 		JSONObject paymentOptions = new JSONObject();
 		JSONObject contactDetails = new JSONObject();
 		mobileClient = new MobileClient(activity);
-		service = mobileClient.getSubscriptionService(Constants.SignUpClientId, Constants.SignUpClientSecret, Constants.SignInpClientId, Constants.SignInClientSecret);
+		service = mobileClient.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		try {
 			PaymentConfiguration payment = new PaymentConfiguration();			
 			paymentOptions = service.getProfile(payment).asJSON();

@@ -43,6 +43,7 @@ import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.mobile.payment.widgets.CardNumberEditText;
 import com.citruspay.mobile.payment.widgets.ExpiryEditText;
+import com.citruspay.util.HMACSignature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -176,8 +177,15 @@ public class CreditCard extends Fragment{
 		} catch (JSONException e) {
 				
 		}
-			
-		new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
+
+        String txnId = String.valueOf(System.currentTimeMillis());
+        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
+        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+
+        insertValues(txnId, signature);
+        initiateTxn();
+
+		/*new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
 
 				@Override
 				public void onTaskExecuted(JSONObject[] signedOrder, String message) {
@@ -191,7 +199,7 @@ public class CreditCard extends Fragment{
 					}
 				}
 				
-		}).execute();
+		}).execute();*/
 	}
 	
 	private void insertValues(String txnId, String signature) {

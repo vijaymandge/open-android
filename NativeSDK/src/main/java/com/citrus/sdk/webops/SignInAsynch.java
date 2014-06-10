@@ -59,7 +59,7 @@ public class SignInAsynch extends AsyncTask<String, Void, String>{
 	protected String doInBackground(String... params) {
 		String result = null;
 		mobileClient = new MobileClient(this.activity);	
-		subscriptionService = mobileClient.getSubscriptionService(Constants.SignUpClientId, Constants.SignUpClientSecret, Constants.SignInpClientId, Constants.SignInClientSecret);
+		subscriptionService = mobileClient.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		
 		try {
 			subscriptionService.signin(params[0], params[1]);

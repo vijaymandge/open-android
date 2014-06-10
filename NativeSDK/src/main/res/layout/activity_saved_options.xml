@@ -50,7 +50,7 @@
     	  android:layout_margin="20dp"
     	  android:layout_centerInParent="true"
     	  android:hint="@string/Email"
-    	  android:text="shardullavekar@gmail.com"/>
+    	  android:text="testercitrus@gmail.com"/>
 	
 	<EditText android:id="@+id/password"
     	  android:layout_width="match_parent"
@@ -59,7 +59,7 @@
     	  android:layout_below="@+id/username"
     	  android:hint="@string/Password"
     	  android:inputType="textPassword"
-    	  android:text="asdQWE#123"/>
+    	  android:text="tester@123"/>
 	
 	<Button android:id="@+id/signIn"
 	    	android:layout_width="match_parent"

@@ -38,6 +38,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
 import com.citruspay.util.HMACSignature;
 
@@ -56,10 +57,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class GuestPay extends AsyncTask <Void, Void, Void>{
-	private final static String GUEST_POST_URL = "https://admin.citruspay.com/api/v2/txn/create";
-	private final static String ACCESS_KEY = "08GXHDIMWZS2IEUG3M9U";
-	private final static String SECRET_KEY = "1c770f0f925597fa640c4a3a00a5fa050a6890bd";
-	
+
 	private ProgressDialog dialog;
 	private Activity activity;
 	private Messenger listener;
@@ -87,12 +85,12 @@ public class GuestPay extends AsyncTask <Void, Void, Void>{
 		HttpPost httpPost;
 		HttpClient httpClient;
 		try {
-			url = new URL(GUEST_POST_URL);
+			url = new URL(Constants.GUEST_PAY_URL);
 			httpClient = new DefaultHttpClient();
 			httpPost = new HttpPost(url.toURI());
-			String data = "merchantAccessKey=" + ACCESS_KEY + "&transactionId=" + txnId + "&amount=1.0";
-			String signature = HMACSignature.generateHMAC(data, SECRET_KEY);
-			httpPost.setHeader("access_key", ACCESS_KEY);
+			String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1.0";
+			String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+			httpPost.setHeader("access_key", Constants.ACCESS_KEY);
 			httpPost.setHeader("Content-Type", "application/json");
 			httpPost.setHeader("Accept-Encoding", "application/json");
 			httpPost.setHeader("Accept-Language", "en-US");

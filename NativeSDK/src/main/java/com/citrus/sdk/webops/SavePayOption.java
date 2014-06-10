@@ -78,7 +78,7 @@ public class SavePayOption extends AsyncTask<Void, Void, Void>{
 
         }
         client = new MobileClient(this.activity);
-        subscriptionService = client.getSubscriptionService(Constants.SignUpClientId, Constants.SignUpClientSecret, Constants.SignInpClientId, Constants.SignInClientSecret);
+        subscriptionService = client.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         PaymentConfiguration payment = new PaymentConfiguration();
         payment.parse(cardDetails);
         try {

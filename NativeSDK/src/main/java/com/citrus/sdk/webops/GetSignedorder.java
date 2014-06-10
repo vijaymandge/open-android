@@ -71,7 +71,7 @@ public class GetSignedorder extends AsyncTask<Void, Void, JSONObject[]>{
 	protected JSONObject[] doInBackground(Void... params) {
 		JSONObject txnOrder = null;
 		mobileClient = new MobileClient(activity);
-		cardService = mobileClient.getNetCardService(Constants.SignInpClientId, Constants.SignInClientSecret);
+		cardService = mobileClient.getNetCardService(Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		try {
             txnOrder = new JSONObject();
 			txnOrder = cardService.getLoadValues(txnObject);
