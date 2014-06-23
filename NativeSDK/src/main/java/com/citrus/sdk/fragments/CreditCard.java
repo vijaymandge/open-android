@@ -34,6 +34,7 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.ErrorValidation;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
+import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
@@ -168,68 +169,23 @@ public class CreditCard extends Fragment{
 	}
 	
 	private void createMemberTxn() {
-		JSONObject txnDetails = new JSONObject();
-		try {
-                /*Enter your amount here*/
-				txnDetails.put("amount", "1");
-				txnDetails.put("currency", "INR");
-				txnDetails.put("redirect", Constants.REDIRECT_URL);
-		} catch (JSONException e) {
-				
-		}
 
-        String txnId = String.valueOf(System.currentTimeMillis());
-        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
+        String txnId = "CTXN" + String.valueOf(System.currentTimeMillis());
+        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
         String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
 
         insertValues(txnId, signature);
         initiateTxn();
-
-		/*new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
-
-				@Override
-				public void onTaskExecuted(JSONObject[] signedOrder, String message) {
-					try {
-						String txnId = signedOrder[0].getString("merchantTransactionId");
-						String signature = signedOrder[0].getString("signature");
-						insertValues(txnId, signature);
-						initiateTxn();
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-				
-		}).execute();*/
 	}
 	
 	private void insertValues(String txnId, String signature) {
 		
 		try {
-			//*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*//*
-			JSONObject amount = new JSONObject();
 
-            /*This amount has to be exactly same as entered earlier*/
-            amount.put("currency", "INR");
-			amount.put("value", "1");
+            JSONObject amount = JSONUtils.fillinAmountDetails();
+			JSONObject address = JSONUtils.fillinAddress();
+			JSONObject userDetails = JSONUtils.fillinUserDetails(address);
 
-            /*Enter the address details*/
-			JSONObject address = new JSONObject();
-			address.put("street1", "");
-			address.put("street2", "");
-			address.put("city", "Mumbai");
-			address.put("state", "Maharashtra");
-			address.put("country", "India");
-			address.put("zip", "411046");
-
-            /*Enter the contact details*/
-			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "tester@gmail.com");
-			userDetails.put("firstName", "Shardul");
-			userDetails.put("lastName", "Swwww");
-			userDetails.put("mobileNo", "7875432990");
-			
-			userDetails.put("address", address);
-			
 			JSONObject paymentMode = new JSONObject();
 			paymentMode.put("type", "credit");
 			paymentMode.put("scheme", card.getCardType().toUpperCase());
@@ -238,10 +194,7 @@ public class CreditCard extends Fragment{
 			paymentMode.put("expiry", expDateStr);
 			paymentMode.put("cvv", cvvStr);
 			
-			JSONObject paymentToken = new JSONObject();
-			paymentToken.put("type", "paymentOptionToken");
-			
-			paymentToken.put("paymentMode", paymentMode);
+			JSONObject paymentToken = JSONUtils.fillinPaymentToken(paymentMode);
 			
 			paymentObject = new JSONObject();
 			paymentObject.put("merchantTxnId", txnId);
@@ -281,7 +234,7 @@ public class CreditCard extends Fragment{
 	
 	protected void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
-        checkout.cardPay(PaymentUtils.CREDIT_CARD.toString());
+        checkout.cardPay(PaymentUtils.CREDIT_CARD.toString(), JSONUtils.TXN_AMOUNT);
 	}
 
     private void savePayOption() {

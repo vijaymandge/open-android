@@ -21,13 +21,15 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
 import com.citrus.sdk.webops.Web3DSecure;
-import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Iterator;
 
 /**
  * Created by shardul on 27/5/14.
@@ -41,7 +43,7 @@ public class GuestCheckout {
 
     }
 
-    public void cardPay(String type) {
+    public void cardPay(String type, String amount) {
         messenger = new Messenger() {
             @Override
             public void onTaskExecuted(String result) {
@@ -57,29 +59,30 @@ public class GuestCheckout {
         };
         String txnId = String.valueOf(System.currentTimeMillis());
         JSONObject paymentObject = new JSONObject();
+        JSONObject personalDetails, paymentDetails;
+
         try {
-            paymentObject.put("paymentMode", type);
-            paymentObject.put("cardType", "VISA");
-            paymentObject.put("cardNumber", "4028530052708001");
-            paymentObject.put("cardHolderName", "Jitendra Gupta");
-            paymentObject.put("expiryMonth", "03");
-            paymentObject.put("expiryYear", "2015");
-            paymentObject.put("cvvNumber", "018");
+            personalDetails = JSONUtils.fillinGuestPersonalDetails();
+            paymentDetails = JSONUtils.fillinGuestPayCardDetails(type);
+
+            Iterator<String> personal_iterator = personalDetails.keys();
+            Iterator<String> payment_iterator = paymentDetails.keys();
+
+            while (personal_iterator.hasNext()) {
+                String key = (String) personal_iterator.next();
+                paymentObject.put(key, personalDetails.getString(key));
+            }
+
+            while (payment_iterator.hasNext()) {
+                String key = (String) payment_iterator.next();
+                paymentObject.put(key, paymentDetails.getString(key));
+            }
 
             paymentObject.put("merchantTxnId", txnId);
 
-			/*Personal Details*/
-            paymentObject.put("amount", "1.0");
-            paymentObject.put("firstName", "Shardul");
-            paymentObject.put("lastName", "Swwww");
-            paymentObject.put("address", "Baner");
-            paymentObject.put("addressCity", "Pune");
-            paymentObject.put("addressState", "Goa");
-            paymentObject.put("addressZip", "885744");
-            paymentObject.put("email", "tester@gmail.com");
-            paymentObject.put("mobile", "7875432990");
+            paymentObject.put("amount", amount);
 
-            paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
+            paymentObject.put("returnUrl", Constants.REDIRECT_URL);
 
             new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
 
@@ -88,7 +91,7 @@ public class GuestCheckout {
         }
     }
 
-    public void netbankPay(String bankCode) {
+    public void netbankPay(String bankCode, String amount) {
         messenger = new Messenger() {
             @Override
             public void onTaskExecuted(String result) {
@@ -104,22 +107,29 @@ public class GuestCheckout {
         };
         String txnId = String.valueOf(System.currentTimeMillis());
         JSONObject paymentObject = new JSONObject();
+        JSONObject paymentDetails, personalDetails;
         try {
-            paymentObject.put("paymentMode", PaymentUtils.NET_BANKING.toString());
+            paymentDetails = JSONUtils.fillinGuestPayNetDetails(bankCode);
+            personalDetails = JSONUtils.fillinGuestPersonalDetails();
+
+            Iterator<String> personal_iterator = personalDetails.keys();
+            Iterator<String> payment_iterator = paymentDetails.keys();
+
+            while (personal_iterator.hasNext()) {
+                String key = (String) personal_iterator.next();
+                paymentObject.put(key, personalDetails.getString(key));
+            }
+
+            while (payment_iterator.hasNext()) {
+                String key = (String) payment_iterator.next();
+                paymentObject.put(key, paymentDetails.getString(key));
+            }
+
             paymentObject.put("merchantTxnId", txnId);
 
-			/*Personal Details*/
-            paymentObject.put("amount", "1.0");
-            paymentObject.put("firstName", "Shardul");
-            paymentObject.put("lastName", "Swwww");
-            paymentObject.put("address", "Baner");
-            paymentObject.put("addressCity", "Pune");
-            paymentObject.put("addressState", "Goa");
-            paymentObject.put("addressZip", "885744");
-            paymentObject.put("email", "shardullavekar@gmail.com");
-            paymentObject.put("mobile", "7875432990");
-            paymentObject.put("issuerCode", bankCode);
-            paymentObject.put("returnUrl", "http://103.13.97.20/citrus/index.php");
+            paymentObject.put("amount", amount);
+
+            paymentObject.put("returnUrl", Constants.REDIRECT_URL);
 
         } catch (JSONException e) {
 

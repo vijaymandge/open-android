@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
+import com.citrus.sdk.operations.JSONUtils;
 import com.citruspay.util.HMACSignature;
 
 import org.apache.http.HttpResponse;
@@ -88,7 +89,7 @@ public class GuestPay extends AsyncTask <Void, Void, Void>{
 			url = new URL(Constants.GUEST_PAY_URL);
 			httpClient = new DefaultHttpClient();
 			httpPost = new HttpPost(url.toURI());
-			String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1.0";
+			String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
 			String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
 			httpPost.setHeader("access_key", Constants.ACCESS_KEY);
 			httpPost.setHeader("Content-Type", "application/json");

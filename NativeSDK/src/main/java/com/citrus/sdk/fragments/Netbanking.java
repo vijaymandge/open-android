@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
+import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
@@ -70,6 +71,8 @@ public class Netbanking extends Fragment {
 	private OnTaskCompleted taskExecuted;
 
     private CheckBox saveOption;
+
+    private JSONObject paymentObject;
 	
 	public Netbanking() {
 		
@@ -85,6 +88,9 @@ public class Netbanking extends Fragment {
 	}
 
 	private void initBanks() {
+
+        /*A specific list of banks will be available to you*/
+
 		bankOptions = new HashMap<String, String>();
 		bankOptions.put("ICICI Bank", "CID001");
 		bankOptions.put("AXIS Bank",  "CID002");
@@ -146,9 +152,6 @@ public class Netbanking extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-           /*if (saveOption.isChecked()) {
-               //Update profile code comes here
-           }*/
 
 		    if (!TextUtils.isEmpty(selectedBank)) {
                 try {
@@ -174,109 +177,48 @@ public class Netbanking extends Fragment {
 
     private void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
-        checkout.netbankPay(selectedCode);
+        checkout.netbankPay(selectedCode, JSONUtils.TXN_AMOUNT);
     }
 
     private void createMemberTxn() {
-        JSONObject txnDetails = new JSONObject();
+        String txnId = "CTXN" + String.valueOf(System.currentTimeMillis());
+        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
+        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+        insertValues(txnId, signature);
+        initiateTxn();
+    }
+
+    private void insertValues(String txnId, String signature) {
+
         try {
-            /*Enter your amount here*/
-            txnDetails.put("amount", "1");
-            txnDetails.put("currency", "INR");
-            txnDetails.put("redirect", Constants.REDIRECT_URL);
+
+            JSONObject amount = JSONUtils.fillinAmountDetails();
+            JSONObject address = JSONUtils.fillinAddress();
+            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+
+            JSONObject paymentMode = new JSONObject();
+            paymentMode.put("type", "netbanking");
+            paymentMode.put("bank", "");
+            paymentMode.put("code", bankOptions.get(selectedBank));
+
+            JSONObject paymentToken = JSONUtils.fillinPaymentToken(paymentMode);
+
+            paymentObject = new JSONObject();
+            paymentObject.put("merchantTxnId", txnId);
+            paymentObject.put("paymentToken", paymentToken);
+            paymentObject.put("userDetails", userDetails);
+            paymentObject.put("amount", amount);
+            paymentObject.put("notifyUrl", "");
+            paymentObject.put("merchantAccessKey", Constants.ACCESS_KEY);
+            paymentObject.put("requestSignature", signature);
+            paymentObject.put("returnUrl", Constants.REDIRECT_URL);
         } catch (JSONException e) {
 
         }
 
-        String txnId = String.valueOf(System.currentTimeMillis());
-        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
-        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
-
-        JSONObject txnObject = initValues(txnId, signature);
-        initiateTxn(txnObject);
-
-        /*new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
-
-            @Override
-            public void onTaskExecuted(JSONObject[] signedOrder, String message) {
-                if (TextUtils.equals(message, "oauth")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "You need to be signed in to make this payment", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else {
-                    try {
-                        String txnId = signedOrder[0].getString("merchantTransactionId");
-                        String signature = signedOrder[0].getString("signature");
-                        JSONObject txnObject = initValues(txnId, signature);
-                        initiateTxn(txnObject);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-        }).execute();*/
     }
 
-
-	private JSONObject initValues(String txnId, String signature) {
-		
-		try {
-			/*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*/
-			JSONObject amount = new JSONObject();
-
-			/*This amount and currency has to be exactly the same as earlier*/
-            amount.put("currency", "INR");
-			amount.put("value", "1");
-
-            /*Fill in the user address details*/
-
-			JSONObject address = new JSONObject();
-			address.put("street1", "");
-			address.put("street2", "");
-			address.put("city", "Mumbai");
-			address.put("state", "Maharashtra");
-			address.put("country", "India");
-			address.put("zip", "411046");
-
-            /*Fill in the user contact details*/
-			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "shardullavekar@gmail.com");
-			userDetails.put("firstName", "Shardul");
-			userDetails.put("lastName", "Swwww");
-			userDetails.put("mobileNo", "7875432990");
-			
-			userDetails.put("address", address);
-			
-			JSONObject paymentMode = new JSONObject();
-			paymentMode.put("type", "netbanking");
-			paymentMode.put("bank", "");
-			paymentMode.put("code", bankOptions.get(selectedBank));
-			
-			JSONObject paymentToken = new JSONObject();
-			paymentToken.put("type", "paymentOptionToken");
-			
-			paymentToken.put("paymentMode", paymentMode);
-			
-			JSONObject paymentObject = new JSONObject();
-			paymentObject.put("merchantTxnId", txnId);
-			paymentObject.put("paymentToken", paymentToken);
-			paymentObject.put("userDetails", userDetails);
-			paymentObject.put("amount", amount);
-			paymentObject.put("notifyUrl", "");
-			paymentObject.put("merchantAccessKey", Constants.ACCESS_KEY);
-			paymentObject.put("requestSignature", signature);
-			paymentObject.put("returnUrl", Constants.REDIRECT_URL);
-
-            return paymentObject;
-		} catch (JSONException e) {
-			return null;
-		}
-		
-	}
-	
-	private void initiateTxn(JSONObject paymentObject) {
+	private void initiateTxn() {
 		taskExecuted = new OnTaskCompleted() {
 
 			@Override

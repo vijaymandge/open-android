@@ -93,10 +93,19 @@ public class SignUp extends Activity {
             @Override
             public void onClick(View view) {
                 HomeScreen.logoutUser(SignUp.this);
-                String params[] = new String[] {randomEmail(), mobileET.getText().toString(), passwordET.getText().toString(), "", ""};
-                signUpLayout.setVisibility(View.INVISIBLE);
-                spinner.setVisibility(View.VISIBLE);
-                new SignUpAsynch(SignUp.this, listener).execute(params);
+                String mobile = mobileET.getText().toString();
+                String password = passwordET.getText().toString();
+                String username = usernameET.getText().toString();
+                if (isValidInput(username, password, mobile)) {
+                    String params[] = new String[] {randomEmail(), mobile, password, "", ""};
+                    signUpLayout.setVisibility(View.INVISIBLE);
+                    spinner.setVisibility(View.VISIBLE);
+                    new SignUpAsynch(SignUp.this, listener).execute(params);
+                }
+                else {
+                    return;
+                }
+
             }
         });
     }
@@ -144,8 +153,19 @@ public class SignUp extends Activity {
         new ActivateAc(SignUp.this, accListener).execute();
     }
 
+    /* This function only demonstrates the usage of one click sign up -
+    *  Do not use this function in real application
+    *  RandomEmail will create problem.
+    * */
     private String randomEmail() {
         String email = String.valueOf(Math.random()) + "@gmail.com";
         return email;
+    }
+
+    private boolean isValidInput(String username, String password, String mobile) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password) || TextUtils.isEmpty(mobile)) {
+            return false;
+        }
+        return true;
     }
 }

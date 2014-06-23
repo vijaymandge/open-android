@@ -104,10 +104,13 @@ public class SignIn extends Activity {
             public void onClick(View v) {
                 String username = usernameET.getText().toString();
                 String password = passwordET.getText().toString();
-                String params[] = new String[]{username, password};
-                signInLayout.setVisibility(View.INVISIBLE);
-                spinner.setVisibility(View.VISIBLE);
-                new SignInAsynch(SignIn.this, signInListener).execute(params);
+                if (isValidInput(username, password)) {
+                    String params[] = new String[]{username, password};
+                    signInLayout.setVisibility(View.INVISIBLE);
+                    spinner.setVisibility(View.VISIBLE);
+                    new SignInAsynch(SignIn.this, signInListener).execute(params);
+                }
+
             }
         });
     }
@@ -116,5 +119,12 @@ public class SignIn extends Activity {
         Intent intent = new Intent(SignIn.this, MemberFlow.class);
         startActivity(intent);
         this.finish();
+    }
+
+    private boolean isValidInput(String username, String password) {
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+            return false;
+        }
+        return true;
     }
 }

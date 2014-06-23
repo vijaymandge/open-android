@@ -33,6 +33,7 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.ErrorValidation;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
+import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
@@ -58,7 +59,7 @@ public class DebitCard extends Fragment{
 	private OnTaskCompleted taskExecuted;
     private CheckBox checkBox;
 
-    private String cardNumStr, expDateStr, cvvStr, cardName;
+    private String cardNumStr, expDateStr, cvvStr, holder_name;
 
 	private View returnView;
 		
@@ -80,7 +81,7 @@ public class DebitCard extends Fragment{
         cardnumber = (CardNumberEditText) returnView.findViewById(R.id.debitCardText);
 
 		cardnumber.setText("5555555555554444");
-
+        //cardnumber.setText("376933245801004");
         expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
 
         nameOnCard = (EditText) returnView.findViewById(R.id.nameOnCard);
@@ -120,7 +121,7 @@ public class DebitCard extends Fragment{
         String[] dateStr = expDate.getText().toString().split("/");
         expDateStr = dateStr[0] + "/20" + dateStr[1];
         cvvStr = cvv.getText().toString();
-        cardName = nameOnCard.getText().toString();
+        holder_name = nameOnCard.getText().toString();
     }
 	
 	protected boolean isValidCard() {
@@ -148,97 +149,44 @@ public class DebitCard extends Fragment{
 
     private void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
-        checkout.cardPay(PaymentUtils.DEBIT_CARD.toString());
+        checkout.cardPay(PaymentUtils.DEBIT_CARD.toString(), JSONUtils.TXN_AMOUNT);
     }
 
 	private void createMemberTxn() {
-		JSONObject txnDetails = new JSONObject();
-		try {
-                /*Enter your amount here*/
-				txnDetails.put("amount", "1");
-				txnDetails.put("currency", "INR");
-				txnDetails.put("redirect", Constants.REDIRECT_URL);
-		} catch (JSONException e) {
-				
-		}
-
-        String txnId = String.valueOf(System.currentTimeMillis());
-        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
+        String txnId = "CTXN" + String.valueOf(System.currentTimeMillis());
+        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
         String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
 
         insertValues(txnId, signature);
         initiateTxn();
-			
-		/*new GetSignedorder(getActivity(), txnDetails, new OnTaskCompleted() {
-
-				@Override
-				public void onTaskExecuted(JSONObject[] signedOrder, String message) {
-					try {
-						String txnId = signedOrder[0].getString("merchantTransactionId");
-						String signature = signedOrder[0].getString("signature");
-						insertValues(txnId, signature);
-						initiateTxn();
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}
-				
-		}).execute();*/
 	}
 	
 	private void insertValues(String txnId, String signature) {
 		
 		try {
-			/*Payment Details - DO NOT STORE THEM LOCALLY OR ON YOUR SERVER*/
-			JSONObject amount = new JSONObject();
-			/*This amount and currency has to be exactly the same as earlier*/
-            amount.put("currency", "INR");
-            amount.put("value", "1");
+            JSONObject amount = JSONUtils.fillinAmountDetails();
+            JSONObject address = JSONUtils.fillinAddress();
+            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
 
+            JSONObject paymentMode = new JSONObject();
+            paymentMode.put("type", "debit");
+            paymentMode.put("scheme", card.getCardType().toUpperCase());
+            paymentMode.put("number", cardNumStr);
+            paymentMode.put("holder", holder_name);
+            paymentMode.put("expiry", expDateStr);
+            paymentMode.put("cvv", cvvStr);
 
-            /*Fill in the user address details*/
+            JSONObject paymentToken = JSONUtils.fillinPaymentToken(paymentMode);
 
-			JSONObject address = new JSONObject();
-			address.put("street1", "");
-			address.put("street2", "");
-			address.put("city", "Mumbai");
-			address.put("state", "Maharashtra");
-			address.put("country", "India");
-			address.put("zip", "411046");
-
-            /*Fill in the user contact details*/
-
-			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "tester@gmail.com");
-			userDetails.put("firstName", "Shardul");
-			userDetails.put("lastName", "Swwww");
-			userDetails.put("mobileNo", "7875432990");
-			
-			userDetails.put("address", address);
-			
-			JSONObject paymentMode = new JSONObject();
-			paymentMode.put("type", "debit");
-			paymentMode.put("scheme", card.getCardType().toUpperCase());
-
-			paymentMode.put("number", cardNumStr);
-			paymentMode.put("holder", cardName);
-			paymentMode.put("expiry", expDateStr);
-			paymentMode.put("cvv", cvvStr);
-			
-			JSONObject paymentToken = new JSONObject();
-			paymentToken.put("type", "paymentOptionToken");
-			
-			paymentToken.put("paymentMode", paymentMode);
-			
-			paymentObject = new JSONObject();
-			paymentObject.put("merchantTxnId", txnId);
-			paymentObject.put("paymentToken", paymentToken);
-			paymentObject.put("userDetails", userDetails);
-			paymentObject.put("amount", amount);
-			paymentObject.put("notifyUrl", "");
-			paymentObject.put("merchantAccessKey", Constants.ACCESS_KEY);
-			paymentObject.put("requestSignature", signature);
-			paymentObject.put("returnUrl", Constants.REDIRECT_URL);
+            paymentObject = new JSONObject();
+            paymentObject.put("merchantTxnId", txnId);
+            paymentObject.put("paymentToken", paymentToken);
+            paymentObject.put("userDetails", userDetails);
+            paymentObject.put("amount", amount);
+            paymentObject.put("notifyUrl", "");
+            paymentObject.put("merchantAccessKey", Constants.ACCESS_KEY);
+            paymentObject.put("requestSignature", signature);
+            paymentObject.put("returnUrl", Constants.REDIRECT_URL);
 		} catch (JSONException e) {
 			
 		}
