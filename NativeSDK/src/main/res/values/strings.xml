@@ -36,6 +36,7 @@
     <string name="memberFlow">Member Flow</string>
     <string name="signIn">Sign In</string>
     <string name="signUp">Sign Up</string>
+    <string name="paymentOption">Payment Options</string>
     <string name="logout">Log out</string>
 
     <!--
@@ -93,5 +94,6 @@ Lakshmi Vilas Bank NetBanking
     <string name="title_activity_get_pay_options">GetPayOptions</string>
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_guestflow">Guestflow</string>
+    <string name="title_activity_options_available">OptionsAvailable</string>
 
 </resources>

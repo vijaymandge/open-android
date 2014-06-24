@@ -41,6 +41,8 @@ public class DBHandler extends SQLiteOpenHelper{
 	private static final int DB_VERSION = 1;
 	
 	private static final String PAYOPTION_TABLE = "PAY_OPTIONS";
+
+    private static final String BANK_TABLE = "BANK_TABLE";
 	
 	private static final String MMID = "mmid";
 	
@@ -63,6 +65,8 @@ public class DBHandler extends SQLiteOpenHelper{
 	private static final String DEFAULT_OPTION = "defaultOption";
 	
 	private static final String TOKEN_ID = "token";
+
+    private static final String BANK_CID = "bank_cid";
 	
 	
 	public DBHandler(Context context) {
@@ -74,13 +78,16 @@ public class DBHandler extends SQLiteOpenHelper{
 		String payTable = "CREATE TABLE IF NOT EXISTS " + PAYOPTION_TABLE + " (" + MMID + " TEXT, " + SCHEME + " TEXT, " 
 				+ EXPDATE + " TEXT, " + NAME + " TEXT PRIMARY KEY, " + OWNER + " TEXT, " + BANK + " TEXT, " + NUMBER 
 				+ " TEXT, " + TYPE + " TEXT, " + TOKEN_ID + " TEXT, " + IMPS_REGISTERED + " TEXT, " + DEFAULT_OPTION + " INTEGER)";
-		db.execSQL(payTable);
+		String bankTable = "CREATE TABLE IF NOT EXISTS " + BANK_TABLE + " (" + BANK_CID + " TEXT PRIMARY KEY, " + BANK + " TEXT)";
+        db.execSQL(payTable);
+        db.execSQL(bankTable);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + PAYOPTION_TABLE);
-		onCreate(db);
+		db.execSQL("DROP TABLE IF EXISTS " + BANK_TABLE);
+        onCreate(db);
 	}
 	
 	public void addPayOption(JSONArray paymentArray) {
@@ -150,6 +157,38 @@ public class DBHandler extends SQLiteOpenHelper{
 		}
 		return savedOptions;
 	}
+
+    public void addBankOptions(JSONArray netbankingOption) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (int i = 0; i < netbankingOption.length(); i++) {
+            ContentValues loadValue = new ContentValues();
+            try {
+                JSONObject bankOption = netbankingOption.getJSONObject(i);
+                loadValue.put(BANK, bankOption.getString("bankName"));
+                loadValue.put(BANK_CID, bankOption.getString("issuerCode"));
+            } catch (JSONException e) {
+
+            }
+            db.insert(BANK_TABLE, null, loadValue);
+        }
+    }
+
+    public List<BankOptions> getBankOptions() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor current_cursor;
+        String[] columNames = {BANK_CID, BANK};
+        String orderBy = DEFAULT_OPTION + " DESC";
+        List<BankOptions> bankOptionsList = new ArrayList<BankOptions>();
+        current_cursor = db.query(PAYOPTION_TABLE, columNames, null, null, null, null, orderBy);
+        if (current_cursor.moveToFirst()) {
+            do {
+                BankOptions currentOption = new BankOptions(current_cursor.getString(0), current_cursor.getString(1));
+                bankOptionsList.add(currentOption);
+            } while (current_cursor.moveToNext());
+        }
+        return bankOptionsList;
+    }
 
     public static boolean deleteDB(Activity activity) {
         return activity.getApplicationContext().deleteDatabase(DB_NAME);

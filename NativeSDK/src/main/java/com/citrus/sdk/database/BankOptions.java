@@ -17,7 +17,18 @@
 package com.citrus.sdk.database;
 
 public class BankOptions {
-	public static final void addOptions() {
-		
-	}
+	private String bankName, bank_cid;
+
+    public BankOptions(String bankName, String bank_cid) {
+        this.bankName = bankName;
+        this.bank_cid = bank_cid;
+    }
+
+    public String getBankName() {
+        return this.bankName;
+    }
+
+    public String getBankcid() {
+        return this.bank_cid;
+    }
 }

@@ -76,6 +76,7 @@ public class HomeScreen extends Activity {
             }
         });
 
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

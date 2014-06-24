@@ -81,14 +81,17 @@ public class Netbanking extends Fragment {
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		returnView = inflater.inflate(R.layout.activity_net_banking, container, false);
-		selectedBank = "";
+
+        selectedBank = "";
+
         paymentType = this.getArguments().getString(Constants.PAY_TYPE);
 
         oneClicksignup = new OneClicksignup(getActivity());
 
 		initBanks();
 		initViews();
-		return returnView;
+
+        return returnView;
 	}
 
 	private void initBanks() {
@@ -246,7 +249,7 @@ public class Netbanking extends Fragment {
 
     private void savePayOption(String bankName) {
         oneClicksignup.savebankOption(getPaymentObject(bankName));
-     }
+    }
 
     private JSONObject getPaymentObject(String bankName) {
         JSONObject paymentDetails = null;

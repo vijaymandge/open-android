@@ -29,6 +29,8 @@ public class Constants {
 	/*Merchant needs to have it's own redirect URL below*/
     public static final String REDIRECT_URL = "https://stgadmin.citruspay.com/requestData";
 
+    public static final String VANITY_URL = "nativesdk";
+
     public static final String ACCESS_KEY = "14KZ1O3AGP8SUKPK8989";
 
     public static final String SECRET_KEY = "662bd8628cf79a2f96b79c5d29418ecb4031bead";
