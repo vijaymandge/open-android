@@ -37,6 +37,7 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
@@ -71,6 +72,8 @@ public class Netbanking extends Fragment {
 	private OnTaskCompleted taskExecuted;
 
     private JSONObject paymentObject;
+
+    private OneClicksignup oneClicksignup;
 	
 	public Netbanking() {
 		
@@ -80,6 +83,9 @@ public class Netbanking extends Fragment {
 		returnView = inflater.inflate(R.layout.activity_net_banking, container, false);
 		selectedBank = "";
         paymentType = this.getArguments().getString(Constants.PAY_TYPE);
+
+        oneClicksignup = new OneClicksignup(getActivity());
+
 		initBanks();
 		initViews();
 		return returnView;
@@ -172,7 +178,10 @@ public class Netbanking extends Fragment {
 
     private void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
+
         checkout.netbankPay(selectedCode, JSONUtils.TXN_AMOUNT);
+
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(selectedBank), "netbanking");
     }
 
     private void createMemberTxn() {
@@ -236,14 +245,18 @@ public class Netbanking extends Fragment {
 
 
     private void savePayOption(String bankName) {
+        oneClicksignup.savebankOption(getPaymentObject(bankName));
+     }
+
+    private JSONObject getPaymentObject(String bankName) {
         JSONObject paymentDetails = null;
         try {
-            paymentDetails =  new JSONObject().put("type", "netbanking").put("bank", bankName).put("owner", "");
+            paymentDetails =  new JSONObject().put("bank", bankName);
         } catch (JSONException e) {
 
         }
 
-       new SavePayOption(getActivity(), paymentDetails).execute();
-     }
+        return paymentDetails;
+    }
 
 }

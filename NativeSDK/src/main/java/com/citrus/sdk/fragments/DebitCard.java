@@ -34,6 +34,7 @@ import com.citrus.sdk.ErrorValidation;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SavePayOption;
@@ -57,6 +58,7 @@ public class DebitCard extends Fragment{
 	private String paymentType;
 	private JSONObject paymentObject;
 	private OnTaskCompleted taskExecuted;
+    private OneClicksignup oneClicksignup;
 
     private String cardNumStr, expDateStr, cvvStr, holder_name;
 
@@ -117,6 +119,7 @@ public class DebitCard extends Fragment{
         expDateStr = dateStr[0] + "/20" + dateStr[1];
         cvvStr = cvv.getText().toString();
         holder_name = nameOnCard.getText().toString();
+        oneClicksignup = new OneClicksignup(getActivity());
     }
 	
 	protected boolean isValidCard() {
@@ -144,7 +147,10 @@ public class DebitCard extends Fragment{
 
     private void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
+
         checkout.cardPay(PaymentUtils.DEBIT_CARD.toString(), JSONUtils.TXN_AMOUNT);
+
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(), "debit");
     }
 
 	private void createMemberTxn() {
@@ -210,16 +216,19 @@ public class DebitCard extends Fragment{
 	}
 
     private void savePayOption() {
+        oneClicksignup.saveCardOption(getPaymentObject());
+    }
+
+    public JSONObject getPaymentObject() {
         JSONObject paymentDetails = null;
         try {
-
             paymentDetails  =  new JSONObject().put("type", "debit").put("owner", nameOnCard.getText().toString())
-                    .put("number", cardNumStr).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase()).put("bank", "");
+                    .put("number", cardNumStr).put("expiryDate", expDate.getText().toString()).put("scheme", card.getCardType().toUpperCase());
         } catch (JSONException e) {
 
         }
-        new SavePayOption(getActivity(), paymentDetails).execute();
 
+        return paymentDetails;
     }
 	
 }

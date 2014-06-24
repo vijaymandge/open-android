@@ -31,6 +31,7 @@ import android.widget.TextView;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.interfaces.Messenger;
+import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.ActivateAc;
 import com.citrus.sdk.webops.SignUpAsynch;
 import com.citruspay.mobile.payment.OnTaskCompleted;
@@ -55,11 +56,16 @@ public class SignUp extends Activity {
 
     private OnTaskCompleted listener;
 
+    private OneClicksignup oneClicksignup;
+
     private Messenger accListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_up);
+
+        oneClicksignup = new OneClicksignup(SignUp.this);
+
         initViews();
         initListeners();
     }
@@ -81,10 +87,10 @@ public class SignUp extends Activity {
                 String password = passwordET.getText().toString();
                 String username = usernameET.getText().toString();
                 if (isValidInput(username, password, mobile)) {
-                    String params[] = new String[] {randomEmail(), mobile, password, "", ""};
+                    String params[] = new String[] {oneClicksignup.randomEmail(), mobile, password, "", ""};
                     signUpLayout.setVisibility(View.INVISIBLE);
                     spinner.setVisibility(View.VISIBLE);
-                    new SignUpAsynch(SignUp.this, listener).execute(params);
+                    oneClicksignup.signUp(params, listener);
                 }
                 else {
                     return;
@@ -100,8 +106,7 @@ public class SignUp extends Activity {
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
 
                 if (TextUtils.equals(message, "success")) {
-                    activateAccount();
-
+                    oneClicksignup.activateAccount(accListener);
                 }
                 else if (TextUtils.equals(Constants.USER_EXISTS, message)) {
                     signUpLayout.setVisibility(View.VISIBLE);
@@ -115,9 +120,6 @@ public class SignUp extends Activity {
             }
         };
 
-    }
-
-    private void activateAccount() {
         accListener = new Messenger() {
             @Override
             public void onTaskExecuted(String result) {
@@ -134,16 +136,6 @@ public class SignUp extends Activity {
             }
         };
 
-        new ActivateAc(SignUp.this, accListener).execute();
-    }
-
-    /* This function only demonstrates the usage of one click sign up -
-    *  Do not use this function in real application
-    *  RandomEmail will create problem.
-    * */
-    private String randomEmail() {
-        String email = String.valueOf(Math.random()) + "@gmail.com";
-        return email;
     }
 
     private boolean isValidInput(String username, String password, String mobile) {

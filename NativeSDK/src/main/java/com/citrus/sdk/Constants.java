@@ -26,7 +26,8 @@ public class Constants {
    * */
 	public static final String CITRUS_SERVER_URL = "https://stgadmin.citruspay.com/service/moto/authorize/struct/payment";
 
-	public static final String REDIRECT_URL = "http://103.13.97.20/citrus/index.php";
+	/*Merchant needs to have it's own redirect URL below*/
+    public static final String REDIRECT_URL = "https://stgadmin.citruspay.com/requestData";
 
     public static final String ACCESS_KEY = "14KZ1O3AGP8SUKPK8989";
 

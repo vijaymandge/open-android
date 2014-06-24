@@ -55,11 +55,11 @@ public class ActivateAc extends AsyncTask <Void, Void, Void>{
         try {
            Amount amount = cardService.activateAccount();
         } catch (OAuth2Exception e) {
-
+           result = "oauthException";
         } catch (ProtocolException e) {
-
+           result = "protoException";
         } catch (PrepaidException e) {
-
+           result = "prepaidException";
         } catch (IllegalArgumentException e) {
            result = "success";
         }
