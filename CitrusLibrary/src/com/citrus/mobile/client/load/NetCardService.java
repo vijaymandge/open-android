@@ -65,7 +65,7 @@ public class NetCardService {
 		return signedOrder;
 	}
 
-    public Amount getBalance() throws ProtocolException, PrepaidException,
+    public Amount activateAccount() throws ProtocolException, PrepaidException,
             OAuth2Exception, IllegalArgumentException {
         JSONObject mycard = null;
         try {

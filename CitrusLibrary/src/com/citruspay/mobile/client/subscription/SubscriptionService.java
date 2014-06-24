@@ -31,10 +31,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.cookie.Cookie;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.citruspay.mobile.client.subscription.contact.ContactDetails;
+import com.citruspay.mobile.client.subscription.payment.PaymentConfiguration;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.client.rest.RESTClient;
 import com.citruspay.mobile.payment.client.rest.RESTException;
@@ -253,6 +255,37 @@ public class SubscriptionService {
 			handleRESTException(rx);
 		}
 	}
+
+    public void setDefaultOption(OptionDetails options) throws ProtocolException, OAuth2Exception, SubscriptionException{
+        JSONObject paymentDetails, optionDetails;
+        paymentDetails = null;
+        optionDetails = null;
+        try {
+            paymentDetails =  new JSONObject().put("owner", options.getOwner())
+                    .put("bank", options.getBank())
+                    .put("number", options.getNumber())
+                    .put("scheme", options.getScheme())
+                    .put("type", options.getType().toLowerCase())
+                    .put("expiryDate", options.getExpDate())
+                    .put("name",options.getName());
+        } catch (JSONException e) {
+
+        }
+
+        try {
+            optionDetails = new JSONObject();
+            optionDetails.put("type", "payment")
+                    .put("defaultOption",options.getName())
+                    .put("paymentOptions", new JSONArray(Collections.singleton(paymentDetails)));
+        } catch (JSONException e) {
+
+        }
+
+        PaymentConfiguration payment = new PaymentConfiguration();
+        payment.parse(optionDetails);
+        updateProfile(payment);
+
+    }
 
 	private JSONObject handleRESTException(RESTException rx) throws ProtocolException, SubscriptionException {
 		if (rx.getHttpStatusCode() == HttpStatus.SC_BAD_REQUEST) {

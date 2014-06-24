@@ -63,13 +63,13 @@ public class Card {
 				type = "MAESTRO";				
 			}
 			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.MASTERCARD)) {
-				type = "MASTERCARD";
+				type = "MCRD";
 			}
 			
 			else {
 				type = "UNKNOWN";
 			}
-			
+
 			return type;
 			
 		}
@@ -136,6 +136,7 @@ public class Card {
     }
 
     public boolean validateNumber() {
+        cardType = getCardType();
         if (TextUtils.isBlank(cardnumber)) {
             return false;
         }
@@ -147,11 +148,11 @@ public class Card {
             return false;
         }
 
-        if (!"American Express".equals(cardType) && rawNumber.length() != 16) {
+        if (!"AMEX".equals(cardType) && rawNumber.length() != 16) {
         	return false;
         }
 
-        if ("American Express".equals(cardType) && rawNumber.length() != 15) {
+        if ("AMEX".equals(cardType) && rawNumber.length() != 15) {
         	return false;
         }
 
@@ -189,8 +190,8 @@ public class Card {
         String cvcValue = cardCVV.trim();
         cardType = getCardType();
         boolean validLength = ((cardType == null && cvcValue.length() >= 3 && cvcValue.length() <= 4) ||
-                ("American Express".equals(cardType) && cvcValue.length() == 4) ||
-                (!"American Express".equals(cardType) && cvcValue.length() == 3));
+                ("AMEX".equals(cardType) && cvcValue.length() == 4) ||
+                (!"AMEX".equals(cardType) && cvcValue.length() == 3));
 
 
         if (!TextUtils.isWholePositiveNumber(cvcValue) || !validLength) {

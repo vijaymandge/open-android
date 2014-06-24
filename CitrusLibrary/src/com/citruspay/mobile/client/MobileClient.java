@@ -51,7 +51,7 @@ public class MobileClient implements MobileServiceProvider {
 			.create(MobileKitConstants.SERVER_URL + "oauth/token");
 
 	private URI subscription = URI
-			.create(MobileKitConstants.SERVER_URL + "service/v2/");
+                .create(MobileKitConstants.SERVER_URL + "service/v2/");
 	
 	private URI prepaid = URI
 			.create(MobileKitConstants.SERVER_URL + "service/v2/mycard/");
