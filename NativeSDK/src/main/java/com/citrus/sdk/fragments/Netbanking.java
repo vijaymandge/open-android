@@ -70,8 +70,6 @@ public class Netbanking extends Fragment {
 
 	private OnTaskCompleted taskExecuted;
 
-    private CheckBox saveOption;
-
     private JSONObject paymentObject;
 	
 	public Netbanking() {
@@ -124,7 +122,6 @@ public class Netbanking extends Fragment {
 		}
 		
 		dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, bankNames);
-        saveOption = (CheckBox) returnView.findViewById(R.id.saveOption);
 		spinner = (Spinner) returnView.findViewById(R.id.bankOptions);
 		spinner.setAdapter(dataAdapter);
 		
@@ -159,9 +156,7 @@ public class Netbanking extends Fragment {
                         createGuestTxn();
                     }
                     else {
-                        if (saveOption.isChecked()) {
-                            savePayOption(selectedBank);
-                        }
+                        savePayOption(selectedBank);
                         createMemberTxn();
                     }
 

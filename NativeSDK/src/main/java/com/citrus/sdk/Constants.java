@@ -22,7 +22,7 @@ import com.citruspay.mobile.client.MobileClient;
 
 public class Constants {
    /*Folowing are the citrus apk merchant details Merchant needs to replace it with their details
-   * Please contact support team at Citrus, if you need any of the parameters.
+   * Please contact support team at Citrus, if you need any further assistance.
    * */
 	public static final String CITRUS_SERVER_URL = "https://stgadmin.citruspay.com/service/moto/authorize/struct/payment";
 

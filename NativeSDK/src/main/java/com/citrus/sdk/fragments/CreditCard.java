@@ -70,8 +70,6 @@ public class CreditCard extends Fragment{
 
     private String paymentType, cardNumStr, expDateStr, cvvStr, holder_name;
 
-    private CheckBox checkBox;
-	
 	public CreditCard() {
 		
 	}
@@ -110,8 +108,6 @@ public class CreditCard extends Fragment{
 
         cvv = (EditText) returnView.findViewById(R.id.cvvText);
 
-        checkBox = (CheckBox) returnView.findViewById(R.id.saveOption);
-
 		submitButton = (Button) returnView.findViewById(R.id.submitButton);
 		initSubmitButton();
 	}
@@ -127,9 +123,7 @@ public class CreditCard extends Fragment{
                         createGuestTxn();
                     }
                     else {
-                        if (checkBox.isChecked()) {
-                            savePayOption();
-                        }
+                        savePayOption();
                         createMemberTxn();
                     }
 				}

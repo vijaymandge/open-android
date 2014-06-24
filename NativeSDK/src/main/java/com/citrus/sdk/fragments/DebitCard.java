@@ -57,7 +57,6 @@ public class DebitCard extends Fragment{
 	private String paymentType;
 	private JSONObject paymentObject;
 	private OnTaskCompleted taskExecuted;
-    private CheckBox checkBox;
 
     private String cardNumStr, expDateStr, cvvStr, holder_name;
 
@@ -81,14 +80,12 @@ public class DebitCard extends Fragment{
         cardnumber = (CardNumberEditText) returnView.findViewById(R.id.debitCardText);
 
 		cardnumber.setText("5555555555554444");
-        //cardnumber.setText("376933245801004");
+
         expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
 
         nameOnCard = (EditText) returnView.findViewById(R.id.nameOnCard);
 
         cvv = (EditText) returnView.findViewById(R.id.cvvText);
-
-        checkBox = (CheckBox) returnView.findViewById(R.id.saveOption);
 
         submitButton = (Button) returnView.findViewById(R.id.submitButton);
 
@@ -106,9 +103,7 @@ public class DebitCard extends Fragment{
                         createGuestTxn();
                     }
                     else {
-                        if (checkBox.isChecked()) {
-                            savePayOption();
-                        }
+                        savePayOption();
                         createMemberTxn();
                     }
 				}

@@ -1,3 +1,19 @@
+/*
+   Copyright 2014 Citrus Payment Solutions Pvt. Ltd.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 package com.citrus.sdk.operations;
 
 import com.citruspay.mobile.payment.internals.PaymentUtils;
@@ -7,9 +23,10 @@ import org.json.JSONObject;
 
 /**
  * Created by shardul on 23/6/14.
- * Following static functions use dummy values - merchants need to build function according to their need.
+ * Following static functions use dummy values.
+ * Merchants need to either provide these parameters in run time or fetch them from shared preferences.
  * All the parameters are mandatory
- *
+ * DO NOT STORE CARD PAYMENT DETAILS - FETCH THEM FROM USER IN RUNTIME
  */
 public class JSONUtils {
 

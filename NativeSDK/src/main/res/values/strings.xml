@@ -31,7 +31,7 @@
     <string name="title_activity_main">Pay</string>
     <string name="title_activity_card_fragment">CardFragment</string>
     <string name="spinner">Choose a bank</string>
-    <string name="checkbox">Save this payment option</string>
+    <string name="checkbox">We save this option</string>
     <string name="guestFlow">Guest Flow</string>
     <string name="memberFlow">Member Flow</string>
     <string name="signIn">Sign In</string>
