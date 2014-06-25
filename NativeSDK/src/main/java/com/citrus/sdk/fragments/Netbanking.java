@@ -96,7 +96,7 @@ public class Netbanking extends Fragment {
 
 	private void initBanks() {
 
-        /*A specific list of banks will be available to you*/
+        /*A specific list of banks will be available to every merchant  */
 
 		bankOptions = new HashMap<String, String>();
 		bankOptions.put("ICICI Bank", "CID001");
