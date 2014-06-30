@@ -53,6 +53,8 @@ public class Constants {
 
     public static final String GUEST_PAY_URL = "https://stgadmin.citruspay.com/api/v2/txn/create";
 
+    public static final String SMS_RECEIVED = "com.citrus.sms_received";
+
 
   	public static final boolean isSignedIn(Activity activity) {
 		MobileClient mobileClient = new MobileClient(activity);	

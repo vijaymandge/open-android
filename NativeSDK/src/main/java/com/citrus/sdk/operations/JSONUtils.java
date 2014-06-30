@@ -16,6 +16,7 @@
 
 package com.citrus.sdk.operations;
 
+import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 
 import org.json.JSONException;
@@ -31,7 +32,6 @@ import org.json.JSONObject;
 public class JSONUtils {
 
     public static final String TXN_AMOUNT = "1";
-
 
     /*Following are the payment details for member flow*/
 
@@ -90,16 +90,17 @@ public class JSONUtils {
 
     /*Following are the payment details for Guest flow*/
 
-    public static final JSONObject fillinGuestPayCardDetails(String type) {
+    public static final JSONObject fillinGuestPayCardDetails(String type, Card card) {
         JSONObject paymentDetails = new JSONObject();
         try {
             paymentDetails.put("paymentMode", type);
-            paymentDetails.put("cardType", "VISA");
-            paymentDetails.put("cardNumber", "4028530052708001");
-            paymentDetails.put("cardHolderName", "Jitendra Gupta");
-            paymentDetails.put("expiryMonth", "01");
-            paymentDetails.put("expiryYear", "2020");
-            paymentDetails.put("cvvNumber", "000");
+            paymentDetails.put("cardType", card.getCardType());
+            paymentDetails.put("cardNumber", card.getCardNumber());
+            paymentDetails.put("cardHolderName", card.getCardHolderName());
+            paymentDetails.put("expiryMonth", card.getExpiryMonth());
+            paymentDetails.put("expiryYear", card.getExpiryYear());
+            paymentDetails.put("cvvNumber", card.getCvvNumber());
+
         } catch (JSONException e) {
 
         }

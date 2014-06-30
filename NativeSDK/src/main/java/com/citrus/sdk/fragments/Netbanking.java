@@ -28,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,12 +37,9 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.operations.OneClicksignup;
-import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
-import com.citrus.sdk.webops.SavePayOption;
-import com.citrus.sdk.webops.Web3DSecure;
+import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.OnTaskCompleted;
-import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.util.HMACSignature;
 
 import org.json.JSONException;

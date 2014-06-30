@@ -74,17 +74,15 @@ public class GuestPay extends AsyncTask <Void, Void, Void>{
 			httpClient = new DefaultHttpClient();
 			httpPost = new HttpPost(url.toURI());
 			String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
-			String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
-			httpPost.setHeader("access_key", Constants.ACCESS_KEY);
+            String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+            httpPost.setHeader("access_key", Constants.ACCESS_KEY);
 			httpPost.setHeader("Content-Type", "application/json");
 			httpPost.setHeader("Accept-Encoding", "application/json");
 			httpPost.setHeader("Accept-Language", "en-US");
 			httpPost.setHeader("signature", signature);
-			
 			httpPost.setEntity(new StringEntity(txnObject.toString()));			
 			HttpResponse response = httpClient.execute(httpPost);
 			StringBuffer res = new StringBuffer();
-
 			BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 		    String inputLine;
 				   while ((inputLine = in.readLine()) != null) {

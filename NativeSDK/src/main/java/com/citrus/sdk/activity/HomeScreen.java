@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
+import com.citrus.sdk.operations.SMSParsing;
 import com.citruspay.mobile.client.Logout;
 
 public class HomeScreen extends Activity {
@@ -76,7 +77,6 @@ public class HomeScreen extends Activity {
             }
         });
 
-
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +90,11 @@ public class HomeScreen extends Activity {
             Logout.logoutUser(activity);
             DBHandler.deleteDB(activity);
             Toast.makeText(activity.getApplicationContext(), "User Logged out successfully!", Toast.LENGTH_SHORT).show();
+
         } catch (Exception e) {
-            Toast.makeText(activity.getApplicationContext(), "Could not out successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), "Could not logout successfully!", Toast.LENGTH_SHORT).show();
         }
 
     }
+
 }

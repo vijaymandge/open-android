@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 
@@ -36,10 +35,8 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.operations.OneClicksignup;
-import com.citrus.sdk.webops.GetSignedorder;
 import com.citrus.sdk.webops.Pay;
-import com.citrus.sdk.webops.SavePayOption;
-import com.citrus.sdk.webops.Web3DSecure;
+import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
@@ -94,16 +91,23 @@ public class CreditCard extends Fragment{
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		returnView = inflater.inflate(R.layout.activity_credit_card, container, false);
-		Bundle data = getArguments();
+
+        Bundle data = getArguments();
+
         paymentType = data.getString(Constants.PAY_TYPE);
         initEditText();
-		return returnView;
+
+        initValues();
+
+        initSubmitButton();
+
+        return returnView;
 	}
 
 	private void initEditText() {
 		cardnumber = (CardNumberEditText) returnView.findViewById(R.id.creditCardText);
 
-        cardnumber.setText("4111111111111111");
+        cardnumber.setText("4028530052708001");
 
         expDate = (ExpiryEditText) returnView.findViewById(R.id.cardExpiry);
 
@@ -112,6 +116,9 @@ public class CreditCard extends Fragment{
         cvv = (EditText) returnView.findViewById(R.id.cvvText);
 
 		submitButton = (Button) returnView.findViewById(R.id.submitButton);
+
+        oneClicksignup = new OneClicksignup(getActivity());
+
 		initSubmitButton();
 	}
 	
@@ -121,7 +128,7 @@ public class CreditCard extends Fragment{
 			@Override
 			public void onClick(View v) {
 				if (isValidCard()) {
-                    initValues();
+
                     if (TextUtils.equals(paymentType, Constants.GUEST_FLOW)) {
                         createGuestTxn();
                     }
@@ -231,12 +238,13 @@ public class CreditCard extends Fragment{
 	
 	protected void createGuestTxn() {
         GuestCheckout checkout = new GuestCheckout(getActivity());
-        checkout.cardPay(PaymentUtils.CREDIT_CARD.toString(), JSONUtils.TXN_AMOUNT);
+
+        checkout.cardPay(PaymentUtils.CREDIT_CARD.toString(), JSONUtils.TXN_AMOUNT, card);
+
         oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(), "credit");
 	}
 
     private void savePayOption() {
-        oneClicksignup = new OneClicksignup(getActivity());
 
         oneClicksignup.saveCardOption(getPaymentObject());
     }

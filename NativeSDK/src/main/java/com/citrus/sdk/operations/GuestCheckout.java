@@ -23,8 +23,8 @@ import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
-import com.citrus.sdk.webops.Web3DSecure;
-import com.citruspay.mobile.payment.internals.PaymentUtils;
+import com.citrus.sdk.activity.Web3DSecure;
+import com.citruspay.mobile.payment.Card;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +43,7 @@ public class GuestCheckout {
 
     }
 
-    public void cardPay(String type, String amount) {
+    public void cardPay(String type, String amount, Card cardDetails) {
         messenger = new Messenger() {
             @Override
             public void onTaskExecuted(String result) {
@@ -63,7 +63,7 @@ public class GuestCheckout {
 
         try {
             personalDetails = JSONUtils.fillinGuestPersonalDetails();
-            paymentDetails = JSONUtils.fillinGuestPayCardDetails(type);
+            paymentDetails = JSONUtils.fillinGuestPayCardDetails(type, cardDetails);
 
             Iterator<String> personal_iterator = personalDetails.keys();
             Iterator<String> payment_iterator = paymentDetails.keys();

@@ -101,7 +101,12 @@ public class Card {
 	}
 	
 	public String getExpiryMonth() {
-		return String.valueOf(expMonth);
+
+        if (expMonth < 10) {
+            return "0" + String.valueOf(expMonth);
+        }
+
+        return String.valueOf(expMonth);
 	}
 	
 	public String getCvvNumber() {
