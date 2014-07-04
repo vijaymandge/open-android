@@ -18,7 +18,7 @@ package com.citruspay.mobile.client;
 
 public class MobileKitConstants {
     /*Do not change the following URL*/
-   public static final String SERVER_URL = "https://stgadmin.citruspay.com/";
-    /*public static final String SERVER_URL = "https://sandboxadmin.citruspay.com/";*/
+   //public static final String SERVER_URL = "https://stgadmin.citruspay.com/";
+    public static final String SERVER_URL = "https://sandboxadmin.citruspay.com/";
 
 }

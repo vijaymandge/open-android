@@ -1,7 +1,9 @@
 package com.citruspay.mobile.payment.options;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.widget.ProgressBar;
 
 import com.citruspay.mobile.payment.OnTaskCompleted;
 
@@ -25,13 +27,13 @@ import java.util.List;
  * Created by shardul on 24/6/14.
  */
 public class PaymentOptions {
-    private static final String PAY_OPTION_URL = "https://stgadmin.citruspay.com/admin-site/service/v1/merchant/pgsettingTest";
+    private static final String PAY_OPTION_URL = "https://sandboxadmin.citruspay.com/service/v1/merchant/pgsetting";
 
     private Activity activity;
 
     private String vanity, result;
 
-    private JSONObject paymentOptionobject;
+    private JSONObject optionobject;
 
     private OnTaskCompleted listener;
 
@@ -47,6 +49,12 @@ public class PaymentOptions {
 
 
     public class AsynchOption extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = ProgressDialog.show(activity, "Please Wait", "Fetching Bank Options", true, true);
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -63,7 +71,7 @@ public class PaymentOptions {
 
                 response = httpclient.execute(httppost);
 
-                paymentOptionobject = new JSONObject(EntityUtils.toString(response.getEntity()));
+                optionobject = new JSONObject(EntityUtils.toString(response.getEntity()));
 
                 result = "success";
 
@@ -81,7 +89,8 @@ public class PaymentOptions {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            listener.onTaskExecuted(new JSONObject[]{}, result);
+            dialog.dismiss();
+            listener.onTaskExecuted(new JSONObject[]{optionobject}, result);
         }
     }
 }
