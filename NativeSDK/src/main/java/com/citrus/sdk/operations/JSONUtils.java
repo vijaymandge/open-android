@@ -33,6 +33,8 @@ public class JSONUtils {
 
     public static final String TXN_AMOUNT = "1";
 
+    /*Make sure that none of the fields below are blank or null - else, there would be errors.*/
+
     /*Following are the payment details for member flow*/
 
     public static final JSONObject fillinAddress() {
@@ -118,16 +120,17 @@ public class JSONUtils {
         return paymentDetails;
     }
 
+
     public static final JSONObject fillinGuestPersonalDetails() {
         JSONObject personalDetails = new JSONObject();
         try {
             personalDetails.put("firstName", "Tester");
             personalDetails.put("lastName", "Citrus");
-            personalDetails.put("address", "");
+            personalDetails.put("address", "Test Address");
             personalDetails.put("addressCity", "Mumbai");
             personalDetails.put("addressState", "Maharashtra");
             personalDetails.put("addressZip", "885744");
-            personalDetails.put("email", "tester@gmail.com");
+            personalDetails.put("email", "monishbaba@gmail.com");
             personalDetails.put("mobile", "1234567890");
         } catch (JSONException e) {
 

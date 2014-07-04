@@ -24,16 +24,17 @@ public class Constants {
    /*Folowing are the citrus apk merchant details Merchant needs to replace it with their details
    * Please contact support team at Citrus, if you need any further assistance.
    * */
-	public static final String CITRUS_SERVER_URL = "https://stgadmin.citruspay.com/service/moto/authorize/struct/payment";
 
-	/*Merchant needs to have it's own redirect URL below*/
+    public static final String CITRUS_SERVER_URL = "https://sandboxadmin.citruspay.com/service/moto/authorize/struct/payment";
+
+    /*Merchant needs to have it's own redirect URL below*/
     public static final String REDIRECT_URL = "https://stgadmin.citruspay.com/requestData";
 
-    public static final String VANITY_URL = "nativesdk";
+    public static final String VANITY_URL = "nativeSDK";
 
-    public static final String ACCESS_KEY = "14KZ1O3AGP8SUKPK8989";
+    public static final String ACCESS_KEY = "F2VZD1HBS2VVXJPMWO77";
 
-    public static final String SECRET_KEY = "662bd8628cf79a2f96b79c5d29418ecb4031bead";
+    public static final String SECRET_KEY = "ef4147f16380678726826483ceccdd7d133e68b7";
 
     public static final String SUBSCRIPTION_ID = "citrus-native-mobile-subscription";
 
@@ -51,7 +52,10 @@ public class Constants {
 
     public static final String USER_EXISTS = "com.citruspay.directory.exception.CitrusUserAlreadyExistsException";
 
-    public static final String GUEST_PAY_URL = "https://stgadmin.citruspay.com/api/v2/txn/create";
+    public static final String GUEST_PAY_URL = "https://sandboxadmin.citruspay.com/api/v2/txn/create";
+
+
+
 
     public static final String SMS_RECEIVED = "com.citrus.sms_received";
 

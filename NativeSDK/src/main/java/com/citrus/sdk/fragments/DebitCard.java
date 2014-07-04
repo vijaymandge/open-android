@@ -74,8 +74,6 @@ public class DebitCard extends Fragment{
 
         initEditText();
 
-        initValues();
-
         initSubmitButton();
 
 		return returnView;
@@ -104,7 +102,7 @@ public class DebitCard extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
-
+                initValues();
 				if (isValidCard()) {
                     if (TextUtils.equals(paymentType, Constants.GUEST_FLOW)) {
                         createGuestTxn();

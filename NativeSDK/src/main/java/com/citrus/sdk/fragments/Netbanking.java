@@ -33,15 +33,19 @@ import android.widget.Toast;
 
 
 import com.citrus.sdk.Constants;
+import com.citrus.sdk.database.BankOptions;
+import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.operations.ManageOptions;
 import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.OnTaskCompleted;
 import com.citruspay.util.HMACSignature;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,6 +60,8 @@ public class Netbanking extends Fragment {
 	private Spinner spinner;
 	
 	private Map<String, String> bankOptions;
+
+    private List<BankOptions> netbankList;
 	
 	private ArrayAdapter<String> dataAdapter;
 	
@@ -65,11 +71,13 @@ public class Netbanking extends Fragment {
 	
 	private Button submit;
 
-	private OnTaskCompleted taskExecuted;
+	private OnTaskCompleted taskExecuted, onNetbankfetched;
 
     private JSONObject paymentObject;
 
     private OneClicksignup oneClicksignup;
+
+    private ManageOptions myOptions;
 	
 	public Netbanking() {
 		
@@ -84,48 +92,62 @@ public class Netbanking extends Fragment {
 
         oneClicksignup = new OneClicksignup(getActivity());
 
+        myOptions = new ManageOptions(getActivity());
+
+        initListener();
+
 		initBanks();
-		initViews();
 
         return returnView;
 	}
 
+    private void initListener() {
+        onNetbankfetched = new OnTaskCompleted() {
+            @Override
+            public void onTaskExecuted(JSONObject[] options, String message) {
+
+                try {
+                    JSONArray array = options[0].getJSONArray("netBanking");
+                    myOptions.storeBanks(array);
+                    initBanks();
+                } catch (JSONException e) {
+                    return;
+                }
+
+            }
+        };
+    }
+
 	private void initBanks() {
 
-        /*A specific list of banks will be available to every merchant  */
+        try {
+            netbankList = myOptions.getBanks();
+        } catch (Exception e) {
+            return;
+        }
 
-		bankOptions = new HashMap<String, String>();
-		bankOptions.put("ICICI Bank", "CID001");
-		bankOptions.put("AXIS Bank",  "CID002");
-		
-		bankOptions.put("YES Bank",	"CID004");
-		bankOptions.put("Deutsche Bank", "CID006");
-		bankOptions.put("Union Bank",	"CID007");
-		bankOptions.put("IDBI Bank",	"CID011");
-		bankOptions.put("Federal Bank",	"CID009");
-		bankOptions.put("State Bank of Hyderabad",	"CID012");
-		bankOptions.put("State Bank of Bikaner and Jaipur",	"CID013");
-		bankOptions.put("State Bank of Mysore",	"CID014");
-		bankOptions.put("State Bank of Travancore",	"CID015");
-		bankOptions.put("HDFC Bank",	"CID010");
-		bankOptions.put("Citibank",	"CID003");
-		bankOptions.put("SBI Bank",	"CID005");
-		bankOptions.put("Indian Bank",	"CID008");
-		
+        if (netbankList.size() == 0) {
+            myOptions.getStoreBanks(onNetbankfetched);
+        }
+
+        else {
+            initViews();
+        }
+
 	}
-	
+
 
 	private void initViews() {
 		bankNames = new ArrayList<String>();
 		bankCodes = new ArrayList<String>();
-		
-		for (Map.Entry<String,String> entry : bankOptions.entrySet()) {
-			  String key = entry.getKey();
-			  String value = entry.getValue();
-			  bankNames.add(key);
-			  bankCodes.add(value);
-		}
-		
+
+        for (int i = 0; i < netbankList.size(); i++) {
+            String bankname = netbankList.get(i).getBankName();
+            String bankcid = netbankList.get(i).getBankcid();
+            bankNames.add(bankname);
+            bankCodes.add(bankcid);
+        }
+
 		dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, bankNames);
 		spinner = (Spinner) returnView.findViewById(R.id.bankOptions);
 		spinner.setAdapter(dataAdapter);

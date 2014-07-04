@@ -272,8 +272,8 @@ public class SavedOptions extends Fragment{
 			amount.put("value", "1");
 			
 			JSONObject address = new JSONObject();
-			address.put("street1", "");
-			address.put("street2", "");
+			address.put("street1", "test street");
+			address.put("street2", "test street 2");
 			address.put("city", "Mumbai");
 			address.put("state", "Maharashtra");
 			address.put("country", "India");
@@ -283,7 +283,7 @@ public class SavedOptions extends Fragment{
 			userDetails.put("email", "tester@gmail.com");
 			userDetails.put("firstName", "Tester");
 			userDetails.put("lastName", "Testing");
-			userDetails.put("mobileNo", "7875432990");
+			userDetails.put("mobileNo", "1234567890");
 			
 			userDetails.put("address", address);
 			

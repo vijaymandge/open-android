@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
@@ -38,7 +39,6 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.SMSParsing;
 import com.citrus.sdk.webops.JSInterface;
-import com.citruspay.mobile.payment.internals.TextUtils;
 
 
 public class Web3DSecure extends Activity {
@@ -91,7 +91,7 @@ public class Web3DSecure extends Activity {
 
         initWebViewClient();
 
-        refreshWebView();
+        webView.loadUrl(url);
 
 	}
 
@@ -99,7 +99,7 @@ public class Web3DSecure extends Activity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refreshWebView();
+                enterOTP();
             }
         });
     }
@@ -156,12 +156,6 @@ public class Web3DSecure extends Activity {
 		                dialog = null;
 		            }
 
-                    if (!android.text.TextUtils.isEmpty(otpValue)) {
-                        String javascript="javascript: document.getElementById('txtOtp').value='"+otpValue+"';document.getElementById('cmdSubmit').onclick();";
-                        view.loadUrl(javascript);
-                        otpLayout.setVisibility(View.INVISIBLE);
-                    }
-
 		        }
 		     
 		     
@@ -170,8 +164,13 @@ public class Web3DSecure extends Activity {
 		webView.setWebViewClient(webViewClient);
 	}
 
-    private void refreshWebView() {
-        webView.loadUrl(url);
+    private void enterOTP() {
+        if (!TextUtils.isEmpty(otpValue)) {
+            String javascript= "javascript: document.frmPayerAuth.txtOtp.value='"+otpValue+"';document.getElementById('frmPayerAuth').submit();";
+            webView.loadUrl(javascript);
+            otpLayout.setVisibility(View.INVISIBLE);
+            otpValue = null;
+        }
     }
 
 }

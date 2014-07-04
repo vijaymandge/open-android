@@ -97,8 +97,6 @@ public class CreditCard extends Fragment{
         paymentType = data.getString(Constants.PAY_TYPE);
         initEditText();
 
-        initValues();
-
         initSubmitButton();
 
         return returnView;
@@ -127,6 +125,9 @@ public class CreditCard extends Fragment{
 			
 			@Override
 			public void onClick(View v) {
+
+                initValues();
+
 				if (isValidCard()) {
 
                     if (TextUtils.equals(paymentType, Constants.GUEST_FLOW)) {

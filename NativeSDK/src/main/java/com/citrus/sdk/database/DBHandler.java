@@ -177,10 +177,9 @@ public class DBHandler extends SQLiteOpenHelper{
     public List<BankOptions> getBankOptions() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor current_cursor;
-        String[] columNames = {BANK_CID, BANK};
-        String orderBy = DEFAULT_OPTION + " DESC";
+        String[] columNames = {BANK, BANK_CID};
         List<BankOptions> bankOptionsList = new ArrayList<BankOptions>();
-        current_cursor = db.query(PAYOPTION_TABLE, columNames, null, null, null, null, orderBy);
+        current_cursor = db.query(BANK_TABLE, columNames, null, null, null, null, null);
         if (current_cursor.moveToFirst()) {
             do {
                 BankOptions currentOption = new BankOptions(current_cursor.getString(0), current_cursor.getString(1));
