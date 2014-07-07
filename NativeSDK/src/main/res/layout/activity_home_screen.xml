@@ -42,11 +42,22 @@
         android:layout_margin="20dp"/>
 
 
+    <Button
+        android:id="@+id/updateContact"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Update Contact"
+        android:layout_below="@+id/signUp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:layout_margin="20dp"/>
+
+
     <Button android:id="@+id/logout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/logout"
-        android:layout_below="@+id/signUp"
+        android:layout_below="@+id/updateContact"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:layout_margin="20dp"/>
