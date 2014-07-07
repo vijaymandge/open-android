@@ -138,4 +138,17 @@ public class JSONUtils {
         return personalDetails;
     }
 
+    public static final JSONObject fillinContactDetails() {
+        JSONObject contact = new JSONObject();
+        try {
+            contact.put("firstName", "Tester");
+            contact.put("lastName", "Citrus");
+            contact.put("email", "monishbaba@gmail.com");
+            contact.put("mobile", "1234567890");
+        } catch (JSONException e) {
+
+        }
+        return contact;
+    }
+
 }

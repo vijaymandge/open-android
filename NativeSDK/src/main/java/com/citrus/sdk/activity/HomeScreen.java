@@ -26,11 +26,17 @@ import android.widget.Toast;
 
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
-import com.citrus.sdk.operations.SMSParsing;
+import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.webops.SavecontactDetails;
 import com.citruspay.mobile.client.Logout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+
 public class HomeScreen extends Activity {
-    private Button guestFlow, memberFlow, signIn, signUp, logout;
+    private Button guestFlow, memberFlow, signIn, signUp, contact, logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +50,7 @@ public class HomeScreen extends Activity {
         signIn = (Button) this.findViewById(R.id.signIn);
         signUp = (Button) this.findViewById(R.id.signUp);
         logout = (Button) this.findViewById(R.id.logout);
+        contact = (Button) this.findViewById(R.id.updateContact);
 
         guestFlow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +84,12 @@ public class HomeScreen extends Activity {
             }
         });
 
+        contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateContact();
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +97,28 @@ public class HomeScreen extends Activity {
                 logoutUser(HomeScreen.this);
             }
         });
+    }
+
+    private void updateContact() {
+        JSONObject contactobject = new JSONObject();
+
+        JSONObject contactDetails = JSONUtils.fillinContactDetails();
+
+        Iterator<String> iterator = contactDetails.keys();
+
+        try {
+            contactobject.put("type", "contact");
+
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                contactobject.put(key, contactDetails.getString(key));
+            }
+
+        } catch (JSONException e) {
+
+        }
+
+        new SavecontactDetails(this, contactobject).execute();
     }
 
     public static final void logoutUser(Activity activity) {

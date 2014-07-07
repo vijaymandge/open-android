@@ -81,7 +81,7 @@ public class DebitCard extends Fragment{
 	
 
 	private void initEditText() {
-		/*Pick these details from the UI*/
+		/*Pick these details in runtime*/
         cardnumber = (CardNumberEditText) returnView.findViewById(R.id.debitCardText);
 
 		cardnumber.setText("4028530052708001");

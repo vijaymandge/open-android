@@ -95,5 +95,6 @@ Lakshmi Vilas Bank NetBanking
     <string name="title_activity_home_screen">HomeScreen</string>
     <string name="title_activity_guestflow">Guestflow</string>
     <string name="title_activity_options_available">OptionsAvailable</string>
+    <string name="title_activity_contact_profile">ContactProfile</string>
 
 </resources>

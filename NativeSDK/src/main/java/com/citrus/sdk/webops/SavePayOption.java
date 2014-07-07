@@ -59,14 +59,6 @@ public class SavePayOption extends AsyncTask<Void, Void, Void>{
 
         }
 
-        /*JSONObject paymentDetails = new JSONObject().put("type", "credit").put("name", card.getType().toLowerCase()).put("owner", nameOnCard)
-                .put("number", cardNumber).put("expiryDate", expiryDate).put("scheme", card.getType().toUpperCase()).put("bank", "");
-        mCardDetails.put("type", Constants.FASTCHECKOUT_TYPE).put("defaultOption", card.getName()).put("paymentOptions", new JSONArray(((Collections.singleton(paymentDetails)))));
-        */
-
-        /*	JSONObject paymentDetails = new JSONObject().put("type", "netbank").put("bankName", bankName);
-            mCardDetails.put("type", Constants.FASTCHECKOUT_TYPE).put("paymentOptions", new JSONArray(((Collections.singleton(paymentDetails)))));
-        * */
 
     }
 
