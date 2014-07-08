@@ -1,9 +1,8 @@
-package com.citruspay.mobile.payment.options;
+package com.citruspay.mobile.client.openservice;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
 
 import com.citruspay.mobile.payment.OnTaskCompleted;
 
@@ -24,31 +23,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by shardul on 24/6/14.
+ * Created by shardul on 7/7/14.
  */
-public class PaymentOptions {
-    private static final String PAY_OPTION_URL = "https://sandboxadmin.citruspay.com/service/v1/merchant/pgsetting";
+public class IscitrusMember {
 
     private Activity activity;
 
-    private String vanity, result;
+    private String vanity, result, service_url;
 
     private JSONObject optionobject;
 
     private OnTaskCompleted listener;
 
-    public PaymentOptions(Activity activity) {
-       this.activity = activity;
+    public IscitrusMember(Activity activity) {
+        this.activity = activity;
     }
 
-    public void getPaymentOptions(String vanity, OnTaskCompleted listener) {
-        this.vanity = vanity;
+    public void ismember(String service_url, String email, OnTaskCompleted listener) {
+        this.vanity = email;
         this.listener = listener;
+        this.service_url = service_url;
         new AsynchOption().execute();
     }
 
-
-    public class AsynchOption extends AsyncTask<Void, Void, Void> {
+    private class AsynchOption extends AsyncTask<Void, Void, Void> {
         private ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
@@ -59,13 +57,13 @@ public class PaymentOptions {
         @Override
         protected Void doInBackground(Void... voids) {
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(PAY_OPTION_URL);
+            HttpPost httppost = new HttpPost(service_url + "service/v1/subscription/verify");
             HttpResponse response = null;
 
             try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
-                nameValuePairs.add(new BasicNameValuePair("vanity", vanity));
+                nameValuePairs.add(new BasicNameValuePair("email", vanity));
 
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -73,7 +71,7 @@ public class PaymentOptions {
 
                 optionobject = new JSONObject(EntityUtils.toString(response.getEntity()));
 
-                result = "success";
+                result = EntityUtils.toString(response.getEntity());
 
             } catch (ClientProtocolException e) {
                 result = "protoException";
@@ -93,4 +91,5 @@ public class PaymentOptions {
             listener.onTaskExecuted(new JSONObject[]{optionobject}, result);
         }
     }
+
 }

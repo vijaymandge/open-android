@@ -79,7 +79,7 @@ public class PaymentGateway {
 
 				   in.close();
 			
-			result = new JSONObject(res.toString());
+    			result = new JSONObject(res.toString());
 		} catch (Exception e) {
 			throw new RuntimeException(String.valueOf(response.getStatusLine().getStatusCode()));
 		}

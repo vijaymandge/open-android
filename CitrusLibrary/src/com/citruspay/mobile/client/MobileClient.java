@@ -46,29 +46,31 @@ import com.citruspay.mobile.payment.oauth2.OAuth2TokenStore;
 
 public class MobileClient implements MobileServiceProvider {
 	private Activity mActivity;
-	
-	private URI oauth = URI
-			.create(MobileKitConstants.SERVER_URL + "oauth/token");
 
-	private URI subscription = URI
-                .create(MobileKitConstants.SERVER_URL + "service/v2/");
+    private String server_url;
 	
-	private URI prepaid = URI
-			.create(MobileKitConstants.SERVER_URL + "service/v2/mycard/");
+	private URI oauth;
+
+	private URI subscription;
+	
+	private URI prepaid;
 	
 	private OAuth2TokenStore token; 	
 
-	private HttpClient http =  new DefaultHttpClient();
+	private HttpClient http;
 
-	private RESTClient restOauth = new RESTClient(oauth, http);
+	private RESTClient restOauth;
 
-	private RESTClient restSubscription = new RESTClient(subscription, http);
+	private RESTClient restSubscription;
 	
-	private RESTClient restPrepaid = new RESTClient(prepaid, http);
+	private RESTClient restPrepaid;
 	
-	public MobileClient(Activity activity) {
+	public MobileClient(Activity activity, String oauth_url) {
 		this.mActivity = activity;
-		token = new AndroidTokenStore(this.mActivity);
+
+        server_url = oauth_url;
+
+        initVariables();
 	}
 	
 	public SubscriptionService getSubscriptionService(String SignUpClientId,
@@ -92,5 +94,23 @@ public class MobileClient implements MobileServiceProvider {
 	public boolean isSignedIn(String SignInClientId) {
 		return token.contains(SignInClientId);
 	}
+
+    private void initVariables() {
+        oauth = URI.create(server_url + "oauth/token");
+
+        subscription = URI.create(server_url + "service/v2/");
+
+        prepaid = URI.create(server_url + "service/v2/mycard/");
+
+        http = new DefaultHttpClient();
+
+        token = new AndroidTokenStore(this.mActivity);
+
+        restOauth = new RESTClient(oauth, http);
+
+        restSubscription = new RESTClient(subscription, http);
+
+        restPrepaid = new RESTClient(prepaid, http);
+    }
 
 }
