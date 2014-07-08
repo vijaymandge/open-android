@@ -54,7 +54,7 @@ public class GetSignedorder extends AsyncTask<Void, Void, JSONObject[]>{
 	@Override
 	protected JSONObject[] doInBackground(Void... params) {
 		JSONObject txnOrder = null;
-		mobileClient = new MobileClient(activity);
+		mobileClient = new MobileClient(activity, Constants.CITRUS_OAUTH_URL);
 		cardService = mobileClient.getNetCardService(Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		try {
             txnOrder = new JSONObject();

@@ -63,7 +63,7 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 	protected JSONObject[] doInBackground(Void... params) {
 		JSONObject paymentOptions = new JSONObject();
 		JSONObject contactDetails = new JSONObject();
-		mobileClient = new MobileClient(activity);
+		mobileClient = new MobileClient(activity, Constants.CITRUS_OAUTH_URL);
 		service = mobileClient.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		try {
 			PaymentConfiguration payment = new PaymentConfiguration();			

@@ -49,7 +49,7 @@ public class Pay extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		urlDetails = null;		
 		try {
-			makePayments = new PaymentGateway(Constants.CITRUS_SERVER_URL, Constants.ACCESS_KEY, postObject);
+			makePayments = new PaymentGateway(Constants.CITRUS_STRUCT_URL, Constants.ACCESS_KEY, postObject);
 			urlDetails = makePayments.postPayment();
 		} catch (Exception e) {
 			result = e.toString();

@@ -43,7 +43,7 @@ public class SignInAsynch extends AsyncTask<String, Void, String>{
 	@Override
 	protected String doInBackground(String... params) {
 		String result = null;
-		mobileClient = new MobileClient(this.activity);	
+		mobileClient = new MobileClient(this.activity, Constants.CITRUS_OAUTH_URL);
 		subscriptionService = mobileClient.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
 		
 		try {

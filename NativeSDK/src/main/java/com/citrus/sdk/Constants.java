@@ -21,13 +21,20 @@ import android.app.Activity;
 import com.citruspay.mobile.client.MobileClient;
 
 public class Constants {
+
+
+    /*Do not change the following URLs*/
+    public static final String CITRUS_STRUCT_URL = "https://sandboxadmin.citruspay.com/service/moto/authorize/struct/payment";
+
+    public static final String GUEST_PAY_URL = "https://sandboxadmin.citruspay.com/api/v2/txn/create";
+
+    public static final String CITRUS_OAUTH_URL = "https://sandboxadmin.citruspay.com/";
+
+
    /*Folowing are the citrus apk merchant details Merchant needs to replace it with their details
    * Please contact support team at Citrus, if you need any further assistance.
    * */
 
-    public static final String CITRUS_SERVER_URL = "https://sandboxadmin.citruspay.com/service/moto/authorize/struct/payment";
-
-    /*Merchant needs to have it's own redirect URL below*/
     public static final String REDIRECT_URL = "https://stgadmin.citruspay.com/requestData";
 
     public static final String VANITY_URL = "nativeSDK";
@@ -44,7 +51,11 @@ public class Constants {
 
     public static final String SIGNIN_SECRET = "83df0e4db17fa7b206f4c36d3f19d6c1";
 
-    public final static String PAY_TYPE = "type";
+
+
+    /*Other merchant non-specific constants*/
+
+    public static final String PAY_TYPE = "type";
 
     public static final String GUEST_FLOW = "guestFlow";
 
@@ -52,12 +63,5 @@ public class Constants {
 
     public static final String USER_EXISTS = "com.citruspay.directory.exception.CitrusUserAlreadyExistsException";
 
-    public static final String GUEST_PAY_URL = "https://sandboxadmin.citruspay.com/api/v2/txn/create";
 
-
-
-  	public static final boolean isSignedIn(Activity activity) {
-		MobileClient mobileClient = new MobileClient(activity);	
-		return mobileClient.isSignedIn(SIGNIN_ID);
-	}
 }

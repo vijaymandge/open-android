@@ -224,7 +224,7 @@ public class Netbanking extends Fragment {
             JSONObject paymentMode = new JSONObject();
             paymentMode.put("type", "netbanking");
             paymentMode.put("bank", "");
-            paymentMode.put("code", bankOptions.get(selectedBank));
+            paymentMode.put("code", selectedCode);
 
             JSONObject paymentToken = JSONUtils.fillinPaymentToken(paymentMode);
 

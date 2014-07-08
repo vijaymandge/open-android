@@ -69,7 +69,7 @@ public class SavePayOption extends AsyncTask<Void, Void, Void>{
         } catch (JSONException e) {
 
         }
-        client = new MobileClient(this.activity);
+        client = new MobileClient(this.activity, Constants.CITRUS_OAUTH_URL);
         subscriptionService = client.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         PaymentConfiguration payment = new PaymentConfiguration();
         payment.parse(cardDetails);

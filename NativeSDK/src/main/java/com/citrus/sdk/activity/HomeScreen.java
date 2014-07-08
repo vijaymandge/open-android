@@ -24,11 +24,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import com.citrus.sdk.Constants;
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.SavecontactDetails;
 import com.citruspay.mobile.client.Logout;
+import com.citruspay.mobile.client.openservice.IscitrusMember;
+import com.citruspay.mobile.payment.OnTaskCompleted;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,7 +97,7 @@ public class HomeScreen extends Activity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logoutUser(HomeScreen.this);
+               logoutUser(HomeScreen.this);
             }
         });
     }
@@ -119,6 +122,17 @@ public class HomeScreen extends Activity {
         }
 
         new SavecontactDetails(this, contactobject).execute();
+    }
+
+    private void checkifMember() {
+        String email = "tester@gmail.com";
+        IscitrusMember iscitrusMember = new IscitrusMember(HomeScreen.this);
+        iscitrusMember.ismember(Constants.CITRUS_OAUTH_URL, email, new OnTaskCompleted() {
+            @Override
+            public void onTaskExecuted(JSONObject[] paymentObject, String message) {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public static final void logoutUser(Activity activity) {

@@ -6,7 +6,7 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.database.BankOptions;
 import com.citrus.sdk.database.DBHandler;
 import com.citruspay.mobile.payment.OnTaskCompleted;
-import com.citruspay.mobile.payment.options.PaymentOptions;
+import com.citruspay.mobile.client.openservice.PaymentOptions;
 
 import org.json.JSONArray;
 
@@ -37,7 +37,7 @@ public class ManageOptions {
     }
 
     private void fetchBanks() {
-        myOptions.getPaymentOptions(Constants.VANITY_URL, taskCompleted);
+        myOptions.getPaymentOptions(Constants.CITRUS_OAUTH_URL, Constants.VANITY_URL, taskCompleted);
     }
 
     public void storeBanks(JSONArray array) {

@@ -43,7 +43,7 @@ public class SetDefault {
     }
 
     public void setdefaultOption(OptionDetails option, Messenger messanger) {
-        client = new MobileClient(this.activity);
+        client = new MobileClient(this.activity, Constants.CITRUS_OAUTH_URL);
         subscriptionService = client.getSubscriptionService(Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         this.option = option;
         this.messanger = messanger;

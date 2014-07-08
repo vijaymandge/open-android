@@ -51,7 +51,7 @@ public class SavecontactDetails extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        client = new MobileClient(activity);
+        client = new MobileClient(activity, Constants.CITRUS_OAUTH_URL);
 
         ContactDetails contactDetails = new ContactDetails();
 

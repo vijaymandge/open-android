@@ -50,7 +50,7 @@ public class ActivateAc extends AsyncTask <Void, Void, Void>{
 
     @Override
     protected Void doInBackground(Void... voids) {
-        client = new MobileClient(context);
+        client = new MobileClient(context, Constants.CITRUS_OAUTH_URL);
         cardService = client.getNetCardService(Constants.SIGNIN_ID, Constants.SIGNIN_SECRET);
         try {
            Amount amount = cardService.activateAccount();
