@@ -34,7 +34,6 @@ import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.database.BankOptions;
-import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
@@ -50,7 +49,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -107,9 +105,15 @@ public class Netbanking extends Fragment {
             public void onTaskExecuted(JSONObject[] options, String message) {
 
                 try {
-                    JSONArray array = options[0].getJSONArray("netBanking");
-                    myOptions.storeBanks(array);
-                    initBanks();
+                    if (!TextUtils.equals(message, "success")) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Check your net connection or vanity url", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        JSONArray array = options[0].getJSONArray("netBanking");
+                        myOptions.storeBanks(array);
+                        initBanks();
+                    }
+
                 } catch (JSONException e) {
                     return;
                 }
