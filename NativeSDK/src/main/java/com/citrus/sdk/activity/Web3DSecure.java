@@ -34,6 +34,15 @@ import com.citrus.sdk.webops.JSInterface;
 public class Web3DSecure extends Activity {
     android.webkit.WebView webView;
     WebViewClient webViewClient;
+    
+    private int webViewPreviousState;
+    
+    private final int PAGE_STARTED = 0x1;
+    
+    private final int PAGE_REDIRECTED = 0x2;
+    
+    private ProgressDialog dialog;
+    
     String url;
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -54,10 +63,7 @@ public class Web3DSecure extends Activity {
 
     private void initWebViewClient() {
         webViewClient = new WebViewClient() {
-            private int webViewPreviousState;
-            private final int PAGE_STARTED = 0x1;
-            private final int PAGE_REDIRECTED = 0x2;
-            private ProgressDialog dialog;
+            
             @Override
             public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String urlNewString) {
                 webViewPreviousState = PAGE_REDIRECTED;
