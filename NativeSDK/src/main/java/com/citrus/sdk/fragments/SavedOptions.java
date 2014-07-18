@@ -41,12 +41,13 @@ import com.citrus.sdk.Constants;
 import com.citrus.sdk.PaymentAdapter;
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
+import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.GetCustprofile;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.SignInAsynch;
 import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.client.subscription.OptionDetails;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.util.HMACSignature;
 
 import org.json.JSONArray;
@@ -58,7 +59,7 @@ public class SavedOptions extends Fragment{
 	
 	private ProgressBar spinner;
 	
-	private OnTaskCompleted taskExecuted, listener, signInListener;
+	private JSONTaskComplete taskExecuted, listener, signInListener;
 	
 	private PaymentAdapter adapter;
 	
@@ -79,7 +80,7 @@ public class SavedOptions extends Fragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		returnView = inflater.inflate(R.layout.activity_saved_options, container, false);
-		listener = new OnTaskCompleted() {
+		listener = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] returnObject,
@@ -104,7 +105,7 @@ public class SavedOptions extends Fragment{
 			
 		};
 		
-		signInListener = new OnTaskCompleted() {
+		signInListener = new JSONTaskComplete() {
 			
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
@@ -208,6 +209,8 @@ public class SavedOptions extends Fragment{
         String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
         String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
 
+
+
         if (TextUtils.equals(type, "NETBANKING")) {
             fillDetails(txnId, signature, token, "");
         }
@@ -267,26 +270,12 @@ public class SavedOptions extends Fragment{
 
 	private void fillDetails(String txnId, String signature, String token, String cvv) {
 		try {
-			JSONObject amount = new JSONObject();
-			amount.put("currency", "INR");
-			amount.put("value", "1");
+			JSONObject amount = JSONUtils.fillinAmountDetails();
 			
-			JSONObject address = new JSONObject();
-			address.put("street1", "test street");
-			address.put("street2", "test street 2");
-			address.put("city", "Mumbai");
-			address.put("state", "Maharashtra");
-			address.put("country", "India");
-			address.put("zip", "411046");
-			
-			JSONObject userDetails = new JSONObject();
-			userDetails.put("email", "tester@gmail.com");
-			userDetails.put("firstName", "Tester");
-			userDetails.put("lastName", "Testing");
-			userDetails.put("mobileNo", "1234567890");
-			
-			userDetails.put("address", address);
-			
+			JSONObject address = JSONUtils.fillinAddress();
+
+            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+
 			JSONObject paymentToken = new JSONObject();
 			paymentToken.put("type", "paymentOptionIdToken");
 			paymentToken.put("id", token);
@@ -310,7 +299,7 @@ public class SavedOptions extends Fragment{
 	}
 	
 	private void initiateTxn() {
-		taskExecuted = new OnTaskCompleted() {
+		taskExecuted = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
