@@ -30,8 +30,8 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.webops.SavecontactDetails;
 import com.citruspay.mobile.client.Logout;
-import com.citruspay.mobile.client.openservice.IscitrusMember;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.client.openservice.User;
+import com.citruspay.mobile.payment.BooleanTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +44,7 @@ public class HomeScreen extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        //checkifMember();
         initButton();
     }
 
@@ -90,7 +91,8 @@ public class HomeScreen extends Activity {
         contact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateContact();
+                //updateContact();
+                checkifMember();
             }
         });
 
@@ -125,15 +127,17 @@ public class HomeScreen extends Activity {
     }
 
     private void checkifMember() {
-        String email = "tester@gmail.com";
-        IscitrusMember iscitrusMember = new IscitrusMember(HomeScreen.this);
-        iscitrusMember.ismember(Constants.CITRUS_OAUTH_URL, email, new OnTaskCompleted() {
+        User user = new User(HomeScreen.this, Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.CITRUS_OAUTH_URL, new BooleanTask() {
             @Override
-            public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            public void ontaskComplete(boolean result) {
+                Toast.makeText(getApplicationContext(), "" + result, Toast.LENGTH_LONG).show();
             }
         });
+
+        user.isMember("tester@gmail.com");
     }
+
+
 
     public static final void logoutUser(Activity activity) {
         try {
@@ -146,5 +150,6 @@ public class HomeScreen extends Activity {
         }
 
     }
+
 
 }
