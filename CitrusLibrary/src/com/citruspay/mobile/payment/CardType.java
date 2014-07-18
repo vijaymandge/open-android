@@ -19,7 +19,7 @@ package com.citruspay.mobile.payment;
 import com.citruspay.mobile.payment.internals.TextUtils;
 
 public enum CardType {
-	VICA("4"), MASTER_CARD("5");
+	VISA("4"), MASTER_CARD("5");
 	
 	private final String[] pattern;
 

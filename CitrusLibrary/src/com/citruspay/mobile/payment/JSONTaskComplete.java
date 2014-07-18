@@ -14,14 +14,10 @@
    limitations under the License.
 */
 
-package com.citruspay.mobile.client;
+package com.citruspay.mobile.payment;
 
-import com.citrus.mobile.client.load.NetCardService;
-import com.citruspay.mobile.client.subscription.OpenService;
-import com.citruspay.mobile.client.subscription.SubscriptionService;
+import org.json.JSONObject;
 
-public interface MobileServiceProvider {
- SubscriptionService getSubscriptionService(String SignUpClientId, String SignUpClientSecret, String SignInClientId, String SignInClientSecret);
- NetCardService getNetCardService(String SignInClientId, String SignInClientSecret);
- OpenService getOpenService(String SignUpClientId, String SignUpClientSecret);
+public interface JSONTaskComplete {
+	public void onTaskExecuted(JSONObject paymentObject[], String message);
 }

@@ -37,6 +37,8 @@ import android.app.Activity;
 
 import com.citrus.mobile.client.load.NetCardService;
 import com.citrus.mobile.client.load.NetCardServiceBuilder;
+import com.citruspay.mobile.client.subscription.OpenService;
+import com.citruspay.mobile.client.subscription.OpenServiceBuilder;
 import com.citruspay.mobile.client.subscription.SubscriptionService;
 import com.citruspay.mobile.client.subscription.SubscriptionServiceBuilder;
 import com.citruspay.mobile.payment.client.rest.MySSLSocketFactory;
@@ -54,6 +56,8 @@ public class MobileClient implements MobileServiceProvider {
 	private URI subscription;
 	
 	private URI prepaid;
+
+    private URI open_url;
 	
 	private OAuth2TokenStore token; 	
 
@@ -64,6 +68,8 @@ public class MobileClient implements MobileServiceProvider {
 	private RESTClient restSubscription;
 	
 	private RESTClient restPrepaid;
+
+    private RESTClient restOpen;
 	
 	public MobileClient(Activity activity, String oauth_url) {
 		this.mActivity = activity;
@@ -90,7 +96,16 @@ public class MobileClient implements MobileServiceProvider {
 				.oauth(restOauth).signedin(SignInClientId, SignInClientSecret)
 				.tokens(token).build();
 	}
-	
+
+    public OpenService getOpenService(String SignUpClientId, String SignUpClientSecret) {
+        return new OpenServiceBuilder()
+                   .tokens(token)
+                   .oauth(restOauth)
+                   .signup(SignUpClientId, SignUpClientSecret)
+                   .openserv(restOpen)
+                   .build();
+    }
+
 	public boolean isSignedIn(String SignInClientId) {
 		return token.contains(SignInClientId);
 	}
@@ -102,6 +117,8 @@ public class MobileClient implements MobileServiceProvider {
 
         prepaid = URI.create(server_url + "service/v2/mycard/");
 
+        open_url = URI.create(server_url + "service/v1/");
+
         http = new DefaultHttpClient();
 
         token = new AndroidTokenStore(this.mActivity);
@@ -111,6 +128,8 @@ public class MobileClient implements MobileServiceProvider {
         restSubscription = new RESTClient(subscription, http);
 
         restPrepaid = new RESTClient(prepaid, http);
+
+        restOpen = new RESTClient(open_url, http);
     }
 
 }

@@ -53,7 +53,6 @@ public class SubscriptionService {
 	private final RESTClient rest;
 	private final PasswordGenerator password;
 	private final HttpClient http;
-	public static Cookie cookie = null;
 
 	protected SubscriptionService(
 			OAuth2Service signup, 
@@ -157,30 +156,9 @@ public class SubscriptionService {
 	public void signin(
 			String email, 
 			String password) throws ProtocolException, OAuth2Exception, SubscriptionException {
-		signedin.signin(email, password);
-		/*HttpGet get;
-		*//*try {
-			*//**//*get = new HttpGet(
-					new URI("https://stg.citruspay.com/session/create"));
-			byte[] encodedBytes = Base64.encodeBase64((email+":"+password).getBytes());
-			//System.out.println("encodedBytes " + new String(encodedBytes));
-			get.setHeader("Authorization", "Basic " + new String(encodedBytes));
-			http.execute(get);
 
-			List<Cookie> cookies = ((DefaultHttpClient)http).getCookieStore().getCookies();
-			for (int i = 0; i < cookies.size(); i++) {
-			    cookie = cookies.get(i);
-			}
+        signedin.signin(email, password);
 
-			String cookieString = cookie.getName() + "=" + cookie.getValue();
-			signedin.storeCookie("cookie", cookieString);*//**//*
-		}catch (ClientProtocolException cpe) {	
-			throw new ProtocolException(cpe);
-		} catch (IOException ioe) {
-			throw new ProtocolException(ioe);
-		} catch (URISyntaxException use) {
-			throw new ProtocolException(use);
-		}*/
 	}
 
 	/**
@@ -284,6 +262,26 @@ public class SubscriptionService {
         PaymentConfiguration payment = new PaymentConfiguration();
         payment.parse(optionDetails);
         updateProfile(payment);
+
+    }
+
+    public void changePassword(String email, String oldPass, String newPass) throws ProtocolException, OAuth2Exception, SubscriptionException, JSONException {
+
+        Collection<Header> authorization = AuthorizationUtil
+                    .asHeader(signedin.getAuthorization());
+
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", email);
+        params.put("old", oldPass);
+        params.put("new", newPass);
+
+        try {
+            rest.put(URI.create("identity/me/password"), authorization, params);
+        } catch (RESTException e) {
+            handleRESTException(e);
+        }
+
 
     }
 

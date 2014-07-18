@@ -78,10 +78,10 @@ public class RESTClient {
 		return execute(post, headers);
 	}
 	
-	public JSONArray postStatement(
-			URI path, 
-			Collection<Header> headers,
-			Map<String, String> params) throws ProtocolException, RESTException {
+	public String openPost(
+            URI path,
+            Collection<Header> headers,
+            Map<String, String> params) throws ProtocolException, RESTException {
 		// convert params
 		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
 		for (Map.Entry<String, String> param : params.entrySet()) {
@@ -97,7 +97,7 @@ public class RESTClient {
 		}
 
 		// execute request
-		return executeforStatement(post, headers);
+		return openExecute(post, headers);
 	}
 	
 	public JSONObject postRequest(
@@ -179,9 +179,16 @@ public class RESTClient {
 			HttpUriRequest request,
 			Collection<Header> headers) throws ProtocolException, RESTException {
 		// set headers
-		for (Header h : headers) {
-			request.addHeader(h);
-		}
+
+        try {
+            if (!(headers == null)) {
+                for (Header h : headers) {
+                    request.addHeader(h);
+                }
+            }
+        } catch (NullPointerException e) {
+
+        }
 
 		// execute request
 		HttpResponse resp = null;
@@ -214,7 +221,7 @@ public class RESTClient {
 		}
 	}
 	
-	protected JSONArray executeforStatement(HttpUriRequest request,	Collection<Header> headers) throws ProtocolException, RESTException {
+	protected String openExecute(HttpUriRequest request, Collection<Header> headers) throws ProtocolException, RESTException {
 		for (Header h : headers) {
 			request.addHeader(h);
 		}
@@ -223,6 +230,7 @@ public class RESTClient {
 		HttpResponse resp = null;
 		try {
 			resp = http.execute(request);
+
 		} catch (IOException iox) {
 			throw new ProtocolException(iox);
 		}
@@ -231,9 +239,9 @@ public class RESTClient {
 		try {
 			switch (resp.getStatusLine().getStatusCode()) {
 			case HttpStatus.SC_OK:
-				return new JSONArray(EntityUtils.toString(resp.getEntity()));
+				return EntityUtils.toString(resp.getEntity());
 			case HttpStatus.SC_NO_CONTENT:
-				return new JSONArray();
+				return null;
 			case HttpStatus.SC_BAD_REQUEST:
 				throw new RESTException(
 						resp.getStatusLine().getStatusCode(),
