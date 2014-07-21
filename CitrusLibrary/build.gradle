@@ -6,8 +6,7 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
-
+    buildToolsVersion '19.1.0'
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -34,5 +33,15 @@ android {
         lintOptions {
             abortOnError false
         }
+    }
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 19
+        versionCode 1
+        versionName '1.0'
+    }
+    productFlavors {
+    }
+    buildTypes {
     }
 }
