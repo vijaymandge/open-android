@@ -31,7 +31,7 @@ import android.widget.Toast;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.webops.GetCustprofile;
 import com.citrus.sdk.webops.SignInAsynch;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONObject;
 
@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * Created by shardul on 27/5/14.
  */
 public class SignIn extends Activity {
-    private OnTaskCompleted getProfileListener, signInListener;
+    private JSONTaskComplete getProfileListener, signInListener;
 
     private ProgressBar spinner;
 
@@ -55,7 +55,7 @@ public class SignIn extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_options);
         spinner = (ProgressBar) this.findViewById(R.id.progressBar1);
-        getProfileListener = new OnTaskCompleted() {
+        getProfileListener = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
                 spinner.setVisibility(View.INVISIBLE);
@@ -69,7 +69,7 @@ public class SignIn extends Activity {
             }
         };
 
-        signInListener = new OnTaskCompleted() {
+        signInListener = new JSONTaskComplete() {
 
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {

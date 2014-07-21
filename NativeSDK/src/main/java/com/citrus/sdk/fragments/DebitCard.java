@@ -37,7 +37,7 @@ import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.mobile.payment.widgets.CardNumberEditText;
 import com.citruspay.mobile.payment.widgets.ExpiryEditText;
@@ -54,7 +54,7 @@ public class DebitCard extends Fragment{
 	private Card card;
 	private String paymentType;
 	private JSONObject paymentObject;
-	private OnTaskCompleted taskExecuted;
+	private JSONTaskComplete taskExecuted;
     private OneClicksignup oneClicksignup;
 
     private String cardNumStr, expDateStr, cvvStr, holder_name;
@@ -198,7 +198,7 @@ public class DebitCard extends Fragment{
 	}
 	
 	private void initiateTxn() {
-		taskExecuted = new OnTaskCompleted() {
+		taskExecuted = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {

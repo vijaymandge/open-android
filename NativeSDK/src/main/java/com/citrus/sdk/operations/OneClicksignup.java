@@ -16,15 +16,13 @@
 package com.citrus.sdk.operations;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.citrus.sdk.interfaces.Messenger;
 import com.citrus.sdk.webops.ActivateAc;
 import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.SignUpAsynch;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +36,7 @@ public class OneClicksignup {
 
     private Activity activity;
 
-    private OnTaskCompleted listener;
+    private JSONTaskComplete listener;
 
     private Messenger messenger;
 
@@ -62,7 +60,7 @@ public class OneClicksignup {
     }
 
     public void initListeners() {
-        listener = new OnTaskCompleted() {
+        listener = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
                 if (TextUtils.equals(message, "success")) {
@@ -89,7 +87,7 @@ public class OneClicksignup {
         };
     }
 
-    public void signUp(String[] signUpParams, OnTaskCompleted listener) {
+    public void signUp(String[] signUpParams, JSONTaskComplete listener) {
         new SignUpAsynch(activity, listener).execute(signUpParams);
     }
 

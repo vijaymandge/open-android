@@ -24,7 +24,7 @@ import com.citrus.mobile.client.load.NetCardService;
 import com.citrus.mobile.client.load.PrepaidException;
 import com.citrus.sdk.Constants;
 import com.citruspay.mobile.client.MobileClient;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
 
@@ -35,12 +35,12 @@ public class GetSignedorder extends AsyncTask<Void, Void, JSONObject[]>{
 	private MobileClient mobileClient;
 	private NetCardService cardService;
 	private String executionMsg = null;
-	private OnTaskCompleted listener;
+	private JSONTaskComplete listener;
 	private Activity activity;
 	private JSONObject txnObject;
 	private ProgressDialog dialog;
 	
-	public GetSignedorder(Activity activity, JSONObject txnObject, OnTaskCompleted listener) {
+	public GetSignedorder(Activity activity, JSONObject txnObject, JSONTaskComplete listener) {
 		this.listener = listener;
 		this.activity = activity;
 		this.txnObject = txnObject;

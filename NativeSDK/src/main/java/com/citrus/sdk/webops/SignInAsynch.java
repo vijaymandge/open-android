@@ -24,7 +24,7 @@ import com.citrus.sdk.Constants;
 import com.citruspay.mobile.client.MobileClient;
 import com.citruspay.mobile.client.subscription.SubscriptionException;
 import com.citruspay.mobile.client.subscription.SubscriptionService;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
 
@@ -34,8 +34,8 @@ public class SignInAsynch extends AsyncTask<String, Void, String>{
 	private MobileClient mobileClient;
 	private SubscriptionService subscriptionService;
 	private Activity activity;
-	private OnTaskCompleted listener;
-	public SignInAsynch(Activity activity, OnTaskCompleted listener) {
+	private JSONTaskComplete listener;
+	public SignInAsynch(Activity activity, JSONTaskComplete listener) {
 		this.activity = activity;
 		this.listener = listener;
 	}

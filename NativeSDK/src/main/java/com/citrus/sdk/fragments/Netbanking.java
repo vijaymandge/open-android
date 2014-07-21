@@ -41,7 +41,7 @@ import com.citrus.sdk.operations.ManageOptions;
 import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.util.HMACSignature;
 
 import org.json.JSONArray;
@@ -69,7 +69,7 @@ public class Netbanking extends Fragment {
 	
 	private Button submit;
 
-	private OnTaskCompleted taskExecuted, onNetbankfetched;
+	private JSONTaskComplete taskExecuted, onNetbankfetched;
 
     private JSONObject paymentObject;
 
@@ -100,7 +100,7 @@ public class Netbanking extends Fragment {
 	}
 
     private void initListener() {
-        onNetbankfetched = new OnTaskCompleted() {
+        onNetbankfetched = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] options, String message) {
 
@@ -248,7 +248,7 @@ public class Netbanking extends Fragment {
     }
 
 	private void initiateTxn() {
-		taskExecuted = new OnTaskCompleted() {
+		taskExecuted = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {

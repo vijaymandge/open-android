@@ -25,16 +25,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.interfaces.Messenger;
 import com.citrus.sdk.operations.OneClicksignup;
-import com.citrus.sdk.webops.ActivateAc;
-import com.citrus.sdk.webops.SignUpAsynch;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONObject;
 
@@ -42,7 +39,7 @@ import org.json.JSONObject;
  * Created by shardul on 27/5/14.
  */
 public class SignUp extends Activity {
-    private OnTaskCompleted getProfileListener, signInListener;
+    private JSONTaskComplete getProfileListener, signInListener;
 
     private ProgressBar spinner;
 
@@ -54,7 +51,7 @@ public class SignUp extends Activity {
 
     private Button signUpButton;
 
-    private OnTaskCompleted listener;
+    private JSONTaskComplete listener;
 
     private OneClicksignup oneClicksignup;
 
@@ -101,7 +98,7 @@ public class SignUp extends Activity {
     }
 
     private void initListeners() {
-        listener = new OnTaskCompleted() {
+        listener = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
 

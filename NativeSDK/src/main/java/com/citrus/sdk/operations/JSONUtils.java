@@ -40,8 +40,8 @@ public class JSONUtils {
     public static final JSONObject fillinAddress() {
         JSONObject address = new JSONObject();
         try {
-            address.put("street1", "Test Street");
-            address.put("street2", "Test Street 2");
+            address.put("street1", "streetone");
+            address.put("street2", "streetwo");
             address.put("city", "Mumbai");
             address.put("state", "Maharashtra");
             address.put("country", "India");

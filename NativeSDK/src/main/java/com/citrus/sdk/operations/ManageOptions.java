@@ -2,13 +2,13 @@ package com.citrus.sdk.operations;
 
 import android.app.Activity;
 
-import com.citrus.sdk.Constants;
 import com.citrus.sdk.database.BankOptions;
 import com.citrus.sdk.database.DBHandler;
-import com.citruspay.mobile.payment.OnTaskCompleted;
-import com.citruspay.mobile.client.openservice.PaymentOptions;
+import com.citrus.sdk.webops.FetchPaymentoptions;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -18,26 +18,20 @@ import java.util.List;
 public class ManageOptions {
     private Activity activity;
 
-    private OnTaskCompleted taskCompleted;
+    private JSONTaskComplete taskCompleted;
 
-    private PaymentOptions myOptions;
+    private JSONObject paymentObject = null;
+
+    private String result;
 
     public ManageOptions(Activity activity) {
         this.activity = activity;
     }
 
-    public void getStoreBanks(OnTaskCompleted taskCompleted) {
+    public void getStoreBanks(JSONTaskComplete taskCompleted) {
         this.taskCompleted = taskCompleted;
-        init();
-        fetchBanks();
-    }
 
-    private void init() {
-        myOptions = new PaymentOptions(activity);
-    }
-
-    private void fetchBanks() {
-        myOptions.getPaymentOptions(Constants.CITRUS_OAUTH_URL, Constants.VANITY_URL, taskCompleted);
+        new FetchPaymentoptions(activity, this.taskCompleted).execute();
     }
 
     public void storeBanks(JSONArray array) {
@@ -52,5 +46,6 @@ public class ManageOptions {
         handler.close();
         return bankOptionsList;
     }
+
 
 }

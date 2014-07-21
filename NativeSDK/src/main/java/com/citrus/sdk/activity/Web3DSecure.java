@@ -19,87 +19,176 @@ package com.citrus.sdk.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
-import com.citrus.sdk.webops.JSInterface;
+import com.citrus.sdk.interfaces.GetHTML;
+import com.citrus.sdk.sms.SMSParsing;
+import com.citrus.sdk.interfaces.JSInterface;
 
 
 public class Web3DSecure extends Activity {
-    android.webkit.WebView webView;
-    WebViewClient webViewClient;
-    
-    private int webViewPreviousState;
-    
-    private final int PAGE_STARTED = 0x1;
-    
-    private final int PAGE_REDIRECTED = 0x2;
-    
+	private android.webkit.WebView webView;
+
+    private TextView otpText;
+
+    private RelativeLayout otpLayout;
+
+    private Button submitButton;
+
+    private WebViewClient webViewClient;
+
+    private String url, otpValue;
+
+    private BroadcastReceiver broadcastReceiver;
+
+    private JSInterface jsInterface;
+
     private ProgressDialog dialog;
-    
-    String url;
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    private int webViewPreviousState;
+
+    private final int PAGE_STARTED    = 0x1;
+
+    private final int PAGE_REDIRECTED = 0x2;
+
+	@SuppressLint("SetJavaScriptEnabled")
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_web3_dsecure);
-        Intent intent = getIntent();
+
+        initReceiver();
+
+        registerReceiver(broadcastReceiver, new IntentFilter(Constants.SMS_RECEIVED));
+
+		Intent intent = getIntent();
+
         url = intent.getStringExtra("redirectUrl");
+
         webView = (android.webkit.WebView) this.findViewById(R.id.loadCardWebView);
+
+        otpLayout = (RelativeLayout) this.findViewById(R.id.otpLayout);
+
+        submitButton = (Button) this.findViewById(R.id.submit);
+
+        otpText = (TextView) this.findViewById(R.id.otpView);
+
         WebSettings webSettings = webView.getSettings();
+
         webSettings.setJavaScriptEnabled(true);
+
         webSettings.setBuiltInZoomControls(false);
-        webView.addJavascriptInterface(new JSInterface(Web3DSecure.this), "CitrusResponse");
+
+        initButton();
+
         initWebViewClient();
+
+        webView.addJavascriptInterface(jsInterface, "CitrusResponse");
+
+        webView.addJavascriptInterface(new GetHTML(), "HTMLOUT");
+
         webView.loadUrl(url);
 
+	}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
-    private void initWebViewClient() {
-        webViewClient = new WebViewClient() {
-            
+    private void initButton() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String urlNewString) {
-                webViewPreviousState = PAGE_REDIRECTED;
-                webView.loadUrl(urlNewString);
-                return true;
+            public void onClick(View view) {
+                enterOTP();
             }
+        });
+    }
 
+    private void initReceiver() {
+        otpValue = "";
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
-            public void onPageStarted(android.webkit.WebView view, String url, Bitmap favicon) {
-                super.onPageStarted(view, url, favicon);
-                webViewPreviousState = PAGE_STARTED;
-                if (dialog == null || !dialog.isShowing())
-                    dialog = ProgressDialog.show(Web3DSecure.this, "Please Wait", "Redirecting to Citrus", true, true,
-                            new OnCancelListener() {
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getExtras().getString("message");
+                otpValue = SMSParsing.extractOTP(message);
 
-                                @Override
-                                public void onCancel(DialogInterface dialog) {
-
-                                }
-                            });
-            }
-
-            @Override
-            public void onPageFinished(android.webkit.WebView view, String url) {
-
-                if (webViewPreviousState == PAGE_STARTED && dialog !=null) {
-                    dialog.dismiss();
-                    dialog = null;
+                if (!TextUtils.isEmpty(otpValue)) {
+                    otpLayout.setVisibility(View.VISIBLE);
+                    otpText.setText("OTP is " + otpValue);
                 }
-
             }
-
-
         };
+    }
 
-        webView.setWebViewClient(webViewClient);
+	private void initWebViewClient() {
+        jsInterface = new JSInterface(Web3DSecure.this);
+
+		webViewClient = new WebViewClient() {
+
+		     @Override
+		        public boolean shouldOverrideUrlLoading(android.webkit.WebView view, String urlNewString) {
+		            webViewPreviousState = PAGE_REDIRECTED;
+		            webView.loadUrl(urlNewString);
+		            return true;
+		     	}
+		     
+		     @Override
+		        public void onPageStarted(android.webkit.WebView view, String url, Bitmap favicon) {
+		            super.onPageStarted(view, url, favicon);
+		            webViewPreviousState = PAGE_STARTED;
+					if (dialog == null || !dialog.isShowing())
+		                dialog = ProgressDialog.show(Web3DSecure.this, "Please Wait", "Redirecting to Citrus", true, false,
+		                        new OnCancelListener() {
+
+		                            @Override
+		                            public void onCancel(DialogInterface dialog) {
+		                            	
+		                            }
+		                        });
+		        }
+		     
+		     @Override
+		        public void onPageFinished(android.webkit.WebView view, String url) {
+
+                    if (webViewPreviousState == PAGE_STARTED && dialog !=null) {
+		                dialog.dismiss();
+		                dialog = null;
+		            }
+
+		        }
+		     
+		     
+		};
+		
+		webView.setWebViewClient(webViewClient);
+	}
+
+    private void enterOTP() {
+        if (!TextUtils.isEmpty(otpValue)) {
+            String javascript= jsInterface.getJS(otpValue);
+            webView.loadUrl(javascript);
+            otpLayout.setVisibility(View.INVISIBLE);
+            otpValue = null;
+        }
     }
 
 }
