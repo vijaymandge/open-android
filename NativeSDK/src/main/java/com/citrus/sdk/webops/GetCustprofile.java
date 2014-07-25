@@ -34,14 +34,14 @@ import com.citruspay.mobile.client.subscription.SubscriptionException;
 import com.citruspay.mobile.client.subscription.SubscriptionService;
 import com.citruspay.mobile.client.subscription.contact.ContactDetails;
 import com.citruspay.mobile.client.subscription.payment.PaymentConfiguration;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
 
 import org.json.JSONObject;
 
 public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
-	private OnTaskCompleted listener;
+	private JSONTaskComplete listener;
 	private Activity activity;
 	
 	private MobileClient mobileClient;
@@ -49,7 +49,7 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 	
 	private String executionMsg = null;
 		
-	public GetCustprofile(Activity activity, OnTaskCompleted listener) {
+	public GetCustprofile(Activity activity, JSONTaskComplete listener) {
 		this.listener = listener;
 		this.activity = activity;
 	}
@@ -70,7 +70,7 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 			paymentOptions = service.getProfile(payment).asJSON();
 			ContactDetails contact = new ContactDetails();
 			contactDetails = service.getProfile(contact).asJSON();
-			
+            executionMsg = "success";
 		} catch (ProtocolException e) {
             executionMsg = "proto";
 		} catch (OAuth2Exception e) {
