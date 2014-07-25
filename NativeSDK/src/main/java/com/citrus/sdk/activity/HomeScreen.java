@@ -16,18 +16,28 @@
 
 package com.citrus.sdk.activity;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.citrus.sdk.Constants;
+import com.citrus.sdk.ImageHelper;
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.SavecontactDetails;
 import com.citruspay.mobile.client.Logout;
 import com.citruspay.mobile.client.openservice.User;
@@ -39,102 +49,67 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class HomeScreen extends Activity {
-    private Button guestFlow, memberFlow, signIn, signUp, contact, logout;
+    private Button paybutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        //checkifMember();
         initButton();
     }
 
-    private void initButton() {
-        guestFlow = (Button) this.findViewById(R.id.guestFlow);
-        memberFlow = (Button) this.findViewById(R.id.memberFlow);
-        signIn = (Button) this.findViewById(R.id.signIn);
-        signUp = (Button) this.findViewById(R.id.signUp);
-        logout = (Button) this.findViewById(R.id.logout);
-        contact = (Button) this.findViewById(R.id.updateContact);
-
-        guestFlow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this, Guestflow.class);
-                startActivity(intent);
-            }
-        });
-
-        memberFlow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this, MemberFlow.class);
-                startActivity(intent);
-            }
-        });
-
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this, SignIn.class);
-                startActivity(intent);
-            }
-        });
-
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(HomeScreen.this, SignUp.class);
-                startActivity(intent);
-            }
-        });
-
-        contact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //updateContact();
-                checkifMember();
-            }
-        });
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               logoutUser(HomeScreen.this);
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.layout, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    private void updateContact() {
-        JSONObject contactobject = new JSONObject();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        JSONObject contactDetails = JSONUtils.fillinContactDetails();
+        switch (item.getItemId()) {
+            case R.id.logoutuser:
+                logoutUser(HomeScreen.this);
 
-        Iterator<String> iterator = contactDetails.keys();
-
-        try {
-            contactobject.put("type", "contact");
-
-            while (iterator.hasNext()) {
-                String key = (String) iterator.next();
-                contactobject.put(key, contactDetails.getString(key));
-            }
-
-        } catch (JSONException e) {
-
+            default:
+                return super.onOptionsItemSelected(item);
         }
 
-        new SavecontactDetails(this, contactobject).execute();
     }
 
-    private void checkifMember() {
+    private void initButton() {
+        paybutton = (Button) this.findViewById(R.id.paybutton);
+
+        paybutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkifMember(OneClicksignup.getDefaultGmail(HomeScreen.this));
+            }
+        });
+
+        ImageView buyer = (ImageView) this.findViewById(R.id.imageLogo);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.buyer);
+        buyer.setImageBitmap(ImageHelper.getRoundedCornerBitmap(bitmap, 75));
+
+    }
+
+
+    private void checkifMember(String email) {
         User user = new User(HomeScreen.this, Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.CITRUS_OAUTH_URL, new BooleanTask() {
             @Override
             public void ontaskComplete(boolean result) {
-                Toast.makeText(getApplicationContext(), "" + result, Toast.LENGTH_LONG).show();
+                    if (result) {
+                        Intent intent = new Intent(HomeScreen.this, MemberFlow.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(HomeScreen.this, Guestflow.class);
+                        startActivity(intent);
+                    }
             }
         });
 
-        user.isMember("tester@gmail.com");
+        user.isMember(email);
     }
 
 
@@ -150,6 +125,8 @@ public class HomeScreen extends Activity {
         }
 
     }
+
+
 
 
 }
