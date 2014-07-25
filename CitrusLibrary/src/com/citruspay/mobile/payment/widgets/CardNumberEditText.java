@@ -27,6 +27,7 @@ import android.widget.EditText;
 
 import com.citrus.citruslibrary.R;
 import com.citruspay.mobile.payment.CardPatterns;
+import com.citruspay.mobile.payment.CardType;
 import com.citruspay.mobile.payment.internals.TextUtils;
 
 public class CardNumberEditText extends EditText {
@@ -45,13 +46,13 @@ public class CardNumberEditText extends EditText {
 			else {
 				testString = s.toString();
 			}
-		
-			if (TextUtils.hasAnyPrefix(testString, CardPatterns.amex)) {
+
+			if (TextUtils.hasAnyPrefix(testString, CardPatterns.AMEX)) {
 				setFilters(new InputFilter[] { new InputFilter.LengthFilter(18)});
 				setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.amex), null);
 				setError(null);
 			}
-			else if (TextUtils.hasAnyPrefix(testString, CardPatterns.disconver)) {
+			else if (TextUtils.hasAnyPrefix(testString, CardPatterns.DISCOVER)) {
 				setFilters(new InputFilter[] { new InputFilter.LengthFilter(19)});
 				setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.discover), null);
 				setError(null);

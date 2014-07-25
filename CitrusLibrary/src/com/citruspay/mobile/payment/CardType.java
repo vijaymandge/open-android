@@ -19,7 +19,18 @@ package com.citruspay.mobile.payment;
 import com.citruspay.mobile.payment.internals.TextUtils;
 
 public enum CardType {
-	VISA("4"), MASTER_CARD("5");
+	VISA("4"),
+    MCRD("5"),
+    MAESTRO("67", "56", "502260", "504433",
+            "504434", "504435", "504437", "504645", "504681",
+            "504753", "504775", "504809", "504817", "504834",
+            "504848", "504884", "504973", "504993", "508125",
+            "508126", "508159", "508192", "508227", "600206",
+            "603123", "603741", "603845", "622018"),
+    DINERCLUB("30", "36", "38", "39"),
+    JCB("35"),
+    AMEX("34", "37"),
+    DISCOVER("60", "62", "64", "65");
 	
 	private final String[] pattern;
 

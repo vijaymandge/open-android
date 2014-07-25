@@ -22,6 +22,5 @@ import com.citruspay.mobile.client.subscription.SubscriptionService;
 
 public interface MobileServiceProvider {
  SubscriptionService getSubscriptionService(String SignUpClientId, String SignUpClientSecret, String SignInClientId, String SignInClientSecret);
- NetCardService getNetCardService(String SignInClientId, String SignInClientSecret);
  OpenService getOpenService(String SignUpClientId, String SignUpClientSecret);
 }

@@ -42,36 +42,8 @@ public class Card {
 	public String getCardType() {
 		String type = null;
 		if (TextUtils.isBlank(cardType) && !TextUtils.isBlank(cardnumber)) {
-			
-			if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.amex)) {
-				type = "AMEX";
-			}
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.disconver)) {
-				type = "DISCOVER";
-			}
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.JCB)) {
-				type = "JCB";
-			}
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.DINERCLUB)) {
-				type = "DINERCLUB";
-			}
-			
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.VISA)) {
-				type = "VISA";
-			}
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.MAESTRO)) {
-				type = "MAESTRO";				
-			}
-			else if (TextUtils.hasAnyPrefix(cardnumber, CardPatterns.MASTERCARD)) {
-				type = "MCRD";
-			}
-			
-			else {
-				type = "UNKNOWN";
-			}
-
+            type = CardType.typeOf(cardnumber).toString();
 			return type;
-			
 		}
 		type = cardType;
 		return type;

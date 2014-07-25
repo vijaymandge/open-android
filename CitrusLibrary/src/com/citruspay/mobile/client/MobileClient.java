@@ -54,8 +54,6 @@ public class MobileClient implements MobileServiceProvider {
 	private URI oauth;
 
 	private URI subscription;
-	
-	private URI prepaid;
 
     private URI open_url;
 	
@@ -66,8 +64,6 @@ public class MobileClient implements MobileServiceProvider {
 	private RESTClient restOauth;
 
 	private RESTClient restSubscription;
-	
-	private RESTClient restPrepaid;
 
     private RESTClient restOpen;
 	
@@ -89,13 +85,6 @@ public class MobileClient implements MobileServiceProvider {
 				.build();
 	}
 
-	@Override
-	public NetCardService getNetCardService(String SignInClientId,
-			String SignInClientSecret) {
-		return new NetCardServiceBuilder().prepaid(restPrepaid)
-				.oauth(restOauth).signedin(SignInClientId, SignInClientSecret)
-				.tokens(token).build();
-	}
 
     public OpenService getOpenService(String SignUpClientId, String SignUpClientSecret) {
         return new OpenServiceBuilder()
@@ -115,8 +104,6 @@ public class MobileClient implements MobileServiceProvider {
 
         subscription = URI.create(server_url + "service/v2/");
 
-        prepaid = URI.create(server_url + "service/v2/mycard/");
-
         open_url = URI.create(server_url + "service/v1/");
 
         http = new DefaultHttpClient();
@@ -126,8 +113,6 @@ public class MobileClient implements MobileServiceProvider {
         restOauth = new RESTClient(oauth, http);
 
         restSubscription = new RESTClient(subscription, http);
-
-        restPrepaid = new RESTClient(prepaid, http);
 
         restOpen = new RESTClient(open_url, http);
     }

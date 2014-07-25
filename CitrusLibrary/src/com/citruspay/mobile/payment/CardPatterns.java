@@ -17,8 +17,8 @@
 package com.citruspay.mobile.payment;
 
 public class CardPatterns {
-	public static final String amex[] = {"34", "37"}; 
-	public static final String disconver[] = {"60", "62", "64", "65"};
+	public static final String AMEX[] = {"34", "37"};
+	public static final String DISCOVER[] = {"60", "62", "64", "65"};
 	public static final String JCB[] = {"35"};
 	public static final String DINERCLUB[] = {"30", "36", "38", "39"};
 	public static final String VISA[] = {"4"};

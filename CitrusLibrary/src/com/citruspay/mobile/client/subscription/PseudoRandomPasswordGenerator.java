@@ -69,18 +69,18 @@ public class PseudoRandomPasswordGenerator implements PasswordGenerator {
 	public int generateSeed(String data) {
 		byte hash[] = md5.digest(data.getBytes());
 		md5.reset();
-		hash = copyOfRange(hash, hash.length - 3, hash.length);
+		hash = rangeCopy(hash, hash.length - 3, hash.length);
 		return new BigInteger(1, hash).intValue();
 	}
 
-	public static byte[] copyOfRange(byte[] original, int from, int to) {
-		int newLength = to - from;
-		if (newLength < 0)
+	public static byte[] rangeCopy(byte[] original, int from, int to) {
+		int lengthNew = to - from;
+		if (lengthNew < 0)
 			throw new IllegalArgumentException(from + " > " + to);
-		byte[] copy = new byte[newLength];
-		System.arraycopy(original, from, copy, 0,
-				Math.min(original.length - from, newLength));
-		return copy;
+		byte[] hash = new byte[lengthNew];
+		System.arraycopy(original, from, hash, 0,
+				Math.min(original.length - from, lengthNew));
+		return hash;
 
 	}
 
