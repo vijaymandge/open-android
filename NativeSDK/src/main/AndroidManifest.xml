@@ -3,12 +3,14 @@
     package="com.citrus.sdk.demo" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/CustomThem" >
+        android:theme="@style/CustomThem"
+        >
         <activity
             android:name="com.citrus.sdk.activity.SignIn"
             android:label="Sign In" >
@@ -43,6 +45,14 @@
             android:name="com.citrus.sdk.activity.Web3DSecure"
             android:label="3D Secure" >
         </activity>
+
+        <receiver android:name="com.citrus.sdk.sms.SMSReciever"
+         >
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+
+        </receiver>
 
 
     </application>
