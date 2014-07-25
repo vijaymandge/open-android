@@ -41,7 +41,7 @@ import com.citrus.sdk.operations.ManageOptions;
 import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.util.HMACSignature;
 
 import org.json.JSONArray;
@@ -69,7 +69,7 @@ public class Netbanking extends Fragment {
 	
 	private Button submit;
 
-	private OnTaskCompleted taskExecuted, onNetbankfetched;
+	private JSONTaskComplete taskExecuted, onNetbankfetched;
 
     private JSONObject paymentObject;
 
@@ -100,7 +100,7 @@ public class Netbanking extends Fragment {
 	}
 
     private void initListener() {
-        onNetbankfetched = new OnTaskCompleted() {
+        onNetbankfetched = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] options, String message) {
 
@@ -206,7 +206,7 @@ public class Netbanking extends Fragment {
 
         checkout.netbankPay(selectedCode, JSONUtils.TXN_AMOUNT);
 
-        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(selectedBank), "netbanking");
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(getActivity()), getPaymentObject(selectedBank), "netbanking");
     }
 
     private void createMemberTxn() {
@@ -223,7 +223,7 @@ public class Netbanking extends Fragment {
 
             JSONObject amount = JSONUtils.fillinAmountDetails();
             JSONObject address = JSONUtils.fillinAddress();
-            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+            JSONObject userDetails = JSONUtils.fillinUserDetails(getActivity(),address);
 
             JSONObject paymentMode = new JSONObject();
             paymentMode.put("type", "netbanking");
@@ -248,11 +248,11 @@ public class Netbanking extends Fragment {
     }
 
 	private void initiateTxn() {
-		taskExecuted = new OnTaskCompleted() {
+		taskExecuted = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-				if (TextUtils.isEmpty(message)) {
+				if (TextUtils.equals(message, "success")) {
 					try {
 						String url = paymentObject[0].getString("redirectUrl");
 						Intent intent = new Intent(getActivity(), Web3DSecure.class);

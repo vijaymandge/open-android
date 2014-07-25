@@ -38,7 +38,7 @@ import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.mobile.payment.widgets.CardNumberEditText;
 import com.citruspay.mobile.payment.widgets.ExpiryEditText;
@@ -60,7 +60,7 @@ public class CreditCard extends Fragment{
 	
 	private JSONObject paymentObject;
 
-    private OnTaskCompleted taskExecuted;
+    private JSONTaskComplete taskExecuted;
 	
 	private View returnView;
 
@@ -189,7 +189,7 @@ public class CreditCard extends Fragment{
 
             JSONObject amount = JSONUtils.fillinAmountDetails();
 			JSONObject address = JSONUtils.fillinAddress();
-			JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+			JSONObject userDetails = JSONUtils.fillinUserDetails(getActivity(), address);
 
 			JSONObject paymentMode = new JSONObject();
 			paymentMode.put("type", "credit");
@@ -217,11 +217,11 @@ public class CreditCard extends Fragment{
 	}
 	
 	private void initiateTxn() {
-		taskExecuted = new OnTaskCompleted() {
+		taskExecuted = new JSONTaskComplete() {
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-				if (TextUtils.isEmpty(message)) {
+				if (TextUtils.equals(message, "success")) {
 					try {
 						String url = paymentObject[0].getString("redirectUrl");
 						Intent intent = new Intent(getActivity().getApplicationContext(), Web3DSecure.class);
@@ -242,7 +242,7 @@ public class CreditCard extends Fragment{
 
         checkout.cardPay(PaymentUtils.CREDIT_CARD.toString(), JSONUtils.TXN_AMOUNT, card);
 
-        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(), "credit");
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(getActivity()), getPaymentObject(), "credit");
 	}
 
     private void savePayOption() {
