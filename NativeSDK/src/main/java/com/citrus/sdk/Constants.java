@@ -35,7 +35,7 @@ public class Constants {
    * Please contact support team at Citrus, if you need any further assistance.
    * */
 
-    public static final String REDIRECT_URL = "https://stgadmin.citruspay.com/requestData";
+    public static final String REDIRECT_URL = "https://sandboxadmin.citruspay.com/requestData";
 
     public static final String VANITY_URL = "nativeSDK";
 
@@ -53,6 +53,7 @@ public class Constants {
 
 
 
+
     /*Other merchant non-specific constants*/
 
     public static final String PAY_TYPE = "type";
@@ -62,6 +63,8 @@ public class Constants {
     public static final String MEMBER_FLOW = "memberFlow";
 
     public static final String USER_EXISTS = "com.citruspay.directory.exception.CitrusUserAlreadyExistsException";
+
+    public static final String SMS_RECEIVED = "com.citrus.sdk.sms.received";
 
 
 }
