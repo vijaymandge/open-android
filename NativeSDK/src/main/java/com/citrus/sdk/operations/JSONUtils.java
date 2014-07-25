@@ -16,6 +16,8 @@
 
 package com.citrus.sdk.operations;
 
+import android.app.Activity;
+
 import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.internals.PaymentUtils;
 
@@ -40,8 +42,8 @@ public class JSONUtils {
     public static final JSONObject fillinAddress() {
         JSONObject address = new JSONObject();
         try {
-            address.put("street1", "Test Street");
-            address.put("street2", "Test Street 2");
+            address.put("street1", "streetone");
+            address.put("street2", "streetwo");
             address.put("city", "Mumbai");
             address.put("state", "Maharashtra");
             address.put("country", "India");
@@ -52,10 +54,10 @@ public class JSONUtils {
         return address;
     }
 
-    public static final JSONObject fillinUserDetails(JSONObject address) {
+    public static final JSONObject fillinUserDetails(Activity activity, JSONObject address) {
         JSONObject userDetails = new JSONObject();
         try {
-            userDetails.put("email", "tester@gmail.com");
+            userDetails.put("email", OneClicksignup.getDefaultGmail(activity));
             userDetails.put("firstName", "Tester");
             userDetails.put("lastName", "Citrus");
             userDetails.put("mobileNo", "1234567890");
@@ -121,7 +123,7 @@ public class JSONUtils {
     }
 
 
-    public static final JSONObject fillinGuestPersonalDetails() {
+    public static final JSONObject fillinGuestPersonalDetails(Activity activity) {
         JSONObject personalDetails = new JSONObject();
         try {
             personalDetails.put("firstName", "Tester");
@@ -130,7 +132,7 @@ public class JSONUtils {
             personalDetails.put("addressCity", "Mumbai");
             personalDetails.put("addressState", "Maharashtra");
             personalDetails.put("addressZip", "885744");
-            personalDetails.put("email", "monishbaba@gmail.com");
+            personalDetails.put("email", OneClicksignup.getDefaultGmail(activity));
             personalDetails.put("mobile", "1234567890");
         } catch (JSONException e) {
 
@@ -138,12 +140,12 @@ public class JSONUtils {
         return personalDetails;
     }
 
-    public static final JSONObject fillinContactDetails() {
+    public static final JSONObject fillinContactDetails(Activity activity) {
         JSONObject contact = new JSONObject();
         try {
             contact.put("firstName", "Tester");
             contact.put("lastName", "Citrus");
-            contact.put("email", "monishbaba@gmail.com");
+            contact.put("email", OneClicksignup.getDefaultGmail(activity));
             contact.put("mobile", "1234567890");
         } catch (JSONException e) {
 

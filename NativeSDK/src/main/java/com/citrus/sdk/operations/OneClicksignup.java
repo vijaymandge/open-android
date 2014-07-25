@@ -15,21 +15,21 @@
 */
 package com.citrus.sdk.operations;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
-import android.content.Intent;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.citrus.sdk.interfaces.Messenger;
-import com.citrus.sdk.webops.ActivateAc;
 import com.citrus.sdk.webops.SavePayOption;
 import com.citrus.sdk.webops.SignUpAsynch;
-import com.citruspay.mobile.payment.OnTaskCompleted;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Created by shardul on 24/6/14.
@@ -38,7 +38,7 @@ public class OneClicksignup {
 
     private Activity activity;
 
-    private OnTaskCompleted listener;
+    private JSONTaskComplete listener;
 
     private Messenger messenger;
 
@@ -62,11 +62,16 @@ public class OneClicksignup {
     }
 
     public void initListeners() {
-        listener = new OnTaskCompleted() {
+        listener = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
                 if (TextUtils.equals(message, "success")) {
-                    activateAccount(messenger);
+                    if (TextUtils.equals(type, "netbanking")) {
+                        savebankOption(paymentDetails);
+                    }
+                    else {
+                        saveCardOption(paymentDetails);
+                    }
                 }
 
             }
@@ -89,13 +94,10 @@ public class OneClicksignup {
         };
     }
 
-    public void signUp(String[] signUpParams, OnTaskCompleted listener) {
+    public void signUp(String[] signUpParams, JSONTaskComplete listener) {
         new SignUpAsynch(activity, listener).execute(signUpParams);
     }
 
-    public void activateAccount(Messenger messenger) {
-        new ActivateAc(activity, messenger).execute();
-    }
 
     public void savebankOption(JSONObject paymentDetails) {
 
@@ -133,20 +135,17 @@ public class OneClicksignup {
         }
         new SavePayOption(this.activity, paymentDetails).execute();
     }
-    /*This method just demonstrates the one click sign up with a random email Id - Do not use it in real application*/
-    public String randomEmail() {
-        String email = String.valueOf(Math.random()) + "@gmail.com";
-        return email;
-    }
+
 
     /*This method just demonstrates the one click sign up with a random Sign Up Params
     * Do not use it in real application
     * Merchant needs to provide real parameters while signing up.
+    * Default Gmail id is recommended for sign up.
     */
 
-    public String[] getSignupparams() {
+    public String[] getSignupparams(Activity activity) {
 
-        String email = randomEmail();
+        String email = getDefaultGmail(activity);
         String mobile = "1234567890";
         String firstName = "Tester";
         String lastName = "Citrus";
@@ -155,4 +154,18 @@ public class OneClicksignup {
 
         return params;
     }
+
+    /*This code snippet takes default gmail Id of the user
+    * It returns empty string if no default gmail is found
+    * */
+
+    public static final String getDefaultGmail(Activity activity) {
+        String myEmailid = "";
+        Account[] accounts= AccountManager.get(activity).getAccountsByType("com.google");
+        if (accounts.length != 0) {
+            myEmailid=accounts[0].name;
+        }
+        return myEmailid;
+    }
+
 }
