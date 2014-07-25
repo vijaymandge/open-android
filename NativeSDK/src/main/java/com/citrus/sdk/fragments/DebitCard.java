@@ -153,7 +153,7 @@ public class DebitCard extends Fragment{
 
         checkout.cardPay(PaymentUtils.DEBIT_CARD.toString(), JSONUtils.TXN_AMOUNT, card);
 
-        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(), "debit");
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(getActivity()), getPaymentObject(), "debit");
     }
 
 	private void createMemberTxn() {
@@ -170,7 +170,7 @@ public class DebitCard extends Fragment{
 		try {
             JSONObject amount = JSONUtils.fillinAmountDetails();
             JSONObject address = JSONUtils.fillinAddress();
-            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+            JSONObject userDetails = JSONUtils.fillinUserDetails(getActivity(), address);
 
             JSONObject paymentMode = new JSONObject();
             paymentMode.put("type", "debit");
@@ -202,7 +202,7 @@ public class DebitCard extends Fragment{
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-				if (TextUtils.isEmpty(message)) {
+				if (TextUtils.equals(message, "success")) {
 					try {
 						String url = paymentObject[0].getString("redirectUrl");
 						Intent intent = new Intent(getActivity().getApplicationContext(), Web3DSecure.class);

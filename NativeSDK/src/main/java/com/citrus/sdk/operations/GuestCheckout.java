@@ -62,7 +62,7 @@ public class GuestCheckout {
         JSONObject personalDetails, paymentDetails;
 
         try {
-            personalDetails = JSONUtils.fillinGuestPersonalDetails();
+            personalDetails = JSONUtils.fillinGuestPersonalDetails(activity);
             paymentDetails = JSONUtils.fillinGuestPayCardDetails(type, cardDetails);
 
             Iterator<String> personal_iterator = personalDetails.keys();
@@ -110,7 +110,7 @@ public class GuestCheckout {
         JSONObject paymentDetails, personalDetails;
         try {
             paymentDetails = JSONUtils.fillinGuestPayNetDetails(bankCode);
-            personalDetails = JSONUtils.fillinGuestPersonalDetails();
+            personalDetails = JSONUtils.fillinGuestPersonalDetails(activity);
 
             Iterator<String> personal_iterator = personalDetails.keys();
             Iterator<String> payment_iterator = paymentDetails.keys();

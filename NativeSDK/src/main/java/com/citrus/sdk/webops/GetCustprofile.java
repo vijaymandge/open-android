@@ -70,7 +70,7 @@ public class GetCustprofile extends AsyncTask<Void, Void, JSONObject[]> {
 			paymentOptions = service.getProfile(payment).asJSON();
 			ContactDetails contact = new ContactDetails();
 			contactDetails = service.getProfile(contact).asJSON();
-			
+            executionMsg = "success";
 		} catch (ProtocolException e) {
             executionMsg = "proto";
 		} catch (OAuth2Exception e) {

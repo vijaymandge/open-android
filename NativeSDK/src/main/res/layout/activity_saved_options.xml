@@ -59,7 +59,16 @@
     	  android:layout_below="@+id/username"
     	  android:hint="@string/Password"
     	  android:inputType="textPassword"
-    	  android:text="tester@123"/>
+    	  android:text=""/>
+
+    <TextView
+        android:id="@+id/resetPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_below="@+id/password"
+        android:textColor="#CC0000"
+        android:gravity="center_horizontal"/>
 	
 	<Button android:id="@+id/signIn"
 	    	android:layout_width="match_parent"

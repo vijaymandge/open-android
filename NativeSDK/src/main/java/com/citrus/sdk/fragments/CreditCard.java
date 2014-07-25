@@ -189,7 +189,7 @@ public class CreditCard extends Fragment{
 
             JSONObject amount = JSONUtils.fillinAmountDetails();
 			JSONObject address = JSONUtils.fillinAddress();
-			JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+			JSONObject userDetails = JSONUtils.fillinUserDetails(getActivity(), address);
 
 			JSONObject paymentMode = new JSONObject();
 			paymentMode.put("type", "credit");
@@ -221,7 +221,7 @@ public class CreditCard extends Fragment{
 
 			@Override
 			public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-				if (TextUtils.isEmpty(message)) {
+				if (TextUtils.equals(message, "success")) {
 					try {
 						String url = paymentObject[0].getString("redirectUrl");
 						Intent intent = new Intent(getActivity().getApplicationContext(), Web3DSecure.class);
@@ -242,7 +242,7 @@ public class CreditCard extends Fragment{
 
         checkout.cardPay(PaymentUtils.CREDIT_CARD.toString(), JSONUtils.TXN_AMOUNT, card);
 
-        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(), getPaymentObject(), "credit");
+        oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(getActivity()), getPaymentObject(), "credit");
 	}
 
     private void savePayOption() {

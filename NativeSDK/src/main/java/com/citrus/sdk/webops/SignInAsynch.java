@@ -30,11 +30,14 @@ import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
 
 public class SignInAsynch extends AsyncTask<String, Void, String>{
 
-	
 	private MobileClient mobileClient;
-	private SubscriptionService subscriptionService;
-	private Activity activity;
-	private JSONTaskComplete listener;
+
+    private SubscriptionService subscriptionService;
+
+    private Activity activity;
+
+    private JSONTaskComplete listener;
+
 	public SignInAsynch(Activity activity, JSONTaskComplete listener) {
 		this.activity = activity;
 		this.listener = listener;

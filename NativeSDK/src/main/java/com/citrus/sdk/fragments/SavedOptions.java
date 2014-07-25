@@ -16,12 +16,16 @@ limitations under the License.
 
 package com.citrus.sdk.fragments;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,14 +43,19 @@ import android.widget.Toast;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.PaymentAdapter;
+import com.citrus.sdk.activity.HomeScreen;
 import com.citrus.sdk.database.DBHandler;
 import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.JSONUtils;
+import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.GetCustprofile;
 import com.citrus.sdk.webops.Pay;
+import com.citrus.sdk.webops.ResetPassword;
 import com.citrus.sdk.webops.SignInAsynch;
 import com.citrus.sdk.activity.Web3DSecure;
+import com.citruspay.mobile.client.Logout;
 import com.citruspay.mobile.client.subscription.OptionDetails;
+import com.citruspay.mobile.payment.BooleanTask;
 import com.citruspay.mobile.payment.JSONTaskComplete;
 import com.citruspay.util.HMACSignature;
 
@@ -57,7 +66,7 @@ import org.json.JSONObject;
 public class SavedOptions extends Fragment{
     private View returnView;
 
-    private ProgressBar spinner;
+    private ProgressBar progressBar;
 
     private JSONTaskComplete taskExecuted, listener, signInListener;
 
@@ -71,7 +80,7 @@ public class SavedOptions extends Fragment{
 
     private EditText usernameET, passwordET;
 
-    private TextView errorText;
+    private TextView errorText, resetPass;
 
     public SavedOptions() {
 
@@ -85,12 +94,8 @@ public class SavedOptions extends Fragment{
             @Override
             public void onTaskExecuted(JSONObject[] returnObject,
                                        String message) {
-                spinner.setVisibility(View.INVISIBLE);
-                if (TextUtils.equals(message, "oauth")) {
-                    Toast.makeText(getActivity().getApplicationContext(), "User is not signed in!", Toast.LENGTH_SHORT).show();
-                    showSignInFlow("User not signed in");
-                }
-                else {
+                progressBar.setVisibility(View.INVISIBLE);
+                if (TextUtils.equals(message, "success")) {
                     initViews();
                     try {
                         storePayOptions(returnObject[1]);
@@ -98,7 +103,10 @@ public class SavedOptions extends Fragment{
                     } catch (Exception e) {
                         return;
                     }
-
+                }
+                else {
+                    Logout.logoutUser(getActivity());
+                    showSignInFlow("User not signed in");
                 }
             }
 
@@ -109,7 +117,7 @@ public class SavedOptions extends Fragment{
 
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-                spinner.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 if (TextUtils.equals(message, "signedIn")) {
                     showSavedOptions();
                 }
@@ -166,6 +174,17 @@ public class SavedOptions extends Fragment{
         usernameET = (EditText) returnView.findViewById(R.id.username);
         passwordET = (EditText) returnView.findViewById(R.id.password);
         errorText= (TextView) returnView.findViewById(R.id.errorText);
+
+        resetPass = (TextView) returnView.findViewById(R.id.resetPass);
+
+        passwordET.requestFocus();
+
+        String udata="Reset Password?";
+        SpannableString content = new SpannableString(udata);
+        content.setSpan(new UnderlineSpan(), 0, udata.length(), 0);
+        resetPass.setText(content);
+
+        usernameET.setText(OneClicksignup.getDefaultGmail(getActivity()));
         errorText.setText(errorMessage);
         Button signIn = (Button) returnView.findViewById(R.id.signIn);
         signIn.setOnClickListener(new OnClickListener() {
@@ -176,16 +195,23 @@ public class SavedOptions extends Fragment{
                 String password = passwordET.getText().toString();
                 String params[] = new String[]{username, password};
                 signInLayout.setVisibility(View.INVISIBLE);
-                spinner.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.VISIBLE);
                 new SignInAsynch(getActivity(), signInListener).execute(params);
+            }
+        });
+
+        resetPass.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopup();
             }
         });
     }
 
 
     private void showSavedOptions() {
-        spinner = (ProgressBar) returnView.findViewById(R.id.progressBar1);
-        spinner.setVisibility(View.VISIBLE);
+        progressBar = (ProgressBar) returnView.findViewById(R.id.progressBar1);
+        progressBar.setVisibility(View.VISIBLE);
         getSavedOptions();
     }
 
@@ -245,7 +271,7 @@ public class SavedOptions extends Fragment{
 
             JSONObject address = JSONUtils.fillinAddress();
 
-            JSONObject userDetails = JSONUtils.fillinUserDetails(address);
+            JSONObject userDetails = JSONUtils.fillinUserDetails(getActivity(), address);
 
             JSONObject paymentToken = new JSONObject();
             paymentToken.put("type", "paymentOptionIdToken");
@@ -274,7 +300,7 @@ public class SavedOptions extends Fragment{
 
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
-                if (TextUtils.isEmpty(message)) {
+                if (TextUtils.equals(message, "success")) {
                     try {
                         String url = paymentObject[0].getString("redirectUrl");
                         Intent intent = new Intent(getActivity(), Web3DSecure.class);
@@ -288,5 +314,42 @@ public class SavedOptions extends Fragment{
 
         };
         new Pay(getActivity(), paymentObject, taskExecuted).execute();
+    }
+
+    private void showPopup() {
+        final String email = OneClicksignup.getDefaultGmail(getActivity());
+
+        final BooleanTask ontask = new BooleanTask() {
+            @Override
+            public void ontaskComplete(boolean result) {
+                  if (result) {
+                      Toast.makeText(getActivity().getApplicationContext(), "An Email has been sent to you", Toast.LENGTH_SHORT).show();
+                  }
+            }
+        };
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Reset Password?");
+
+        builder.setMessage("An email will be sent to " + email);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                 new ResetPassword(getActivity(), email, ontask).execute();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        builder.create();
+
+        builder.show();
     }
 }

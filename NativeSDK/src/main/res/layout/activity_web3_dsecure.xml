@@ -11,6 +11,15 @@
         android:layout_centerInParent="true"/>
 
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"/>
+
+
     <RelativeLayout android:id="@+id/otpLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

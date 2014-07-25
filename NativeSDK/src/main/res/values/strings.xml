@@ -39,60 +39,11 @@
     <string name="paymentOption">Payment Options</string>
     <string name="logout">Log out</string>
 
-    <!--
-<string-array name="netbanking">
-    <item>ICICI Bank</item>
-	<item>AXIS Bank</item>
-	<item>YES Bank</item>
-	<item>Deutsche Bank</item>
-	<item>Union Bank</item>
-	<item>IDBI Bank</item>
-Federal Bank
-State Bank of Hyderabad
-State Bank of Bikaner and Jaipur
-State Bank of Mysore
-State Bank of Travancore
-HDFC Bank
-Citibank
-SBI Bank
-Indian Bank
-Andhra Bank
-Bank of Bahrain & Kuwait
-Bank of Baroda Corporate Accounts
-Bank of India
-Bank of Baroda Retail Accounts
-Bank of Maharashtra
-Catholic Syrian Bank
-Central Bank of India
-City Union Bank
-Corporation Bank
-DCB Bank ( Development Credit Bank )
-Indian Overseas Bank
-IndusInd Bank
-ING Vysya Bank
-Jammu & Kashmir Bank
-Karnataka Bank
-Karur Vysya Bank
-Kotak Mahindra Bank
-Lakshmi Vilas Bank NetBanking
-<item>Oriental Bank of Commerce</item>
-<item>Punjab National Bank Corporate Accounts</item>
-<item>South Indian Bank</item>
-<item>Standard Chartered Bank</item>
-<item>Syndicate Bank</item>
-<item>Tamilnad Mercantile Bank</item>
-<item>United Bank of India</item>
-<item>Vijaya Bank</item>
-<item>State Bank of Patiala</item>
-<item>Punjab National Bank Retail Accounts</item>
-</string-array>
-    -->
 
     <string name="title_activity_guest_flow">GuestFlow</string>
-    <string name="title_activity_home_page">HomePage</string>
     <string name="title_activity_savepay_option">SavepayOption</string>
-    <string name="title_activity_get_pay_options">GetPayOptions</string>
-    <string name="title_activity_home_screen">HomeScreen</string>
+    <string name="title_activity_get_pay_options">MemberPay</string>
+    <string name="title_activity_home_screen">SDKProduction</string>
     <string name="title_activity_guestflow">Guestflow</string>
     <string name="title_activity_options_available">OptionsAvailable</string>
     <string name="title_activity_contact_profile">ContactProfile</string>

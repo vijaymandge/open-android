@@ -32,6 +32,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,7 +60,7 @@ public class Web3DSecure extends Activity {
 
     private JSInterface jsInterface;
 
-    private ProgressDialog dialog;
+    private ProgressBar progressBar;
 
     private int webViewPreviousState;
 
@@ -90,6 +91,8 @@ public class Web3DSecure extends Activity {
 
         otpText = (TextView) this.findViewById(R.id.otpView);
 
+        progressBar = (ProgressBar) this.findViewById(R.id.progressBar1);
+
         WebSettings webSettings = webView.getSettings();
 
         webSettings.setJavaScriptEnabled(true);
@@ -112,6 +115,7 @@ public class Web3DSecure extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+
     }
 
     private void initButton() {
@@ -154,24 +158,18 @@ public class Web3DSecure extends Activity {
 		     @Override
 		        public void onPageStarted(android.webkit.WebView view, String url, Bitmap favicon) {
 		            super.onPageStarted(view, url, favicon);
-		            webViewPreviousState = PAGE_STARTED;
-					if (dialog == null || !dialog.isShowing())
-		                dialog = ProgressDialog.show(Web3DSecure.this, "Please Wait", "Redirecting to Citrus", true, false,
-		                        new OnCancelListener() {
 
-		                            @Override
-		                            public void onCancel(DialogInterface dialog) {
-		                            	
-		                            }
-		                        });
+                    webViewPreviousState = PAGE_STARTED;
+
+                    progressBar.setVisibility(View.VISIBLE);
+
 		        }
 		     
 		     @Override
 		        public void onPageFinished(android.webkit.WebView view, String url) {
 
-                    if (webViewPreviousState == PAGE_STARTED && dialog !=null) {
-		                dialog.dismiss();
-		                dialog = null;
+                    if (webViewPreviousState == PAGE_STARTED) {
+                        progressBar.setVisibility(View.INVISIBLE);
 		            }
 
 		        }
