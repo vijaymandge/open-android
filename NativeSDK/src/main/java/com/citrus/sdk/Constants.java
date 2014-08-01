@@ -26,8 +26,6 @@ public class Constants {
     /*Do not change the following URLs*/
     public static final String CITRUS_STRUCT_URL = "https://sandboxadmin.citruspay.com/service/moto/authorize/struct/payment";
 
-    public static final String GUEST_PAY_URL = "https://sandboxadmin.citruspay.com/api/v2/txn/create";
-
     public static final String CITRUS_OAUTH_URL = "https://sandboxadmin.citruspay.com/";
 
 
