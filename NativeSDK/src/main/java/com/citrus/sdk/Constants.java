@@ -35,13 +35,13 @@ public class Constants {
    * Please contact support team at Citrus, if you need any further assistance.
    * */
 
+    public static final String SIGNATURE_URL = "http://sandbox.citruspay.com/namo/sign.php";
+
     public static final String REDIRECT_URL = "https://admin.citruspay.com/requestData";
 
     public static final String VANITY_URL = "nativeSDK";
 
     public static final String ACCESS_KEY = "F2VZD1HBS2VVXJPMWO77";
-
-    public static final String SECRET_KEY = "ef4147f16380678726826483ceccdd7d133e68b7";
 
     public static final String SUBSCRIPTION_ID = "citrus-native-mobile-subscription";
 
