@@ -64,9 +64,7 @@ public class PaymentGateway {
 			
 			httpPost.setHeader("access_key", accessKey);
 			httpPost.setHeader("Content-Type", "application/json");
-			httpPost.setHeader("Accept-Encoding", "application/json");
-			httpPost.setHeader("Accept-Language", "en-US");
-			
+
 			httpPost.setEntity(new StringEntity(txnObject.toString()));			
 			response = httpClient.execute(httpPost);
 			StringBuffer res = new StringBuffer();

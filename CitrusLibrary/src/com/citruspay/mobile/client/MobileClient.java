@@ -17,31 +17,16 @@
 package com.citruspay.mobile.client;
 
 import java.net.URI;
-import java.security.KeyStore;
 
-import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
-import org.apache.http.protocol.HTTP;
 
 import android.app.Activity;
 
-import com.citrus.mobile.client.load.NetCardService;
-import com.citrus.mobile.client.load.NetCardServiceBuilder;
 import com.citruspay.mobile.client.subscription.OpenService;
 import com.citruspay.mobile.client.subscription.OpenServiceBuilder;
 import com.citruspay.mobile.client.subscription.SubscriptionService;
 import com.citruspay.mobile.client.subscription.SubscriptionServiceBuilder;
-import com.citruspay.mobile.payment.client.rest.MySSLSocketFactory;
 import com.citruspay.mobile.payment.client.rest.RESTClient;
 import com.citruspay.mobile.payment.oauth2.AndroidTokenStore;
 import com.citruspay.mobile.payment.oauth2.OAuth2TokenStore;

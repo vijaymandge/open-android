@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.citrus.mobile.client.load.PrepaidException;
 import com.citruspay.mobile.client.MobileClient;
 import com.citruspay.mobile.client.subscription.OpenService;
 import com.citruspay.mobile.payment.BooleanTask;
@@ -76,9 +75,6 @@ public class User {
 
             } catch (JSONException e) {
                 result = "jsonexception";
-
-            } catch (PrepaidException e) {
-                result = "prepaidexception";
 
             } catch (ProtocolException e) {
                 result = "protoexception";

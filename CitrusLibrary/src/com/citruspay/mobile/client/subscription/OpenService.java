@@ -1,6 +1,5 @@
 package com.citruspay.mobile.client.subscription;
 
-import com.citrus.mobile.client.load.PrepaidException;
 import com.citruspay.mobile.payment.client.rest.ProtocolException;
 import com.citruspay.mobile.payment.client.rest.RESTClient;
 import com.citruspay.mobile.payment.client.rest.RESTException;
@@ -8,16 +7,12 @@ import com.citruspay.mobile.payment.oauth2.AuthorizationUtil;
 import com.citruspay.mobile.payment.oauth2.OAuth2Exception;
 import com.citruspay.mobile.payment.oauth2.OAuth2Service;
 
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +29,7 @@ public class OpenService {
     }
 
     public String checkCitrusmember(String identifier) throws JSONException, ProtocolException,
-            OAuth2Exception, PrepaidException {
+            OAuth2Exception {
         Map<String, String> params = new HashMap<String, String>();
 
         String result = null;
@@ -50,7 +45,7 @@ public class OpenService {
         return result;
     }
 
-    public JSONObject getPaymentOptions(String vanity) throws IOException, JSONException, PrepaidException {
+    public JSONObject getPaymentOptions(String vanity) throws IOException, JSONException {
         Map<String, String> params = new HashMap<String, String>();
 
         JSONObject paymentOptions = null;
@@ -69,11 +64,9 @@ public class OpenService {
 
 
     private JSONObject handleRESTException(RESTException rx)
-            throws ProtocolException, PrepaidException {
-        if (rx.getHttpStatusCode() == HttpStatus.SC_BAD_REQUEST) {
-            throw new PrepaidException(rx, rx.getContent());
-        } else {
-            throw new ProtocolException(rx);
-        }
+            throws ProtocolException {
+
+        throw new ProtocolException(rx);
+
     }
 }

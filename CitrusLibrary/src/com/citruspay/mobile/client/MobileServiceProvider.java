@@ -16,7 +16,6 @@
 
 package com.citruspay.mobile.client;
 
-import com.citrus.mobile.client.load.NetCardService;
 import com.citruspay.mobile.client.subscription.OpenService;
 import com.citruspay.mobile.client.subscription.SubscriptionService;
 
