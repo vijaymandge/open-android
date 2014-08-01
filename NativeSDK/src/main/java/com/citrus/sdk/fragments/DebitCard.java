@@ -31,17 +31,15 @@ import android.widget.EditText;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.ErrorValidation;
 import com.citrus.sdk.demo.R;
-import com.citrus.sdk.operations.GuestCheckout;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.operations.OneClicksignup;
+import com.citrus.sdk.webops.GetSign;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.activity.Web3DSecure;
 import com.citruspay.mobile.payment.Card;
 import com.citruspay.mobile.payment.JSONTaskComplete;
-import com.citruspay.mobile.payment.internals.PaymentUtils;
 import com.citruspay.mobile.payment.widgets.CardNumberEditText;
 import com.citruspay.mobile.payment.widgets.ExpiryEditText;
-import com.citruspay.util.HMACSignature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -105,12 +103,12 @@ public class DebitCard extends Fragment{
                 initValues();
 				if (isValidCard()) {
                     if (TextUtils.equals(paymentType, Constants.GUEST_FLOW)) {
-                        createGuestTxn();
+                        createUser();
                     }
                     else {
                         savePayOption();
-                        createMemberTxn();
                     }
+                    getSignature();
 				}
 			}
 		});
@@ -148,21 +146,23 @@ public class DebitCard extends Fragment{
 		return true;
 	}
 
-    private void createGuestTxn() {
-        GuestCheckout checkout = new GuestCheckout(getActivity());
-
-        checkout.cardPay(PaymentUtils.DEBIT_CARD.toString(), JSONUtils.TXN_AMOUNT, card);
-
+    private void createUser() {
         oneClicksignup.oneclickSignUp(oneClicksignup.getSignupparams(getActivity()), getPaymentObject(), "debit");
     }
 
-	private void createMemberTxn() {
-        String txnId = "CTXN" + String.valueOf(System.currentTimeMillis());
-        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=" + JSONUtils.TXN_AMOUNT;
-        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+	private void getSignature() {
+        final String txnId = "MRTXN" + String.valueOf(System.currentTimeMillis());
 
-        insertValues(txnId, signature);
-        initiateTxn();
+        JSONTaskComplete taskComplete = new JSONTaskComplete() {
+            @Override
+            public void onTaskExecuted(JSONObject[] paymentObject, String signature) {
+                insertValues(txnId, signature);
+                initiateTxn();
+            }
+        };
+
+        GetSign sign = new GetSign(getActivity(), txnId, JSONUtils.TXN_AMOUNT, taskComplete);
+        sign.execute();
 	}
 	
 	private void insertValues(String txnId, String signature) {
@@ -187,7 +187,6 @@ public class DebitCard extends Fragment{
             paymentObject.put("paymentToken", paymentToken);
             paymentObject.put("userDetails", userDetails);
             paymentObject.put("amount", amount);
-            paymentObject.put("notifyUrl", "");
             paymentObject.put("merchantAccessKey", Constants.ACCESS_KEY);
             paymentObject.put("requestSignature", signature);
             paymentObject.put("returnUrl", Constants.REDIRECT_URL);

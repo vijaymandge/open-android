@@ -49,6 +49,7 @@ import com.citrus.sdk.demo.R;
 import com.citrus.sdk.operations.JSONUtils;
 import com.citrus.sdk.operations.OneClicksignup;
 import com.citrus.sdk.webops.GetCustprofile;
+import com.citrus.sdk.webops.GetSign;
 import com.citrus.sdk.webops.Pay;
 import com.citrus.sdk.webops.ResetPassword;
 import com.citrus.sdk.webops.SignInAsynch;
@@ -57,7 +58,6 @@ import com.citruspay.mobile.client.Logout;
 import com.citruspay.mobile.client.subscription.OptionDetails;
 import com.citruspay.mobile.payment.BooleanTask;
 import com.citruspay.mobile.payment.JSONTaskComplete;
-import com.citruspay.util.HMACSignature;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -224,19 +224,23 @@ public class SavedOptions extends Fragment{
         final String token = optionDetails.getToken();
         final String type = optionDetails.getType();
 
-        String txnId = String.valueOf(System.currentTimeMillis());
-        String data = "merchantAccessKey=" + Constants.ACCESS_KEY + "&transactionId=" + txnId + "&amount=1";
-        String signature = HMACSignature.generateHMAC(data, Constants.SECRET_KEY);
+        final String txnId = "MRTXN" + String.valueOf(System.currentTimeMillis());
 
+        JSONTaskComplete taskComplete = new JSONTaskComplete() {
+            @Override
+            public void onTaskExecuted(JSONObject[] paymentObject, String signature) {
 
+                if (TextUtils.equals(type, "NETBANKING")) {
+                    fillDetails(txnId, signature, token, "");
+                }
+                else {
+                    processCardFlow(txnId, signature, token);
+                }
+            }
+        };
 
-        if (TextUtils.equals(type, "NETBANKING")) {
-            fillDetails(txnId, signature, token, "");
-        }
-        else {
-            processCardFlow(txnId, signature, token);
-        }
-
+        GetSign sign = new GetSign(getActivity(), txnId, JSONUtils.TXN_AMOUNT, taskComplete);
+        sign.execute();
 
     }
 
@@ -310,9 +314,11 @@ public class SavedOptions extends Fragment{
                         e.printStackTrace();
                     }
                 }
+
             }
 
         };
+
         new Pay(getActivity(), paymentObject, taskExecuted).execute();
     }
 
