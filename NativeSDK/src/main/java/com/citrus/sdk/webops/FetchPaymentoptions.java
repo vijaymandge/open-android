@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-import com.citrus.mobile.client.load.PrepaidException;
 import com.citrus.sdk.Constants;
 import com.citruspay.mobile.client.MobileClient;
 import com.citruspay.mobile.client.subscription.OpenService;
@@ -55,8 +54,6 @@ public class FetchPaymentoptions extends AsyncTask<Void, Void, Void> {
         } catch (IOException e) {
 
         } catch (JSONException e) {
-
-        } catch (PrepaidException e) {
 
         }
         return null;
