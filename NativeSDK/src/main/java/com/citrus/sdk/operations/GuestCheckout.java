@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.interfaces.Messenger;
 import com.citrus.sdk.activity.Web3DSecure;
+import com.citrus.sdk.webops.GetSign;
 import com.citruspay.mobile.payment.Card;
+import com.citruspay.mobile.payment.JSONTaskComplete;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,10 +39,10 @@ import java.util.Iterator;
 public class GuestCheckout {
     private Activity activity;
     private Messenger messenger;
+    private JSONObject paymentObject;
 
     public GuestCheckout(Activity activity) {
         this.activity = activity;
-
     }
 
     public void cardPay(String type, String amount, Card cardDetails) {
@@ -58,7 +60,7 @@ public class GuestCheckout {
             }
         };
         String txnId = String.valueOf(System.currentTimeMillis());
-        JSONObject paymentObject = new JSONObject();
+        paymentObject = new JSONObject();
         JSONObject personalDetails, paymentDetails;
 
         try {
@@ -84,11 +86,12 @@ public class GuestCheckout {
 
             paymentObject.put("returnUrl", Constants.REDIRECT_URL);
 
-            new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        initPayment(txnId);
     }
 
     public void netbankPay(String bankCode, String amount) {
@@ -106,7 +109,7 @@ public class GuestCheckout {
             }
         };
         String txnId = String.valueOf(System.currentTimeMillis());
-        JSONObject paymentObject = new JSONObject();
+        paymentObject = new JSONObject();
         JSONObject paymentDetails, personalDetails;
         try {
             paymentDetails = JSONUtils.fillinGuestPayNetDetails(bankCode);
@@ -134,6 +137,20 @@ public class GuestCheckout {
         } catch (JSONException e) {
 
         }
-        new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId).execute();
+
+        initPayment(txnId);
+    }
+
+    public void initPayment(final String txnId) {
+
+        JSONTaskComplete taskComplete = new JSONTaskComplete() {
+            @Override
+            public void onTaskExecuted(JSONObject[] result, String signature) {
+                new com.citrus.sdk.webops.GuestPay(activity, paymentObject, messenger, txnId, signature).execute();
+            }
+        };
+
+        GetSign sign = new GetSign(activity, txnId, JSONUtils.TXN_AMOUNT, taskComplete);
+        sign.execute();
     }
 }

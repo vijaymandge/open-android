@@ -62,7 +62,7 @@ public class OneClicksignup {
     }
 
     public void initListeners() {
-        listener = new JSONTaskComplete() {
+            listener = new JSONTaskComplete() {
             @Override
             public void onTaskExecuted(JSONObject[] paymentObject, String message) {
                 if (TextUtils.equals(message, "success")) {
