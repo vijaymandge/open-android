@@ -18,11 +18,8 @@ package com.citrus.sdk.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -38,7 +35,6 @@ import android.widget.TextView;
 
 import com.citrus.sdk.Constants;
 import com.citrus.sdk.demo.R;
-import com.citrus.sdk.interfaces.GetHTML;
 import com.citrus.sdk.sms.SMSParsing;
 import com.citrus.sdk.interfaces.JSInterface;
 
@@ -104,8 +100,6 @@ public class Web3DSecure extends Activity {
         initWebViewClient();
 
         webView.addJavascriptInterface(jsInterface, "CitrusResponse");
-
-        webView.addJavascriptInterface(new GetHTML(), "HTMLOUT");
 
         webView.loadUrl(url);
 

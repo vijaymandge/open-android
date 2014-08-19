@@ -24,7 +24,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
-import com.citrus.sdk.Constants;
 import com.citruspay.mobile.client.subscription.OptionDetails;
 
 import org.json.JSONArray;

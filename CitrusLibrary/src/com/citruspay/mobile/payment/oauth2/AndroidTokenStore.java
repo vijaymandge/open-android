@@ -26,33 +26,32 @@ import android.content.SharedPreferences.Editor;
 
 public class AndroidTokenStore implements OAuth2TokenStore {
 	public static final String STORED_VALUES = "StoredValues";
-	private static final String OUATH_KEY_NAME = "OauthKeyName";
-	
+
 	private Activity mActivity;
-	private SharedPreferences mStoredPreferences;
+	private SharedPreferences tokenPrefs;
 	
 	
 	
 	public AndroidTokenStore(Activity mContext) {
 		this.mActivity = mContext;
-		mStoredPreferences = this.mActivity.getSharedPreferences(STORED_VALUES, 0);
+		tokenPrefs = this.mActivity.getSharedPreferences(STORED_VALUES, 0);
 	}
 	
 	@Override
 	public void store(String key, OAuth2Token token) {
-		Editor editor = mStoredPreferences.edit();
-		editor.putString(OUATH_KEY_NAME, token.asJSON().toString());
+		Editor editor = tokenPrefs.edit();
+		editor.putString(key, token.asJSON().toString());
 		editor.commit();
 	}
 
 	@Override
 	public boolean contains(String key) {
-		return (mStoredPreferences.contains(OUATH_KEY_NAME));
+		return (tokenPrefs.contains(key));
 	}
 
 	@Override
 	public OAuth2Token load(String key) {
-		String token = mStoredPreferences.getString(OUATH_KEY_NAME, null);
+		String token = tokenPrefs.getString(key, null);
 	    JSONObject tokenObject = null;
 		try {
 			tokenObject = new JSONObject(token);
@@ -64,8 +63,8 @@ public class AndroidTokenStore implements OAuth2TokenStore {
 	}
 
 	public void clearToken(String key, boolean clearData) {
-		Editor editor = mStoredPreferences.edit();
-		editor.putString(OUATH_KEY_NAME, null);
+		Editor editor = tokenPrefs.edit();
+		editor.putString(key, null);
 		editor.commit();
 	}
 		

@@ -17,7 +17,7 @@ import org.json.JSONException;
  * Created by shardul on 11/7/14.
  */
 public class User {
-    private String subId, subSecret, server_url, identifier, result;
+    private String subId, subSecret, server_url, identifier, result, signId;
 
     private Activity activity;
 
@@ -27,17 +27,18 @@ public class User {
 
     private OpenService service;
 
-    public User(Activity activity, String subId, String subSecret, String server_url, BooleanTask ontask) {
+    public User(Activity activity, String signId, String subId, String subSecret, String server_url, BooleanTask ontask) {
         this.subId = subId;
         this.subSecret = subSecret;
         this.activity = activity;
         this.server_url = server_url;
         this.task = ontask;
+        this.signId = signId;
     }
 
     public void isMember(String identifier) {
         initClient();
-        if (!client.isSignedIn("")) {
+        if (!client.isSignedIn(signId)) {
             this.identifier = identifier;
             new Servercheckuser().execute();
         }

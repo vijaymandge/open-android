@@ -95,7 +95,7 @@ public class HomeScreen extends Activity {
 
 
     private void checkifMember(String email) {
-        User user = new User(HomeScreen.this, Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.CITRUS_OAUTH_URL, new BooleanTask() {
+        User user = new User(HomeScreen.this, Constants.SIGNIN_ID, Constants.SUBSCRIPTION_ID, Constants.SUBSCRIPTION_SECRET, Constants.CITRUS_OAUTH_URL, new BooleanTask() {
             @Override
             public void ontaskComplete(boolean result) {
                     if (result) {
@@ -111,7 +111,6 @@ public class HomeScreen extends Activity {
 
         user.isMember(email);
     }
-
 
 
     public static final void logoutUser(Activity activity) {

@@ -315,7 +315,7 @@ public class SavedOptions extends Fragment{
                     }
                 }
 
-            }
+                }
 
         };
 
