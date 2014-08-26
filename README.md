@@ -4,6 +4,7 @@ open-android
 * You need to enroll with Citrus as a merchant.
 * Have an HMAC generator installed on your server - (Sample - sign.php - replace your secret key and access key.)
 * Make sure that you have following parameters from Citrus
+
 	1) Secret Key 
 
 	2) Access Key
