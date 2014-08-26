@@ -5,19 +5,19 @@ open-android
 * Have an HMAC generator installed on your server - (Sample - sign.php - replace your secret key and access key.)
 * Make sure that you have following parameters from Citrus
 
-	1) Secret Key 
+	** Secret Key 
 
-	2) Access Key
+	** Access Key
 
 Following can be obtained from our support team. Do write a mail to tech.support@citruspay.com or call on +91-87-677-099-00 Extn: 2 (Technical Support)
 
-	3) SignIn Key
+	** SignIn Key
  
-	4) SignIn Secret
+	** SignIn Secret
 
-	5) SignUp Key
+	** SignUp Key
 
-	6) SignUp Secret
+	** SignUp Secret
   	
 
 # SDK Prerequisites
