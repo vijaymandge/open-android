@@ -3,7 +3,7 @@ open-android
 # PG Prerequisites
 * You need to enroll with Citrus as a merchant.
 * Have an HMAC generator installed on your server
-* Make sure that you have following parameters from Citrus
+* Make sure that you have the following parameters from Citrus
 
 Following can be obtained from our support team. Do write a mail to tech.support@citruspay.com or call on +91-87-677-099-00 Extn: 2 (Technical Support)
 
@@ -28,7 +28,7 @@ You need to have installed and configured:
 * A `git` client
 * All Citrus PG Prerequisites.
 
-In case you do not have these details, do not proceed.
+In case you do not have these details, DO NOT proceed.
 
 
 # Installation
@@ -45,5 +45,8 @@ For Eclipse, import the NativeSDK and CitrusLibrary folders into, by using Impor
 
 ### Android Studio
 
-_For Android Studio, choose Import Project from the "Welcome to Android Studio" screen. Choose the build.gradle file at the top of the open-android repository. A sample implementation can be found in NativeSDK._
+For Android Studio, choose Import Project from the "Welcome to Android Studio" screen. Choose the build.gradle file at the top of the open-android repository. A sample implementation can be found in NativeSDK.
 
+# Wiki
+
+Please refer to [git wiki](https://github.com/citruspay/open-android/wiki) to get started.
