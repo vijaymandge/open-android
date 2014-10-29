@@ -20,6 +20,7 @@ package com.citruspay.mobile.client.subscription;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.net.URI;
 import java.util.Collection;
@@ -53,7 +54,7 @@ public class SubscriptionService {
 	private final RESTClient rest;
 	private final PasswordGenerator password;
 	private final HttpClient http;
-
+	private final static String logTAG = "CitrusSDK"; 
 	protected SubscriptionService(
 			OAuth2Service signup, 
 			OAuth2Service signedin,
@@ -67,6 +68,7 @@ public class SubscriptionService {
 		this.password = password;
 	}
 
+	
 	/**
 	 * Method for a new subscription.
 	 * 
@@ -93,17 +95,21 @@ public class SubscriptionService {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("email", email);
 		params.put("mobile", mobile);
+		params.put("firstName",firstName);
+		params.put("lastName",lastName);
+		params.put("password",password);
 		JSONObject profile = null;
 		try {
 			profile = rest.post(
-					URI.create("identity/new"),
+					URI.create("identity/create"),
 					AuthorizationUtil.asHeader(signup.getAuthorization()),
 					params);
+			Log.d(logTAG, "identity/create RESPONSE " + profile.toString());
 		} catch (RESTException rx) {
 			handleRESTException(rx);
 		}
 
-		// signin
+		/*// signin
 		String generated = this.password.generate(email, mobile);
 		signin(email, generated);
 		Collection<Header> authorization = AuthorizationUtil
@@ -140,7 +146,84 @@ public class SubscriptionService {
 		}     
 
 
-		updateProfile(contact);
+		updateProfile(contact);*/
+
+		return profile.getString("username");
+	}
+	
+	/**
+	 * 
+	 * @param email
+	 * @param mobile
+	 * @param firstName
+	 * @param lastName
+	 * @return the username of new subscriber.
+	 * @throws ProtocolException
+	 * @throws OAuth2Exception
+	 * @throws SubscriptionException
+	 * @throws JSONException
+	 */
+	public String signup(
+			String email, 
+			String mobile, 
+			String firstName, 
+			String lastName) throws ProtocolException, OAuth2Exception, SubscriptionException, JSONException {
+		// signup
+		Map<String, String> params = new HashMap<String, String>();
+		
+		params.put("email", email);
+		params.put("mobile", mobile);
+		params.put("firstName",firstName);
+		params.put("lastName",lastName);
+		
+		JSONObject profile = null;
+		try {
+			profile = rest.post(
+					URI.create("identity/create"),
+					AuthorizationUtil.asHeader(signup.getAuthorization()),
+					params);
+		} catch (RESTException rx) {
+			handleRESTException(rx);
+		}
+
+	/*	// signin
+		String generated = this.password.generate(email, mobile);
+		signin(email, generated);
+		Collection<Header> authorization = AuthorizationUtil
+				.asHeader(signedin.getAuthorization());
+
+		// change password
+		    params.put("old", generated);
+        if (TextUtils.isEmpty(password)) {
+            params.put("new", generated);
+        }
+        else {
+            params.put("new", password);
+        }
+
+		try {
+			rest.put(URI.create("identity/me/password"), authorization, params);
+		} catch (RESTException rx) {
+			handleRESTException(rx);
+		}
+
+		JSONObject update = null;
+		ContactDetails contact = null;
+
+		try {
+			update = new JSONObject();
+			update.put("type", "contact").put("email", email)
+			.put("mobile", mobile).put("firstName", firstName)
+			.put("lastName", lastName);
+			contact = new ContactDetails();
+			contact.parse(update);
+		}
+		catch (JSONException jx) {
+				throw new RuntimeException(jx);
+		}     
+
+
+		updateProfile(contact); */
 
 		return profile.getString("username");
 	}
@@ -284,7 +367,76 @@ public class SubscriptionService {
 
 
     }
-
+    
+    public boolean verifyOTP(String mobile, String mobileOTP) throws ProtocolException, OAuth2Exception, SubscriptionException, JSONException
+    {
+    	Map<String, String> params = new HashMap<String, String>();
+    	params.put("mobile", mobile);
+    	params.put("mobileOTP", mobileOTP);
+    	JSONObject otpResponse = null; 
+    	boolean isSuccessfulOTP = false;
+    	try {
+    		otpResponse = rest.post(
+					URI.create("user/verification/mobile"),
+					AuthorizationUtil.asHeader(null),
+					params);
+		} catch (RESTException rx) {
+			handleRESTException(rx);
+		}
+    	if(otpResponse!=null)
+    	{
+    		isSuccessfulOTP = Boolean.parseBoolean(otpResponse.toString());
+    	}
+    	else
+    	{
+    		isSuccessfulOTP = false;
+    	}
+    	
+    	return isSuccessfulOTP;
+    }
+    
+    public void regenerateOTP(String mobile) throws ProtocolException, OAuth2Exception, SubscriptionException, JSONException
+    {
+    	Map<String, String> params = new HashMap<String, String>();
+    	params.put("mobile", mobile);
+    	JSONObject otpResponse = null; 
+    	try {
+    		otpResponse = rest.post(
+					URI.create("user/verification/generate-otp"),
+					AuthorizationUtil.asHeader(null),
+					params);
+		} catch (RESTException rx) {
+			handleRESTException(rx);
+		}
+    }
+    
+    
+    public boolean isMobileVerified(String mobile) throws ProtocolException, OAuth2Exception, SubscriptionException, JSONException
+    {
+    	Map<String, String> params = new HashMap<String, String>();
+    	params.put("mobile", mobile);
+    	JSONObject verificationResponse = null; 
+    	boolean isMobileVerified = false;
+    	try {
+    		verificationResponse = rest.post(
+					URI.create("user/verification/mobile-verified"),
+					AuthorizationUtil.asHeader(null),
+					params);
+		} catch (RESTException rx) {
+			handleRESTException(rx);
+		}
+    	if(verificationResponse!=null)
+    	{
+    		isMobileVerified = Boolean.parseBoolean(verificationResponse.toString());
+    	}
+    	else
+    	{
+    		isMobileVerified = false;
+    	}
+    	
+    	return isMobileVerified;
+    }
+    
 	private JSONObject handleRESTException(RESTException rx) throws ProtocolException, SubscriptionException {
 		if (rx.getHttpStatusCode() == HttpStatus.SC_BAD_REQUEST) {
 			throw new SubscriptionException(rx, rx.getContent());
